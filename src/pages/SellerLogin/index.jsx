@@ -1,6 +1,6 @@
 import Styles from './style.module.css'
 // PNG Files
-import mainLogoPng from '../../assets/images/logo/cart_text_square_dark.png'
+import mainLogoPng from '../../assets/images/background/sellerLogin.png'
 // Components
 import Header from '../../components/Sign/Header'
 import Form from '../../components/Sign/Form'
@@ -11,10 +11,14 @@ function BuyerLogin() {
   return (
     <>
       <div className={Styles.container}>
-        <Header pageName="登入" memberCenter="賣家中心" centerPath="/seller/login" />
+        <Header pageName="賣家中心" memberCenter="買家中心" centerPath="/buyer/login" />
         <main className={Styles.main}>
           <div className={Styles.mainContainer}>
-            <img className={Styles.mainLogo} src={mainLogoPng} />
+            <div>
+              <div className={Styles.bgTextUp}>讓專業的來！</div>
+              <div className={Styles.bgTextDown}>使用瞎皮爾賣家中心，讓你管理賣場超有效率！</div>
+              <img className={Styles.mainLogo} src={mainLogoPng} />
+            </div>
             <div className={Styles.loginContainer}>
               <div className={Styles.loginHeader}>登入</div>
               <div className={Styles.loginMain}>
@@ -36,7 +40,7 @@ function BuyerLogin() {
               </div>
               <div className={Styles.loginFooter}>
                 <span className={Styles.registerRedirectText}>瞎皮爾新朋友&#65311;</span>
-                <a className={Styles.registerRedirect} href="/buyer/register">
+                <a className={Styles.registerRedirect} href="/seller/register">
                   註冊
                 </a>
               </div>

@@ -1,16 +1,16 @@
 import Styles from './style.module.css'
 // PNG Files
-import facebookPng from '../../../assets/images/thirdPartyLogin/facebook.png'
-import googlePng from '../../../assets/images/thirdPartyLogin/google.png'
+import facebookPng from '../../../assets/images/thirdParty/facebook.png'
+import googlePng from '../../../assets/images/thirdParty/google.png'
 
 const ThirdParty = () => {
   return (
-    <div className={Styles.thirdPartyLogin}>
-      <div className={Styles.facebookLogin}>
+    <div className={Styles.thirdParty}>
+      <div className={Styles.facebookSign}>
         <img className={Styles.thirdPartyLogo} src={facebookPng} />
         <div className={Styles.thirdPartyText}>Facebook</div>
       </div>
-      <div className={Styles.googleLogin}>
+      <div className={Styles.googleSign}>
         <img className={Styles.thirdPartyLogo} src={googlePng} />
         <div className={Styles.thirdPartyText}>Google</div>
       </div>

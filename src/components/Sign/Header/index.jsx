@@ -2,7 +2,7 @@ import Styles from './style.module.css'
 // PNG Files
 import headerLogoPng from '../../../assets/images/logo/banner_light.png'
 
-const Header = ({ pageName, memberCenter }) => {
+const Header = ({ pageName, memberCenter, centerPath }) => {
   return (
     <header className={Styles.header}>
       <div className={Styles.headerLeft}>
@@ -10,7 +10,7 @@ const Header = ({ pageName, memberCenter }) => {
         <div className={Styles.pageName}>{pageName}</div>
       </div>
       <div className={Styles.headerRight}>
-        <a className={Styles.memberCenter}>{memberCenter}</a>
+        <a className={Styles.memberCenter} href={centerPath}>{memberCenter}</a>
       </div>
     </header>
   )
