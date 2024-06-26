@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import BuyerLogin from './pages/BuyerLogin'
 import BuyerRegister from './pages/BuyerRegister'
 import SellerLogin from './pages/SellerLogin'
+import SellerRegister from './pages/SellerRegister'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path="/buyer/login" element={<BuyerLogin />} />
           <Route path="/buyer/register" element={<BuyerRegister />} />
           <Route path="/seller/login" element={<SellerLogin />} />
+          <Route path="/seller/register" element={<SellerRegister />} />
         </Routes>
       </BrowserRouter>
     </>

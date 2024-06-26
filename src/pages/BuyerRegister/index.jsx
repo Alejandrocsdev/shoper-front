@@ -11,7 +11,7 @@ function BuyerRegister() {
   return (
     <>
       <div className={Styles.container}>
-        <Header pageName="註冊" memberCenter="賣家中心" />
+        <Header pageName="註冊" memberCenter="賣家中心" centerPath="/seller/register" />
         <main className={Styles.main}>
           <div className={Styles.mainContainer}>
             <img className={Styles.mainLogo} src={mainLogoPng} />
