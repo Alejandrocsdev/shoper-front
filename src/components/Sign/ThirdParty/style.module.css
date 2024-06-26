@@ -1,0 +1,6 @@
+.thirdPartyLogin { display: flex; justify-content: space-between; }
+.facebookLogin, .googleLogin { width: 100%; height: 40px; font-size: 14px; background-color: #ECEBF5; border: 1px solid rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; }
+.facebookLogin:hover, .googleLogin:hover { filter: brightness(90%); }
+.facebookLogin { margin-right: 5px; }
+.googleLogin { margin-left: 5px; }
+.thirdPartyLogo { width: 16px; height: 16px; margin-right: 5px; }

@@ -1,0 +1,9 @@
+.footer { padding: 10px 160px; background-color: #ECEBF5; }
+.platformInfo { display: flex; justify-content: space-evenly; }
+.payment, .logistic, .socialMedia { width: 360px; }
+.catName { margin-bottom: 10px; }
+.images { height: 60px; margin-bottom: 10px; display: flex; justify-content: space-evenly; }
+.image { width: 80px; padding: 5px; background-color: white; border-radius: 10px; object-fit: contain; cursor: pointer; }
+.link { display: flex; justify-content: center; align-items: center; }
+.icon { width: 100px; font-size: 50px; }
+.companyInfo { height: 50px; padding-top: 10px; color: gray; border-top: 1px solid gray; display: flex; justify-content: space-evenly; align-items: center; }
