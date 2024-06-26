@@ -1,13 +1,15 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Login from './pages/Login'
+import BuyerLogin from './pages/BuyerLogin'
+import BuyerRegister from './pages/BuyerRegister'
 
 function App() {
   return (
     <>
       <BrowserRouter basename="/">
         <Routes>
-          <Route index element={<Login />} />
+          <Route path="/buyer/login" element={<BuyerLogin />} />
+          <Route path="/buyer/register" element={<BuyerRegister />} />
         </Routes>
       </BrowserRouter>
     </>

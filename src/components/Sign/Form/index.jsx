@@ -2,10 +2,11 @@ import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useState, useCallback } from 'react'
 
-const LoginForm = () => {
+const Form = ({ isLogin }) => {
   // Toogle Password
   const [showPassword, setShowPassword] = useState(false)
   const togglePassword = () => setShowPassword(!showPassword)
@@ -14,85 +15,127 @@ const LoginForm = () => {
   const [loginKey, setLoginKey] = useState('')
   const [password, setPassword] = useState('')
   // Input Warning: Touched
-  const [loginKeyTouched, setLoginKeyTouched] = useState(false)
-  const [passwordTouched, setPasswordTouched] = useState(false)
-
-  const inputParams = useCallback(
-    (type) => {
-      return {
-        value: type === 'loginKey' ? loginKey : password,
-        setValue: type === 'loginKey' ? setLoginKey : setPassword,
-        touched: type === 'loginKey' ? loginKeyTouched : passwordTouched,
-        setTouched: type === 'loginKey' ? setLoginKeyTouched : setPasswordTouched
-      }
-    },
-    [loginKey, password, loginKeyTouched, passwordTouched]
-  )
+  const [inputTouched, setInputTouched] = useState({ loginKey: false, password: false })
 
   const handleChange = (e, type) => {
-    const params = inputParams(type)
     const value = e.target.value
-    const { setValue, touched, setTouched } = params
-    setValue(value)
-    if (value === '' && touched) setTouched(true)
+    type === 'loginKey' ? setLoginKey(value) : setPassword(value)
+    if (value !== '') setInputTouched((prev) => ({ ...prev, [type]: true }))
   }
 
   const handleBlur = (type) => {
-    const params = inputParams(type)
-    const { value, setTouched } = params
-    if (value === '') setTouched(true)
+    if (type === 'loginKey' && loginKey !== '') {
+      setInputTouched((prev) => ({ ...prev, loginKey: true }))
+    } else if (type === 'password' && password !== '') {
+      setInputTouched((prev) => ({ ...prev, password: true }))
+    }
+  }
+
+  const showInputWarning = (type) => {
+    return inputTouched[type] && (type === 'loginKey' ? loginKey === '' : password === '')
+  }
+
+  const showPhoneWarning = () => {
+    return inputTouched.loginKey && (!loginKey.startsWith('09') || loginKey.length !== 10)
+  }
+
+  const isButtonDisabled = () => {
+    if (isLogin) {
+      return !(loginKey !== '' && password !== '')
+    } else {
+      return !(loginKey.startsWith('09') && loginKey.length === 10)
+    }
+  }
+
+  const handleSubmit = (e) => {
+    if (isButtonDisabled()) {
+      e.preventDefault()
+    }
   }
 
   return (
-    <form action="" method="post">
+    <form action="" method="post" onSubmit={handleSubmit}>
       {/* Login Key Input */}
       <div className={Styles.loginKey}>
         <input
           className={`${Styles.loginKeyInput} ${
-            loginKeyTouched && loginKey === '' ? Styles.inputWarning : ''
+            isLogin
+              ? showInputWarning('loginKey')
+                ? Styles.inputWarning
+                : ''
+              : showPhoneWarning('loginKey')
+              ? Styles.inputWarning
+              : ''
           }`}
           type="text"
           name="loginKey"
-          placeholder="電話號碼/使用者名稱/Email"
+          placeholder={isLogin ? '電話號碼/使用者名稱/Email' : '手機號碼'}
           value={loginKey}
           onChange={(e) => handleChange(e, 'loginKey')}
           onBlur={() => handleBlur('loginKey')}
           aria-label="Login Key"
         />
+        {/* Toggle Phone Check */}
+        {!isLogin && loginKey.startsWith('09') && loginKey.length === 10 && (
+          <div className={Styles.checkContainer} aria-label="Toggle Phone Check">
+            <FontAwesomeIcon className={Styles.check} icon={faCircleCheck} />
+          </div>
+        )}
       </div>
       {/* Warning Text */}
-      <div className={`${Styles.loginKeyWarning} ${Styles.textWarning}`}>
-        {loginKeyTouched && loginKey === '' ? '請填寫此欄位' : ''}
-      </div>
-      {/* Password Input */}
-      <div className={Styles.password}>
-        <input
-          className={`${Styles.passwordInput} ${
-            passwordTouched && password === '' ? Styles.inputWarning : ''
-          }`}
-          type={showPassword ? 'text' : 'password'}
-          name="password"
-          placeholder="密碼"
-          value={password}
-          onChange={(e) => handleChange(e, 'password')}
-          onBlur={() => handleBlur('password')}
-          aria-label="Password"
-        />
-        {/* Toggle Password */}
-        <div className={Styles.eyeContainer} onClick={togglePassword} aria-label="Toggle Password">
-          <FontAwesomeIcon className={Styles.eye} icon={showPassword ? faEye : faEyeSlash} />
+      {isLogin && (
+        <div className={`${Styles.loginKeyWarning} ${Styles.textWarning}`}>
+          {showInputWarning('loginKey') ? '請填寫此欄位' : ''}
         </div>
-      </div>
-      {/* Warning Text */}
-      <div className={`${Styles.passwordWarning} ${Styles.textWarning}`}>
-        {passwordTouched && password === '' ? '請填寫此欄位' : ''}
-      </div>
+      )}
+      {!isLogin && (
+        <div className={`${Styles.loginKeyWarning} ${Styles.textWarning}`}>
+          {showPhoneWarning() ? '請輸入有效行動電話號碼' : ''}
+        </div>
+      )}
+
+      {/* Password Input */}
+      {isLogin && (
+        <>
+          <div className={Styles.password}>
+            <input
+              className={`${Styles.passwordInput} ${
+                showInputWarning('password') ? Styles.inputWarning : ''
+              }`}
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="密碼"
+              value={password}
+              onChange={(e) => handleChange(e, 'password')}
+              onBlur={() => handleBlur('password')}
+              maxLength={16}
+              aria-label="Password"
+            />
+            {/* Toggle Password */}
+            <div
+              className={Styles.eyeContainer}
+              onClick={togglePassword}
+              aria-label="Toggle Password"
+            >
+              <FontAwesomeIcon className={Styles.eye} icon={showPassword ? faEye : faEyeSlash} />
+            </div>
+          </div>
+          {/* Warning Text */}
+          <div className={`${Styles.passwordWarning} ${Styles.textWarning}`}>
+            {showInputWarning('password') ? '請填寫此欄位' : ''}
+          </div>
+        </>
+      )}
+
       {/* Submit */}
-      <button className={Styles.loginSubmit} type="submit">
-        登入
+      <button
+        className={`${Styles.loginSubmit} ${isButtonDisabled() ? Styles.notAllowed : ''}`}
+        type="submit"
+      >
+        {isLogin ? '登入' : '下一步'}
       </button>
     </form>
   )
 }
 
-export default LoginForm
+export default Form

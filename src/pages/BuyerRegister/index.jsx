@@ -7,22 +7,18 @@ import Form from '../../components/Sign/Form'
 import ThirdParty from '../../components/Sign/ThirdParty'
 import Footer from '../../components/Sign/Footer'
 
-function Login() {
+function BuyerRegister() {
   return (
     <>
       <div className={Styles.container}>
-        <Header />
+        <Header pageName="註冊" memberCenter="賣家中心" />
         <main className={Styles.main}>
           <div className={Styles.mainContainer}>
             <img className={Styles.mainLogo} src={mainLogoPng} />
             <div className={Styles.loginContainer}>
-              <div className={Styles.loginHeader}>登入</div>
+              <div className={Styles.loginHeader}>註冊</div>
               <div className={Styles.loginMain}>
-                <Form />
-                <div className={Styles.otherLogin}>
-                  <a className={Styles.forgotPassword}>忘記密碼</a>
-                  <a className={Styles.smsLogin}>使用簡訊登入</a>
-                </div>
+                <Form isLogin={false} />
                 <div className={Styles.breakLine}>
                   <div className={Styles.lineContainer}>
                     <div className={Styles.line}></div>
@@ -34,9 +30,15 @@ function Login() {
                 </div>
                 <ThirdParty />
               </div>
+              <div className={Styles.policy}>
+                點擊「下一步」或繼續註冊，即表示您已閱讀並同意瞎皮爾購物的
+                <a>服務條款</a>與<a>隱私權政策</a>
+              </div>
               <div className={Styles.loginFooter}>
-                <span className={Styles.registerRedirectText}>瞎皮爾新朋友&#65311;</span>
-                <a className={Styles.registerRedirect}>註冊</a>
+                <span className={Styles.registerRedirectText}>已經有帳號了嗎&#65311;</span>
+                <a className={Styles.registerRedirect} href="/buyer/login">
+                  登入
+                </a>
               </div>
             </div>
           </div>
@@ -47,4 +49,4 @@ function Login() {
   )
 }
 
-export default Login
+export default BuyerRegister

@@ -5,7 +5,10 @@
 .inputWarning { background-color: #ffeaed; border: 1px solid #ff424f; }
 .inputWarning:focus { outline:none; }
 .textWarning { width: 100%; height: 21px; padding-top: 5px ; margin-bottom: 10px; color: #ff424f; font-size: 12px; }
+/* Toggle Phone Check */
+.check { color: #66CC00; }
 /* Toggle Password */
-.eyeContainer { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; }
+.checkContainer, .eyeContainer { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
 .eye { font-size: 18px; cursor: pointer; }
-.loginSubmit { width: 100%; height: 40px; color: #ECEBF5; background-color: #100D25; border: 0; cursor: not-allowed; }
+.loginSubmit { width: 100%; height: 40px; color: #ECEBF5; background-color: #100D25; border: 0; cursor: pointer; }
+.notAllowed { cursor: not-allowed; }

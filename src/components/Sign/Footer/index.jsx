@@ -10,7 +10,7 @@ import okMartPng from '../../../assets/images/ecpay/okMart.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareFacebook, faInstagram, faLine } from '@fortawesome/free-brands-svg-icons'
 
-const LoginFooter = () => {
+const Footer = () => {
   return (
     <footer className={Styles.footer}>
       <div className={Styles.platformInfo}>
@@ -54,4 +54,4 @@ const LoginFooter = () => {
   )
 }
 
-export default LoginFooter
+export default Footer
