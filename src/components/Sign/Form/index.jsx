@@ -7,48 +7,49 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 import { useState, useCallback } from 'react'
 
 const Form = ({ isLogin }) => {
-  // Toogle Password
   const [showPassword, setShowPassword] = useState(false)
-  const togglePassword = () => setShowPassword(!showPassword)
-
-  // Input Warning: Value
   const [loginKey, setLoginKey] = useState('')
   const [password, setPassword] = useState('')
-  // Input Warning: Touched
   const [inputTouched, setInputTouched] = useState({ loginKey: false, password: false })
 
-  const handleChange = (e, type) => {
+  const togglePassword = () => setShowPassword(!showPassword)
+
+  const handleChange = (e, inputType) => {
     const value = e.target.value
-    type === 'loginKey' ? setLoginKey(value) : setPassword(value)
-    if (value !== '') setInputTouched((prev) => ({ ...prev, [type]: true }))
+    inputType === 'loginKey' ? setLoginKey(value) : setPassword(value)
+    if (value !== '') setInputTouched((prev) => ({ ...prev, [inputType]: true }))
   }
 
-  const handleBlur = (type) => {
-    if (type === 'loginKey' && loginKey !== '') {
+  const handleBlur = (inputType) => {
+    if (inputType === 'loginKey' && loginKey !== '') {
       setInputTouched((prev) => ({ ...prev, loginKey: true }))
-    } else if (type === 'password' && password !== '') {
+    } else if (inputType === 'password' && password !== '') {
       setInputTouched((prev) => ({ ...prev, password: true }))
     }
   }
 
-  const showInputWarning = (type) => {
-    return inputTouched[type] && (type === 'loginKey' ? loginKey === '' : password === '')
-  }
+  const phoneCheck = loginKey.startsWith('09') && loginKey.length === 10
 
-  const showPhoneWarning = () => {
-    return inputTouched.loginKey && (!loginKey.startsWith('09') || loginKey.length !== 10)
-  }
-
-  const isButtonDisabled = () => {
+  const shouldShowWarning = (isLogin, inputType) => {
     if (isLogin) {
-      return !(loginKey !== '' && password !== '')
+      return (
+        inputTouched[inputType] && (inputType === 'loginKey' ? loginKey === '' : password === '')
+      )
     } else {
-      return !(loginKey.startsWith('09') && loginKey.length === 10)
+      return inputTouched.loginKey && !phoneCheck
+    }
+  }
+
+  const isSubmitDisabled = () => {
+    if (isLogin) {
+      return loginKey === '' || password === ''
+    } else {
+      return !phoneCheck
     }
   }
 
   const handleSubmit = (e) => {
-    if (isButtonDisabled()) {
+    if (isSubmitDisabled()) {
       e.preventDefault()
     }
   }
@@ -59,13 +60,7 @@ const Form = ({ isLogin }) => {
       <div className={Styles.loginKey}>
         <input
           className={`${Styles.loginKeyInput} ${
-            isLogin
-              ? showInputWarning('loginKey')
-                ? Styles.inputWarning
-                : ''
-              : showPhoneWarning('loginKey')
-              ? Styles.inputWarning
-              : ''
+            shouldShowWarning(isLogin, 'loginKey') ? Styles.inputWarning : ''
           }`}
           type="text"
           name="loginKey"
@@ -76,23 +71,16 @@ const Form = ({ isLogin }) => {
           aria-label="Login Key"
         />
         {/* Toggle Phone Check */}
-        {!isLogin && loginKey.startsWith('09') && loginKey.length === 10 && (
+        {!isLogin && phoneCheck && (
           <div className={Styles.checkContainer} aria-label="Toggle Phone Check">
             <FontAwesomeIcon className={Styles.check} icon={faCircleCheck} />
           </div>
         )}
       </div>
       {/* Warning Text */}
-      {isLogin && (
-        <div className={`${Styles.loginKeyWarning} ${Styles.textWarning}`}>
-          {showInputWarning('loginKey') ? '請填寫此欄位' : ''}
-        </div>
-      )}
-      {!isLogin && (
-        <div className={`${Styles.loginKeyWarning} ${Styles.textWarning}`}>
-          {showPhoneWarning() ? '請輸入有效行動電話號碼' : ''}
-        </div>
-      )}
+      <div className={`${Styles.loginKeyWarning} ${Styles.textWarning}`}>
+        {shouldShowWarning(isLogin, 'loginKey') ? '請填寫此欄位' : ''}
+      </div>
 
       {/* Password Input */}
       {isLogin && (
@@ -100,7 +88,7 @@ const Form = ({ isLogin }) => {
           <div className={Styles.password}>
             <input
               className={`${Styles.passwordInput} ${
-                showInputWarning('password') ? Styles.inputWarning : ''
+                shouldShowWarning(isLogin, 'password') ? Styles.inputWarning : ''
               }`}
               type={showPassword ? 'text' : 'password'}
               name="password"
@@ -122,14 +110,14 @@ const Form = ({ isLogin }) => {
           </div>
           {/* Warning Text */}
           <div className={`${Styles.passwordWarning} ${Styles.textWarning}`}>
-            {showInputWarning('password') ? '請填寫此欄位' : ''}
+            {shouldShowWarning(isLogin, 'password') ? '請填寫此欄位' : ''}
           </div>
         </>
       )}
 
       {/* Submit */}
       <button
-        className={`${Styles.loginSubmit} ${isButtonDisabled() ? Styles.notAllowed : ''}`}
+        className={`${Styles.loginSubmit} ${isSubmitDisabled() ? Styles.notAllowed : ''}`}
         type="submit"
       >
         {isLogin ? '登入' : '下一步'}
