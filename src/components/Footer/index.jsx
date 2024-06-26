@@ -1,14 +1,16 @@
 import Styles from './style.module.css'
 // PNG Files
-import masterCardPng from '../../../assets/images/ecpay/masterCard.png'
-import visaPng from '../../../assets/images/ecpay/visa.png'
-import jcbPng from '../../../assets/images/ecpay/jcb.png'
-import sevenElevenPng from '../../../assets/images/ecpay/sevenEleven.png'
-import familyMartPng from '../../../assets/images/ecpay/familyMart.png'
-import okMartPng from '../../../assets/images/ecpay/okMart.png'
+import masterCardPng from '../../assets/images/ecpay/masterCard.png'
+import visaPng from '../../assets/images/ecpay/visa.png'
+import jcbPng from '../../assets/images/ecpay/jcb.png'
+import sevenElevenPng from '../../assets/images/ecpay/sevenEleven.png'
+import familyMartPng from '../../assets/images/ecpay/familyMart.png'
+import okMartPng from '../../assets/images/ecpay/okMart.png'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareFacebook, faInstagram, faLine } from '@fortawesome/free-brands-svg-icons'
+// Components
+import Anchor from '../Elements/Anchor'
 
 const Footer = () => {
   return (
@@ -33,15 +35,18 @@ const Footer = () => {
         <div className={Styles.socialMedia}>
           <div className={Styles.catName}>關注我們</div>
           <div className={Styles.images}>
-            <a className={Styles.link}>
-              <FontAwesomeIcon className={Styles.icon} icon={faSquareFacebook} />
-            </a>
-            <a className={Styles.link}>
-              <FontAwesomeIcon className={Styles.icon} icon={faInstagram} />
-            </a>
-            <a className={Styles.link}>
-              <FontAwesomeIcon className={Styles.icon} icon={faLine} />
-            </a>
+            <Anchor
+              style={Styles.link}
+              content={<FontAwesomeIcon className={Styles.icon} icon={faSquareFacebook} />}
+            />
+            <Anchor
+              style={Styles.link}
+              content={<FontAwesomeIcon className={Styles.icon} icon={faInstagram} />}
+            />
+            <Anchor
+              style={Styles.link}
+              content={<FontAwesomeIcon className={Styles.icon} icon={faLine} />}
+            />
           </div>
         </div>
       </div>

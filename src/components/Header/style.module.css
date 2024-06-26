@@ -1,2 +1,9 @@
-.header { height: 120px; padding: 0 160px; background-color: #FB5831; }
-.nav { height: 35px; background-color: #92432f; display: flex; justify-content: space-between; align-items: center; }
+.header { height: 120px; background-color: #100D25; display: flex; flex-direction: column; }
+.nav { width: 1216px; height: 35px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.navLeft { width: 350px; display: flex; justify-content: space-evenly; }
+.navText, .register, .login { font-size: 13px; color: #ECEBF5!important; }
+.login { margin-left: 10px; }
+.socialMedia { font-size: 18px; color: #ECEBF5!important; }
+.headerSearch { height: 85px; display: flex; justify-content: center; align-items: center; }
+.headerLogo { height: 75px; }
+.cart { color: #ECEBF5; }

@@ -5,7 +5,8 @@ import sellerBgPng from '../../assets/images/background/sellerBg.png'
 import Header from '../../components/Sign/Header'
 import Form from '../../components/Sign/Form'
 import ThirdParty from '../../components/Sign/ThirdParty'
-import Footer from '../../components/Sign/Footer'
+import Footer from '../../components/Footer'
+import Anchor from '../../components/Elements/Anchor'
 
 function BuyerLogin() {
   return (
@@ -24,8 +25,8 @@ function BuyerLogin() {
               <div className={Styles.loginMain}>
                 <Form isLogin={true} />
                 <div className={Styles.otherLogin}>
-                  <a className={Styles.forgotPassword}>忘記密碼</a>
-                  <a className={Styles.smsLogin}>使用簡訊登入</a>
+                  <Anchor style={Styles.forgotPassword} content="忘記密碼" />
+                  <Anchor style={Styles.smsLogin} content="使用簡訊登入" />
                 </div>
                 <div className={Styles.breakLine}>
                   <div className={Styles.lineContainer}>
@@ -40,9 +41,7 @@ function BuyerLogin() {
               </div>
               <div className={Styles.loginFooter}>
                 <span className={Styles.registerRedirectText}>瞎皮爾新朋友&#65311;</span>
-                <a className={Styles.registerRedirect} href="/seller/register">
-                  註冊
-                </a>
+                <Anchor style={Styles.registerRedirect} href="/seller/register" content="註冊" />
               </div>
             </div>
           </div>
