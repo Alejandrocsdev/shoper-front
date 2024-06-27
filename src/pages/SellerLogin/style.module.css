@@ -1,6 +1,6 @@
 .container { min-width: 1200px; }
 /* Main */
-.main { height: calc(100vh - var(--header-heaight)); padding: 0 240px; display: flex; justify-content: space-between; align-items: center; background-color: #D3E5D9; }
+.main { min-height: calc(100vh - var(--header-heaight)); padding: 0 240px; display: flex; justify-content: space-between; align-items: center; background-color: #D3E5D9; }
 .mainContainer { margin: auto; display: flex; }
 .mainLogo { width: 560px; object-fit: contain; }
 .bgTextUp { font-size: 2rem; line-height: 3.5rem; }

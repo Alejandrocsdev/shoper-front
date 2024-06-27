@@ -31,19 +31,32 @@ function Header() {
             />
           </div>
           <div className={Styles.navRight}>
-            <Anchor style={Styles.register} href="/buyer/register" content="註冊" />
-            <Anchor style={Styles.login} href="/buyer/login" content="登入" />
+            <div className={Styles.logOutView}>
+              <Anchor style={Styles.register} href="/buyer/register" content="註冊" />
+              <Anchor style={Styles.login} href="/buyer/login" content="登入" />
+            </div>
+            {/* <div className={Styles.logInView}>
+              <a className={Styles.profileLink} href="/user/purchase/">
+                <img
+                  className={Styles.avatar}
+                  src="https://avatar.iran.liara.run/public/boy?username=Scott"
+                />
+                <div className={Styles.username}>newlean14</div>
+              </a>
+            </div> */}
           </div>
         </nav>
         <div className={Styles.headerSearch}>
-          <img className={Styles.headerLogo} src={headerLogoPng}/>
+          <a className={Styles.homeLink} href="/">
+            <img className={Styles.headerLogo} src={headerLogoPng} />
+          </a>
           <div className={Styles.searchContainer}>
-            <input type="text" />
-            <button type="submit">
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </button>
+            <input className={Styles.searchInput} type="text" placeholder="請輸入搜尋關鍵字" />
+            <button className={Styles.searchButton} type="submit">
+              <FontAwesomeIcon className={Styles.searchIcon} icon={faMagnifyingGlass} />
+            </button>
           </div>
-          <FontAwesomeIcon className={Styles.cart} icon={faCartShopping} />
+          <FontAwesomeIcon className={Styles.cartIcon} icon={faCartShopping} />
         </div>
       </header>
     </>
