@@ -5,8 +5,14 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+// module
+import axios from 'axios'
+// env
+const { VITE_BASE_URL } = import.meta.env
 
 const Form = ({ isLogin }) => {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [loginKey, setLoginKey] = useState('')
   const [password, setPassword] = useState('')
@@ -48,14 +54,24 @@ const Form = ({ isLogin }) => {
     }
   }
 
-  const handleSubmit = (e) => {
-    if (isSubmitDisabled()) {
-      e.preventDefault()
+  const handleSubmit = async () => {
+    if (!isSubmitDisabled() && !isLogin) {
+      try {
+        console.log(loginKey)
+        const response = await axios.post(`${VITE_BASE_URL}/verification/send/otp`, { loginKey })
+        console.log(VITE_BASE_URL)
+        console.log('Response:', response.data)
+        navigate('/buyer/register/phone')
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    } else if (!isSubmitDisabled() && isLogin) {
+      console.log('Login')
     }
   }
 
   return (
-    <form action="" method="post" onSubmit={handleSubmit}>
+    <div>
       {/* Login Key Input */}
       <div className={Styles.loginKey}>
         <input
@@ -79,7 +95,11 @@ const Form = ({ isLogin }) => {
       </div>
       {/* Warning Text */}
       <div className={`${Styles.loginKeyWarning} ${Styles.textWarning}`}>
-        {shouldShowWarning(isLogin, 'loginKey') ? '請填寫此欄位' : ''}
+        {shouldShowWarning(isLogin, 'loginKey')
+          ? isLogin
+            ? '請填寫此欄位'
+            : '請輸入有效行動電話號碼'
+          : ''}
       </div>
 
       {/* Password Input */}
@@ -117,12 +137,12 @@ const Form = ({ isLogin }) => {
 
       {/* Submit */}
       <button
-        className={`${Styles.loginSubmit} ${isSubmitDisabled() ? Styles.notAllowed : ''}`}
-        type="submit"
+        className={`${Styles.submit} ${isSubmitDisabled() ? Styles.notAllowed : Styles.allowed}`}
+        onClick={handleSubmit}
       >
         {isLogin ? '登入' : '下一步'}
       </button>
-    </form>
+    </div>
   )
 }
 

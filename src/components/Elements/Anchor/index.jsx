@@ -1,7 +1,7 @@
 import Styles from './style.module.css'
 
-function Anchor({ style, href, content }) {
-  return <a className={`${Styles.a} ${style}`} href={href}>{content}</a>
+function Anchor({ style, href, content, onClick }) {
+  return <a className={`${Styles.a} ${style}`} href={href} onClick={onClick}>{content}</a>
 }
 
 export default Anchor

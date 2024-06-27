@@ -8,10 +8,39 @@ import Header from '../../components/Sign/Header'
 import Footer from '../../components/Footer'
 import Anchor from '../../components/Elements/Anchor'
 // Hooks
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function RegisterPhone() {
   const inputsRef = useRef([])
+  const [count, setCount] = useState(5)
+  const [counting, setCounting] = useState(true)
+  const [showCountDown, setShowCountDown] = useState(true) // State to control showing countdown or other text
+
+  // Effect to start the countdown when `counting` state changes
+  useEffect(() => {
+    let timer
+    if (counting) {
+      timer = setInterval(() => {
+        setCount((prevCount) => {
+          if (prevCount === 1) {
+            clearInterval(timer)
+            setCounting(false)
+            setShowCountDown(false) // Hide countdown when it reaches zero
+          }
+          return prevCount - 1
+        })
+      }, 1000)
+    }
+    return () => clearInterval(timer)
+  }, [counting])
+
+  // Function to handle resend click
+  const handleResendClick = () => {
+    setCount(60)
+    setCounting(true)
+    setShowCountDown(true) // Show countdown again on resend click
+  }
+
   useEffect(() => {
     const OTPinputs = inputsRef.current
     OTPinputs[0].focus()
@@ -106,7 +135,7 @@ function RegisterPhone() {
                           key={i}
                           className={Styles.otpInput}
                           type="number"
-                          ref={(el) => (inputsRef.current[i] = el)}
+                          ref={(e) => (inputsRef.current[i] = e)}
                           disabled={i !== 0}
                         />
                       ))}
@@ -114,12 +143,18 @@ function RegisterPhone() {
                   </form>
                 </div>
                 <div className={Styles.otherVerification}>
-                  <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
-                  <div className={Styles.otherText}>
-                    <Anchor content="重新傳送" />
-                    或嘗試
-                    <Anchor content="其他方式" />
-                  </div>
+                  {showCountDown ? (
+                    <div className={Styles.countDown}>{`${count}秒後重新傳送`}</div>
+                  ) : (
+                    <>
+                      <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
+                      <div className={Styles.otherText}>
+                        <Anchor content="重新傳送" onClick={handleResendClick} />
+                        或嘗試
+                        <Anchor content="其他方式" />
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className={Styles.cardSubmit}>下一步</div>
               </div>
