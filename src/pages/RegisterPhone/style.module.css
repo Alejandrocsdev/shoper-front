@@ -29,6 +29,8 @@
 .otherVerification { height: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .countDown { color: gray; text-align: center; }
 .otherText { text-align: center; }
-.cardSubmit { height: 40px; margin-top: 30px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.otherText span { color: #219ebc; text-decoration: none; cursor: pointer; }
+.otherText span:hover { filter: brightness(70%); }
+.submit { height: 40px; margin-top: 30px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
 .notAllowed { cursor: not-allowed; }
 .allowed:hover { background-color: hsl(248, 48%, 40%) }

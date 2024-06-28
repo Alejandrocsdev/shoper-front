@@ -1,3 +1,4 @@
+// Style
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,22 +10,37 @@ import Footer from '../../components/Footer'
 import Anchor from '../../components/Elements/Anchor'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
-// module
+// modules
 import axios from 'axios'
-// env
+// environment variables
 const { VITE_BASE_URL } = import.meta.env
 
 function RegisterPhone() {
+  // 用來保存所有 OTP 輸入框的參考
   const inputsRef = useRef([])
-  const [count, setCount] = useState(60)
-  const [counting, setCounting] = useState(true)
-  const [showCountDown, setShowCountDown] = useState(true) // State to control showing countdown or other text
-  const [allFilled, setAllFilled] = useState(false)
-  const [otp, setOtp] = useState('') // State to hold the combined OTP
-  const [errorMessage, setErrorMessage] = useState('') // State for dynamic error message
-  const [hasError, setHasError] = useState(false) // State to control error section visibility
 
-  // Effect to start the countdown when `counting` state changes
+  // 倒數計時秒數
+  const [count, setCount] = useState(5)
+  // 是否正在倒數計時的狀態
+  const [counting, setCounting] = useState(true)
+  // 是否顯示倒數計時的狀態
+  const [showCountDown, setShowCountDown] = useState(true)
+  // 是否所有 OTP 輸入框都已填入值的狀態
+  const [allFilled, setAllFilled] = useState(false)
+  // OTP 驗證碼
+  const [otp, setOtp] = useState('')
+  // 錯誤訊息
+  const [errorMessage, setErrorMessage] = useState('')
+  // 是否有錯誤的狀態
+  const [hasError, setHasError] = useState(false)
+
+  // 當組件渲染後，將第一個 OTP 輸入框設置焦點
+  useEffect(() => {
+    const OTPinputs = inputsRef.current
+    OTPinputs[0].focus()
+  }, [])
+
+  // 控制倒數計時
   useEffect(() => {
     let timer
     if (counting) {
@@ -33,7 +49,7 @@ function RegisterPhone() {
           if (prevCount === 1) {
             clearInterval(timer)
             setCounting(false)
-            setShowCountDown(false) // Hide countdown when it reaches zero
+            setShowCountDown(false)
           }
           return prevCount - 1
         })
@@ -42,89 +58,81 @@ function RegisterPhone() {
     return () => clearInterval(timer)
   }, [counting])
 
-  // Function to handle resend click
-  const handleResendClick = () => {
-    setCount(60)
-    setCounting(true)
-    setShowCountDown(true) // Show countdown again on resend click
+  // 處理每個 OTP 輸入框值的變化
+  const handleInputChange = (index, value) => {
+    const OTPinputs = inputsRef.current
+    OTPinputs[index].value = value
+
+    // 如果該輸入框填入了值且不是最後一個輸入框，解鎖下一個輸入框並設置焦點
+    if (index < OTPinputs.length - 1 && value.length === 1) {
+      OTPinputs[index + 1].removeAttribute('disabled')
+      OTPinputs[index + 1].focus()
+    }
+
+    updateOtpValue()
+    checkAllFilled()
   }
 
-  useEffect(() => {
-    const OTPinputs = inputsRef.current
-    OTPinputs[0].focus()
+  // 處理鍵盤事件，特別是退格鍵事件
+  const handleKeyUp = (index, event) => {
+    if (event.key === 'Backspace' && index > 0) {
+      const OTPinputs = inputsRef.current
+      OTPinputs[index].value = ''
+      OTPinputs[index].setAttribute('disabled', true)
+      OTPinputs[index - 1].focus()
 
-    OTPinputs.forEach((input, index) => {
-      input.addEventListener('input', (e) => {
-        const currentInput = e.target
-        const nextInput = OTPinputs[index + 1]
-
-        if (currentInput.value.length > 1 && currentInput.value.length === 2) {
-          currentInput.value = ''
-        }
-
-        if (nextInput && nextInput.hasAttribute('disabled') && currentInput.value !== '') {
-          nextInput.removeAttribute('disabled')
-          nextInput.focus()
-        }
-        checkAllFilled()
-        updateOtpValue()
-      })
-
-      input.addEventListener('keyup', (e) => {
-        if (e.key === 'Backspace') {
-          if (index > 0) {
-            e.target.value = ''
-            e.target.setAttribute('disabled', true)
-            OTPinputs[index - 1].focus()
-          }
-          checkAllFilled()
-          updateOtpValue()
-        }
-      })
-    })
-
-    return () => {
-      OTPinputs.forEach((input, index) => {
-        input.removeEventListener('input', () => {})
-        input.removeEventListener('keyup', () => {})
-      })
+      updateOtpValue()
+      checkAllFilled()
     }
-  }, [])
+  }
 
-  // Function to update the OTP value state based on current inputs
+  // 更新 OTP 驗證碼的值
   const updateOtpValue = () => {
     const otpValue = inputsRef.current.map((input) => input.value).join('')
     setOtp(otpValue)
   }
 
+  // 檢查是否所有 OTP 輸入框都已填入值
   const checkAllFilled = () => {
-    const state = inputsRef.current.every((input) => input.value !== '')
-    console.log(state)
-    setAllFilled(state)
+    const filled = inputsRef.current.every((input) => input.value !== '')
+    setAllFilled(filled)
   }
 
+  // 處理重新發送驗證碼的點擊事件
+  const handleResendClick = () => {
+    setCount(5)
+    setCounting(true)
+    setShowCountDown(true)
+  }
+
+  // 處理表單提交事件
   const handleSubmit = async () => {
-    try {
-      const response = await axios.post(`${VITE_BASE_URL}/verification/verify/otp`, {
-        phone: '0938473300',
-        otp
-      })
-      console.log('Response:', response.data)
-      // Clear any previous error
-      setErrorMessage('')
-      setHasError(false)
-    } catch (error) {
-      console.error('Error:', error)
-      // Set error message state
-      setErrorMessage(error.response?.data?.message || '驗證碼錯誤') // Default message or use error message from API
-      setHasError(true)
+    if (allFilled) {
+      try {
+        const response = await axios.post(`${VITE_BASE_URL}/verification/verify/otp`, {
+          phone: '0938473300',
+          otp
+        })
+        console.log('Response:', response.data)
+        setErrorMessage('')
+        setHasError(false)
+      } catch (error) {
+        console.error('Error:', error)
+        setErrorMessage(error.response?.data?.message || '驗證碼錯誤')
+        setHasError(true)
+      }
     }
   }
 
-  // Function to determine if the submit button should be disabled
-  // const isSubmitDisabled = () => {
-  //   return !allFilled // Disable if inputs are not all filled or countdown is active
-  // }
+  const countDownText = <div className={Styles.countDown}>{`${count}秒後重新傳送`}</div>
+  const otherVerification = (
+    <div>
+      <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
+      <div className={Styles.otherText}>
+        <span onClick={handleResendClick}>重新傳送</span>或嘗試<span>其他方式</span>
+      </div>
+    </div>
+  )
 
   return (
     <>
@@ -133,6 +141,7 @@ function RegisterPhone() {
         <main className={Styles.main}>
           <div className={Styles.mainContainer}>
             <div className={Styles.steps}>
+              {/* 步驟1 */}
               <div className={Styles.step}>
                 <div className={Styles.currentCircle}>1</div>
                 <div className={Styles.currentCircleText}>驗證電話號碼</div>
@@ -140,6 +149,7 @@ function RegisterPhone() {
               <div className={Styles.arrow}>
                 <FontAwesomeIcon icon={faArrowRightLong} />
               </div>
+              {/* 步驟2 */}
               <div className={Styles.step}>
                 <div className={Styles.circle}>2</div>
                 <div className={Styles.circleText}>設定密碼</div>
@@ -147,6 +157,7 @@ function RegisterPhone() {
               <div className={Styles.arrow}>
                 <FontAwesomeIcon icon={faArrowRightLong} />
               </div>
+              {/* 步驟3 */}
               <div className={Styles.step}>
                 <div className={Styles.circle}>
                   <FontAwesomeIcon className={Styles.checkIcon} icon={faCheck} />
@@ -154,61 +165,54 @@ function RegisterPhone() {
                 <div className={Styles.circleText}>完成</div>
               </div>
             </div>
+            {/* 驗證表單 */}
             <div className={Styles.verificationCard}>
               <div className={Styles.cardHeader}>
+                {/* 返回上一頁 */}
                 <a className={Styles.back} href="/buyer/register">
                   <FontAwesomeIcon icon={faArrowLeftLong} />
                 </a>
                 <div className={Styles.cardName}>輸入驗證碼</div>
               </div>
               <div className={Styles.cardMain}>
-              {hasError && (
+                {/* 錯誤訊息 */}
+                {hasError && (
                   <div className={Styles.errorMessage}>
                     <div className={Styles.crossIcon}>
                       <FontAwesomeIcon icon={faCircleXmark} />
                     </div>
-                    <div className={Styles.message}>
-                      {errorMessage}
-                    </div>
+                    <div className={Styles.message}>{errorMessage}</div>
                   </div>
                 )}
                 <div className={Styles.cardText}>
                   <div className={Styles.text}>您的驗證碼已透過簡訊傳送至</div>
                   <div className={Styles.phone}>0938473300</div>
                 </div>
+                {/* OTP輸入框 */}
                 <div className={Styles.otpContainer}>
-                  <form className={Styles.otpForm} action="#">
+                  <form className={Styles.otpForm}>
                     <div className={Styles.inputFields}>
                       {[...Array(6)].map((_, i) => (
                         <input
                           key={i}
                           className={Styles.otpInput}
                           type="number"
-                          ref={(e) => (inputsRef.current[i] = e)}
+                          ref={(el) => (inputsRef.current[i] = el)}
                           disabled={i !== 0}
+                          onChange={(e) => handleInputChange(i, e.target.value)}
+                          onKeyUp={(e) => handleKeyUp(i, e)}
                         />
                       ))}
                     </div>
                   </form>
                 </div>
+                {/* OTP發送倒數 & 其他選項 */}
                 <div className={Styles.otherVerification}>
-                  {showCountDown ? (
-                    <div className={Styles.countDown}>{`${count}秒後重新傳送`}</div>
-                  ) : (
-                    <>
-                      <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
-                      <div className={Styles.otherText}>
-                        <Anchor content="重新傳送" onClick={handleResendClick} />
-                        或嘗試
-                        <Anchor content="其他方式" />
-                      </div>
-                    </>
-                  )}
+                  <div>{showCountDown ? countDownText : otherVerification}</div>
                 </div>
+                {/* 執行下一步 */}
                 <div
-                  className={`${Styles.cardSubmit} ${
-                    allFilled ? Styles.allowed : Styles.notAllowed
-                  }`}
+                  className={`${Styles.submit} ${allFilled ? Styles.allowed : Styles.notAllowed}`}
                   onClick={handleSubmit}
                 >
                   下一步
