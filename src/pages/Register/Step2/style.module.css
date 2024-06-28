@@ -11,7 +11,8 @@
 .currentCircleText { color: #FCC30E; }
 .verificationCard { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
 .cardHeader { height: 80px; margin-right: 80px; display: flex; justify-content: center; align-items: center; }
-.back { width: 80px; font-size: 26px; text-align: center; }
+.back { width: 80px; font-size: 26px; text-align: center; cursor: pointer; }
+.back:hover { color:hsl(0, 0%, 30%); }
 .cardName { width: 420px; font-size: 20px; text-align: center; }
 .cardMain { margin: 0 80px; }
 .errorMessage { margin-bottom: 30px; padding: 12px 15px; background-color: #ffdae0; border: 1px solid #ff424f33; display: flex; }

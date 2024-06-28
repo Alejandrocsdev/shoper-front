@@ -37,7 +37,7 @@ function BuyerLogin() {
               </div>
               <div className={Styles.loginFooter}>
                 <span className={Styles.registerRedirectText}>瞎皮爾新朋友&#65311;</span>
-                <Anchor style={Styles.registerRedirect} href="/buyer/register" content="註冊" />
+                <Anchor style={Styles.registerRedirect} href="/signUp" content="註冊" />
               </div>
             </div>
           </div>

@@ -5,26 +5,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faArrowRightLong, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 // Components
-import Header from '../../components/Sign/Header'
-import Footer from '../../components/Footer'
-import Anchor from '../../components/Elements/Anchor'
+import Header from '../../../components/Sign/Header'
+import Footer from '../../../components/Footer'
+import Anchor from '../../../components/Elements/Anchor'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 // modules
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
+// 請求網址
+const SEND_OTP_URL = `${VITE_BASE_URL}/verification/send/otp`
+const VERIFY_OTP_URL = `${VITE_BASE_URL}/verification/verify/otp`
 
-function RegisterPhone({ onPrevious, onNext }) {
-  // 導向特定頁面
-  const navigate = useNavigate()
-
+// 註冊步驟2: 驗證手機OTP
+function Step2({ onPrevious, onNext, phone }) {
   // 用來保存所有 OTP 輸入框的參考
   const inputsRef = useRef([])
 
   // 倒數計時秒數
-  const [count, setCount] = useState(5)
+  const [count, setCount] = useState(60)
   // 是否正在倒數計時的狀態
   const [counting, setCounting] = useState(true)
   // 是否顯示倒數計時的狀態
@@ -65,7 +65,10 @@ function RegisterPhone({ onPrevious, onNext }) {
   // 處理每個 OTP 輸入框值的變化
   const handleInputChange = (index, value) => {
     const OTPinputs = inputsRef.current
-    OTPinputs[index].value = value
+
+    // 保持只取值的最後一個字符
+    const singleDigit = value.slice(-1)
+    OTPinputs[index].value = singleDigit
 
     // 如果該輸入框填入了值且不是最後一個輸入框，解鎖下一個輸入框並設置焦點
     if (index < OTPinputs.length - 1 && value.length === 1) {
@@ -73,7 +76,9 @@ function RegisterPhone({ onPrevious, onNext }) {
       OTPinputs[index + 1].focus()
     }
 
+    // 更新OTP值
     updateOtpValue()
+    // 驗證OTP六位數是否填滿
     checkAllFilled()
   }
 
@@ -85,7 +90,9 @@ function RegisterPhone({ onPrevious, onNext }) {
       OTPinputs[index].setAttribute('disabled', true)
       OTPinputs[index - 1].focus()
 
+      // 更新OTP值
       updateOtpValue()
+      // 驗證OTP六位數是否填滿
       checkAllFilled()
     }
   }
@@ -98,36 +105,32 @@ function RegisterPhone({ onPrevious, onNext }) {
 
   // 檢查是否所有 OTP 輸入框都已填入值
   const checkAllFilled = () => {
-    const filled = inputsRef.current.every((input) => input.value !== '')
-    setAllFilled(filled)
+    const allFilled = !inputsRef.current.some((input) => input.value === '')
+    setAllFilled(allFilled)
   }
 
   // 處理重新發送驗證碼的點擊事件
   const handleResendClick = () => {
-    handleResendOTP()
-    setCount(5)
+    // 開始倒數60秒
+    setCount(60)
     setCounting(true)
     setShowCountDown(true)
+    // 發送OTP
+    handleResendOTP()
   }
 
   // 處理表單提交事件
   const handleSubmit = async () => {
     if (allFilled) {
       try {
-        const response = await axios.post(`${VITE_BASE_URL}/verification/verify/otp`, {
-          phone: '0938473300',
-          otp
-        })
-        console.log('Response:', response.data)
+        const response = await axios.post(SEND_OTP_URL, { otp, phone })
         setErrorMessage('')
         setHasError(false)
         if (response.data.statusType === 'Success') {
           // onNext()
-          console.log('onNext')
         }
-      } catch (error) {
-        console.error('Error:', error)
-        setErrorMessage(error.response?.data?.message || '驗證碼錯誤')
+      } catch (err) {
+        setErrorMessage(err.response?.data?.message)
         setHasError(true)
       }
     }
@@ -136,18 +139,15 @@ function RegisterPhone({ onPrevious, onNext }) {
   // 處理重新傳送OTP事件
   const handleResendOTP = async () => {
     try {
-      const response = await axios.post(`${VITE_BASE_URL}/verification/send/otp`, {
-        phone: '0938473300'
-      })
-      console.log('Response:', response.data)
-      setErrorMessage('')
-      setHasError(false)
-    } catch (error) {
-      console.error('Error:', error)
+      const response = await axios.post(VERIFY_OTP_URL, { phone })
+    } catch (err) {
+      console.error(err.response?.data?.message)
     }
   }
 
+  // 60秒倒數文字
   const countDownText = <div className={Styles.countDown}>{`${count}秒後重新傳送`}</div>
+  // 重新傳送 & 其他方式
   const otherVerification = (
     <div>
       <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
@@ -209,7 +209,7 @@ function RegisterPhone({ onPrevious, onNext }) {
                 )}
                 <div className={Styles.cardText}>
                   <div className={Styles.text}>您的驗證碼已透過簡訊傳送至</div>
-                  <div className={Styles.phone}>0938473300</div>
+                  <div className={Styles.phone}>{phone}</div>
                 </div>
                 {/* OTP輸入框 */}
                 <div className={Styles.otpContainer}>
@@ -250,4 +250,4 @@ function RegisterPhone({ onPrevious, onNext }) {
   )
 }
 
-export default RegisterPhone
+export default Step2

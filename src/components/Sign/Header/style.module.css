@@ -1,6 +1,4 @@
 :root { --header-heaight: 85px }
-.header { height: var(--header-heaight); padding: 0 160px; background-color: #ECEBF5; display: flex; justify-content: space-between; align-items: center; }
-.headerLeft { display: flex; align-items: center; }
+.header { height: var(--header-heaight); padding: 0 160px; background-color: #ECEBF5; display: flex; justify-content:left; align-items: center; }
 .headerLogo { height: 70px; cursor: pointer; }
 .pageName { margin-left: 10px; font-size: 24px; font-weight: 700; }
-.memberCenter { font-size: 18px; font-weight: 700; }

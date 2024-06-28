@@ -63,7 +63,7 @@ const Form = ({ isLogin, onNext }) => {
         )
         console.log(VITE_BASE_URL)
         console.log('Response:', response.data)
-        onNext()
+        onNext(loginKey)
       } catch (error) {
         console.error('Error:', error)
       }

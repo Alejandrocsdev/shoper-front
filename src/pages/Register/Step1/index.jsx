@@ -1,14 +1,14 @@
 import Styles from './style.module.css'
 // PNG Files
-import mainLogoPng from '../../assets/images/logo/cart_text_square_dark.png'
+import mainLogoPng from '../../../assets/images/logo/cart_text_square_dark.png'
 // Components
-import Header from '../../components/Sign/Header'
-import Form from '../../components/Sign/Form'
-import ThirdParty from '../../components/Sign/ThirdParty'
-import Footer from '../../components/Footer'
-import Anchor from '../../components/Elements/Anchor'
+import Header from '../../../components/Sign/Header'
+import Form from '../../../components/Sign/Form'
+import ThirdParty from '../../../components/Sign/ThirdParty'
+import Footer from '../../../components/Footer'
+import Anchor from '../../../components/Elements/Anchor'
 
-function BuyerRegister({ onNext }) {
+function Step1({ onNext }) {
   return (
     <>
       <div className={Styles.container}>
@@ -37,7 +37,7 @@ function BuyerRegister({ onNext }) {
               </div>
               <div className={Styles.loginFooter}>
                 <span className={Styles.registerRedirectText}>已經有帳號了嗎&#65311;</span>
-                <Anchor style={Styles.registerRedirect} href="/buyer/login" content="登入" />
+                <Anchor style={Styles.registerRedirect} href="/signIn" content="登入" />
               </div>
             </div>
           </div>
@@ -48,4 +48,4 @@ function BuyerRegister({ onNext }) {
   )
 }
 
-export default BuyerRegister
+export default Step1

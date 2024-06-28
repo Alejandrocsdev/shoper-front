@@ -14,9 +14,9 @@ function Header() {
       <header className={Styles.header}>
         <nav className={Styles.nav}>
           <div className={Styles.navLeft}>
-            <Anchor style={Styles.navText} href="/seller/login" content="賣家中心" />
-            <Anchor style={Styles.navText} href="/seller/register" content="開始隨拍即賣囉!" />
-            <span className={Styles.navText}>追蹤我們</span>
+            {/* <Anchor style={Styles.navText} href="/signIn" content="賣家中心" />
+            <Anchor style={Styles.navText} href="/signUp" content="開始隨拍即賣囉!" /> */}
+            {/* <span className={Styles.navText}>追蹤我們</span>
             <Anchor
               style={Styles.socialMedia}
               content={<FontAwesomeIcon className={Styles.icon} icon={faSquareFacebook} />}
@@ -28,12 +28,12 @@ function Header() {
             <Anchor
               style={Styles.socialMedia}
               content={<FontAwesomeIcon className={Styles.icon} icon={faLine} />}
-            />
+            /> */}
           </div>
           <div className={Styles.navRight}>
             <div className={Styles.logOutView}>
-              <Anchor style={Styles.register} href="/buyer/register" content="註冊" />
-              <Anchor style={Styles.login} href="/buyer/login" content="登入" />
+              <Anchor style={Styles.register} href="/signUp" content="註冊" />
+              <Anchor style={Styles.login} href="/signIn" content="登入" />
             </div>
             {/* <div className={Styles.logInView}>
               <a className={Styles.profileLink} href="/user/purchase/">

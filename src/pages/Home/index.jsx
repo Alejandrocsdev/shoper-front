@@ -8,7 +8,7 @@ function Home() {
   return (
     <>
       <Header />
-      <BannerSection />
+      {/* <BannerSection /> */}
       <main className={Styles.main}></main>
       <Footer />
     </>

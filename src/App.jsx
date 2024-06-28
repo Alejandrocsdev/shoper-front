@@ -2,13 +2,9 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import BuyerLogin from './pages/BuyerLogin'
-// import BuyerRegister from './pages/BuyerRegister'
-// import RegisterPhone from './pages/RegisterPhone'
+import SignUp from './components/Sign/SignUp.jsx'
 
-import Register from './components/Register'
-
-import SellerLogin from './pages/SellerLogin'
-import SellerRegister from './pages/SellerRegister'
+import Test from './pages/Register/Step2'
 
 function App() {
   return (
@@ -16,10 +12,9 @@ function App() {
       <BrowserRouter basename="/">
         <Routes>
           <Route index element={<Home />} />
-          <Route path="/buyer/login" element={<BuyerLogin />} />
-          <Route path="/buyer/register" element={<Register />} />
-          <Route path="/seller/login" element={<SellerLogin />} />
-          <Route path="/seller/register" element={<SellerRegister />} />
+          <Route path="/signIn" element={<BuyerLogin />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/signUp/test" element={<Test />} />
         </Routes>
       </BrowserRouter>
     </>
