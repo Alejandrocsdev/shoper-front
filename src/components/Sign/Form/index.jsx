@@ -11,7 +11,7 @@ import axios from 'axios'
 // env
 const { VITE_BASE_URL } = import.meta.env
 
-const Form = ({ isLogin }) => {
+const Form = ({ isLogin, onNext }) => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [loginKey, setLoginKey] = useState('')
@@ -63,7 +63,7 @@ const Form = ({ isLogin }) => {
         )
         console.log(VITE_BASE_URL)
         console.log('Response:', response.data)
-        navigate('/buyer/register/phone')
+        onNext()
       } catch (error) {
         console.error('Error:', error)
       }

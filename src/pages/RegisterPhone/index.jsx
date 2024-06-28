@@ -10,12 +10,16 @@ import Footer from '../../components/Footer'
 import Anchor from '../../components/Elements/Anchor'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // modules
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
 
-function RegisterPhone() {
+function RegisterPhone({ onPrevious, onNext }) {
+  // 導向特定頁面
+  const navigate = useNavigate()
+
   // 用來保存所有 OTP 輸入框的參考
   const inputsRef = useRef([])
 
@@ -100,6 +104,7 @@ function RegisterPhone() {
 
   // 處理重新發送驗證碼的點擊事件
   const handleResendClick = () => {
+    handleResendOTP()
     setCount(5)
     setCounting(true)
     setShowCountDown(true)
@@ -116,11 +121,29 @@ function RegisterPhone() {
         console.log('Response:', response.data)
         setErrorMessage('')
         setHasError(false)
+        if (response.data.statusType === 'Success') {
+          // onNext()
+          console.log('onNext')
+        }
       } catch (error) {
         console.error('Error:', error)
         setErrorMessage(error.response?.data?.message || '驗證碼錯誤')
         setHasError(true)
       }
+    }
+  }
+
+  // 處理重新傳送OTP事件
+  const handleResendOTP = async () => {
+    try {
+      const response = await axios.post(`${VITE_BASE_URL}/verification/send/otp`, {
+        phone: '0938473300'
+      })
+      console.log('Response:', response.data)
+      setErrorMessage('')
+      setHasError(false)
+    } catch (error) {
+      console.error('Error:', error)
     }
   }
 
@@ -169,7 +192,7 @@ function RegisterPhone() {
             <div className={Styles.verificationCard}>
               <div className={Styles.cardHeader}>
                 {/* 返回上一頁 */}
-                <a className={Styles.back} href="/buyer/register">
+                <a className={Styles.back} onClick={onPrevious}>
                   <FontAwesomeIcon icon={faArrowLeftLong} />
                 </a>
                 <div className={Styles.cardName}>輸入驗證碼</div>

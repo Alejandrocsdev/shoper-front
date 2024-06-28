@@ -8,7 +8,7 @@ import ThirdParty from '../../components/Sign/ThirdParty'
 import Footer from '../../components/Footer'
 import Anchor from '../../components/Elements/Anchor'
 
-function BuyerRegister() {
+function BuyerRegister({ onNext }) {
   return (
     <>
       <div className={Styles.container}>
@@ -19,7 +19,7 @@ function BuyerRegister() {
             <div className={Styles.loginContainer}>
               <div className={Styles.loginHeader}>註冊</div>
               <div className={Styles.loginMain}>
-                <Form isLogin={false} />
+                <Form isLogin={false} onNext={onNext} />
                 <div className={Styles.breakLine}>
                   <div className={Styles.lineContainer}>
                     <div className={Styles.line}></div>
