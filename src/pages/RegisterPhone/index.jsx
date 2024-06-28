@@ -9,12 +9,20 @@ import Footer from '../../components/Footer'
 import Anchor from '../../components/Elements/Anchor'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
+// module
+import axios from 'axios'
+// env
+const { VITE_BASE_URL } = import.meta.env
 
 function RegisterPhone() {
   const inputsRef = useRef([])
-  const [count, setCount] = useState(5)
+  const [count, setCount] = useState(60)
   const [counting, setCounting] = useState(true)
   const [showCountDown, setShowCountDown] = useState(true) // State to control showing countdown or other text
+  const [allFilled, setAllFilled] = useState(false)
+  const [otp, setOtp] = useState('') // State to hold the combined OTP
+  const [errorMessage, setErrorMessage] = useState('') // State for dynamic error message
+  const [hasError, setHasError] = useState(false) // State to control error section visibility
 
   // Effect to start the countdown when `counting` state changes
   useEffect(() => {
@@ -58,6 +66,8 @@ function RegisterPhone() {
           nextInput.removeAttribute('disabled')
           nextInput.focus()
         }
+        checkAllFilled()
+        updateOtpValue()
       })
 
       input.addEventListener('keyup', (e) => {
@@ -67,6 +77,8 @@ function RegisterPhone() {
             e.target.setAttribute('disabled', true)
             OTPinputs[index - 1].focus()
           }
+          checkAllFilled()
+          updateOtpValue()
         }
       })
     })
@@ -78,6 +90,41 @@ function RegisterPhone() {
       })
     }
   }, [])
+
+  // Function to update the OTP value state based on current inputs
+  const updateOtpValue = () => {
+    const otpValue = inputsRef.current.map((input) => input.value).join('')
+    setOtp(otpValue)
+  }
+
+  const checkAllFilled = () => {
+    const state = inputsRef.current.every((input) => input.value !== '')
+    console.log(state)
+    setAllFilled(state)
+  }
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(`${VITE_BASE_URL}/verification/verify/otp`, {
+        phone: '0938473300',
+        otp
+      })
+      console.log('Response:', response.data)
+      // Clear any previous error
+      setErrorMessage('')
+      setHasError(false)
+    } catch (error) {
+      console.error('Error:', error)
+      // Set error message state
+      setErrorMessage(error.response?.data?.message || '驗證碼錯誤') // Default message or use error message from API
+      setHasError(true)
+    }
+  }
+
+  // Function to determine if the submit button should be disabled
+  // const isSubmitDisabled = () => {
+  //   return !allFilled // Disable if inputs are not all filled or countdown is active
+  // }
 
   return (
     <>
@@ -115,14 +162,16 @@ function RegisterPhone() {
                 <div className={Styles.cardName}>輸入驗證碼</div>
               </div>
               <div className={Styles.cardMain}>
-                {/* <div className={Styles.errorMessage}>
-                  <div className={Styles.crossIcon}>
-                    <FontAwesomeIcon icon={faCircleXmark} />
+              {hasError && (
+                  <div className={Styles.errorMessage}>
+                    <div className={Styles.crossIcon}>
+                      <FontAwesomeIcon icon={faCircleXmark} />
+                    </div>
+                    <div className={Styles.message}>
+                      {errorMessage}
+                    </div>
                   </div>
-                  <div className={Styles.message}>
-                    您輸入的驗證碼已經過期。請再次嘗試請求新的驗證碼。
-                  </div>
-                </div> */}
+                )}
                 <div className={Styles.cardText}>
                   <div className={Styles.text}>您的驗證碼已透過簡訊傳送至</div>
                   <div className={Styles.phone}>0938473300</div>
@@ -156,7 +205,14 @@ function RegisterPhone() {
                     </>
                   )}
                 </div>
-                <div className={Styles.cardSubmit}>下一步</div>
+                <div
+                  className={`${Styles.cardSubmit} ${
+                    allFilled ? Styles.allowed : Styles.notAllowed
+                  }`}
+                  onClick={handleSubmit}
+                >
+                  下一步
+                </div>
               </div>
             </div>
           </div>

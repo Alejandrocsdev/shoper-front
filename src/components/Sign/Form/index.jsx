@@ -57,8 +57,10 @@ const Form = ({ isLogin }) => {
   const handleSubmit = async () => {
     if (!isSubmitDisabled() && !isLogin) {
       try {
-        console.log(loginKey)
-        const response = await axios.post(`${VITE_BASE_URL}/verification/send/otp`, { loginKey })
+        const response = await axios.post(
+          `${VITE_BASE_URL}/verification/send/otp`,
+          isLogin ? { loginKey } : { phone: loginKey }
+        )
         console.log(VITE_BASE_URL)
         console.log('Response:', response.data)
         navigate('/buyer/register/phone')
@@ -79,7 +81,7 @@ const Form = ({ isLogin }) => {
             shouldShowWarning(isLogin, 'loginKey') ? Styles.inputWarning : ''
           }`}
           type="text"
-          name="loginKey"
+          name={isLogin ? 'loginKey' : 'phone'}
           placeholder={isLogin ? '電話號碼/使用者名稱/Email' : '手機號碼'}
           value={loginKey}
           onChange={(e) => handleChange(e, 'loginKey')}
