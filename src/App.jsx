@@ -4,7 +4,8 @@ import Home from './pages/Home'
 import BuyerLogin from './pages/BuyerLogin'
 import SignUp from './components/Sign/SignUp.jsx'
 
-import Test from './pages/Register/Step2'
+import Test2 from './pages/SignUp/Step2'
+import Test3 from './pages/SignUp/Step3'
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/signIn" element={<BuyerLogin />} />
           <Route path="/signUp" element={<SignUp />} />
-          <Route path="/signUp/test" element={<Test />} />
+          <Route path="/signUp/test2" element={<Test2 />} />
+          <Route path="/signUp/test3" element={<Test3 />} />
         </Routes>
       </BrowserRouter>
     </>

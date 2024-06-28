@@ -1,6 +1,7 @@
 // 引用註冊4步驟
-import Step1 from '../../pages/Register/Step1'
-import Step2 from '../../pages/Register/Step2'
+import Step1 from '../../pages/SignUp/Step1'
+import Step2 from '../../pages/SignUp/Step2'
+import Step3 from '../../pages/SignUp/Step3'
 // Hooks
 import { useState } from 'react'
 
@@ -22,6 +23,7 @@ const SignUp = () => {
     <div>
       {step === 1 && <Step1 onNext={nextStep} />}
       {step === 2 && <Step2 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
+      {step === 3 && <Step3 onPrevious={previousStep} onNext={nextStep} />}
     </div>
   )
 }

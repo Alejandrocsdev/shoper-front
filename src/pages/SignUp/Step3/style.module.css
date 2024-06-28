@@ -1,0 +1,29 @@
+.container { min-width: 1200px; }
+/* Main */
+.main { min-height: calc(100vh - var(--header-heaight)); padding: 50px 0; display: flex; justify-content: center; background-color: #100D25; }
+.mainContainer { width: 500px; }
+.steps { height: 75px; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: center; }
+.step { width: 100px; display: flex; flex-direction: column; align-items: center; }
+.arrow { color: #ECEBF5; }
+.currentArrow { color: #FCC30E; }
+.circle, .currentCircle { width: 35px; height: 35px; border-radius: 50%; background-color: #ECEBF5; display: flex; justify-content: center; align-items: center; }
+.circleText,.currentCircleText { font-size: 12px; margin-top: 5px; color: #ECEBF5; }
+.currentCircle { background-color: #FCC30E; }
+.currentCircleText { color: #FCC30E; }
+.verificationCard { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
+.cardHeader { height: 80px; margin-right: 80px; display: flex; justify-content: center; align-items: center; }
+.back { width: 80px; font-size: 26px; text-align: center; cursor: pointer; }
+.back:hover { color:hsl(0, 0%, 30%); }
+.cardName { width: 420px; font-size: 20px; text-align: center; }
+.cardMain { margin: 0 80px; }
+.cardText { margin: 10px 0; }
+.text { font-size: 16px; margin-bottom: 10px; text-align: center; }
+.password { height: 40px; background-color: white; border: 1px solid rgba(0,0,0,0.2); box-shadow:inset 0 2px 0 rgba(0, 0, 0, 0.02); display: flex; position: relative; }
+.passwordInput { width: 100%; padding: 12px; border: 0; outline: 0; }
+.eyeContainer { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+.eye { font-size: 18px; cursor: pointer; }
+.submit { height: 40px; margin-top: 30px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.notAllowed { cursor: not-allowed; }
+.allowed:hover { background-color: hsl(248, 48%, 40%) }
+.valid { color: green; }
+.invalid { color: red; }
