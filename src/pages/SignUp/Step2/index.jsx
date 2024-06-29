@@ -2,160 +2,73 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRightLong, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
-import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
+import {
+  faCheck,
+  faArrowRightLong,
+  faArrowLeftLong,
+  faEye,
+  faEyeSlash
+} from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
 import Footer from '../../../components/Footer'
-import Anchor from '../../../components/Elements/Anchor'
 // Hooks
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 // modules
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-// 請求網址
-const SEND_OTP_URL = `${VITE_BASE_URL}/verification/send/otp`
-const VERIFY_OTP_URL = `${VITE_BASE_URL}/verification/verify/otp`
 
-// 註冊步驟2: 驗證手機OTP
-function Step2({ onPrevious, onNext, phone }) {
-  // 用來保存所有 OTP 輸入框的參考
-  const inputsRef = useRef([])
+// 註冊步驟2: 設定密碼
+function Step2({ onPrevious, onNext }) {
+  const [showPassword, setShowPassword] = useState(false)
+  const [password, setPassword] = useState('')
+  const [inputTouched, setInputTouched] = useState(false)
+  // 密碼限制
+  const [isLowerCaseValid, setIsLowerCaseValid] = useState(false)
+  const [isUpperCaseValid, setIsUpperCaseValid] = useState(false)
+  const [isLengthValid, setIsLengthValid] = useState(false)
+  const [isCharactersValid, setIsCharactersValid] = useState(false)
 
-  // 倒數計時秒數
-  const [count, setCount] = useState(60)
-  // 是否正在倒數計時的狀態
-  const [counting, setCounting] = useState(true)
-  // 是否顯示倒數計時的狀態
-  const [showCountDown, setShowCountDown] = useState(true)
-  // 是否所有 OTP 輸入框都已填入值的狀態
-  const [allFilled, setAllFilled] = useState(false)
-  // OTP 驗證碼
-  const [otp, setOtp] = useState('')
-  // 錯誤訊息
-  const [errorMessage, setErrorMessage] = useState('')
-  // 是否有錯誤的狀態
-  const [hasError, setHasError] = useState(false)
+  const togglePassword = () => setShowPassword(!showPassword)
 
-  // 當組件渲染後，將第一個 OTP 輸入框設置焦點
-  useEffect(() => {
-    const OTPinputs = inputsRef.current
-    OTPinputs[0].focus()
-  }, [])
-
-  // 控制倒數計時
-  useEffect(() => {
-    let timer
-    if (counting) {
-      timer = setInterval(() => {
-        setCount((prevCount) => {
-          if (prevCount === 1) {
-            clearInterval(timer)
-            setCounting(false)
-            setShowCountDown(false)
-          }
-          return prevCount - 1
-        })
-      }, 1000)
-    }
-    return () => clearInterval(timer)
-  }, [counting])
-
-  // 處理每個 OTP 輸入框值的變化
-  const handleInputChange = (index, value) => {
-    const OTPinputs = inputsRef.current
-
-    // 保持只取值的最後一個字符
-    const singleDigit = value.slice(-1)
-    OTPinputs[index].value = singleDigit
-
-    // 如果該輸入框填入了值且不是最後一個輸入框，解鎖下一個輸入框並設置焦點
-    if (index < OTPinputs.length - 1 && value.length === 1) {
-      OTPinputs[index + 1].removeAttribute('disabled')
-      OTPinputs[index + 1].focus()
-    }
-
-    // 更新OTP值
-    updateOtpValue()
-    // 驗證OTP六位數是否填滿
-    checkAllFilled()
+  const handleChange = (e) => {
+    const value = e.target.value
+    setPassword(value)
+    if (!inputTouched && value !== '') setInputTouched(true)
+    validatePassword(value)
   }
 
-  // 處理鍵盤事件，特別是退格鍵事件
-  const handleKeyUp = (index, event) => {
-    if (event.key === 'Backspace' && index > 0) {
-      const OTPinputs = inputsRef.current
-      OTPinputs[index].value = ''
-      OTPinputs[index].setAttribute('disabled', true)
-      OTPinputs[index - 1].focus()
-
-      // 更新OTP值
-      updateOtpValue()
-      // 驗證OTP六位數是否填滿
-      checkAllFilled()
+  const handleBlur = () => {
+    if (password !== '') {
+      setInputTouched((prev) => ({ ...prev, password: true }))
     }
   }
 
-  // 更新 OTP 驗證碼的值
-  const updateOtpValue = () => {
-    const otpValue = inputsRef.current.map((input) => input.value).join('')
-    setOtp(otpValue)
+  const validatePassword = (value) => {
+    setIsLowerCaseValid(/[a-z]/.test(value))
+    setIsUpperCaseValid(/[A-Z]/.test(value))
+    setIsLengthValid(value.length >= 8 && value.length <= 16)
+    setIsCharactersValid(/^[a-zA-Z0-9!@#$%^&*()-_+=~`[\]{}|:;"'<>,.?/]+$/.test(value))
   }
 
-  // 檢查是否所有 OTP 輸入框都已填入值
-  const checkAllFilled = () => {
-    const allFilled = !inputsRef.current.some((input) => input.value === '')
-    setAllFilled(allFilled)
+  const crossIcon = <FontAwesomeIcon className={Styles.icon} icon={faCircleXmark} />
+  const checkIcon = <FontAwesomeIcon className={Styles.icon} icon={faCircleCheck} />
+
+  const isPasswordValid = isLowerCaseValid && isUpperCaseValid && isLengthValid && isCharactersValid
+
+  const getCriteriaClass = (isValid) => {
+    if (!inputTouched) return ''
+    return isValid ? Styles.valid : Styles.invalid
   }
 
-  // 處理重新發送驗證碼的點擊事件
-  const handleResendClick = () => {
-    // 開始倒數60秒
-    setCount(60)
-    setCounting(true)
-    setShowCountDown(true)
-    // 發送OTP
-    handleResendOTP()
-  }
-
-  // 處理表單提交事件
-  const handleSubmit = async () => {
-    if (allFilled) {
-      try {
-        const response = await axios.post(SEND_OTP_URL, { otp, phone })
-        setErrorMessage('')
-        setHasError(false)
-        if (response.data.statusType === 'Success') {
-          // onNext()
-        }
-      } catch (err) {
-        setErrorMessage(err.response?.data?.message)
-        setHasError(true)
-      }
+  const handleSubmit = () => {
+    if (isPasswordValid) {
+      console.log('Next')
+      // onNext()
     }
   }
-
-  // 處理重新傳送OTP事件
-  const handleResendOTP = async () => {
-    try {
-      const response = await axios.post(VERIFY_OTP_URL, { phone })
-    } catch (err) {
-      console.error(err.response?.data?.message)
-    }
-  }
-
-  // 60秒倒數文字
-  const countDownText = <div className={Styles.countDown}>{`${count}秒後重新傳送`}</div>
-  // 重新傳送 & 其他方式
-  const otherVerification = (
-    <div>
-      <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
-      <div className={Styles.otherText}>
-        <span onClick={handleResendClick}>重新傳送</span>或嘗試<span>其他方式</span>
-      </div>
-    </div>
-  )
 
   return (
     <>
@@ -169,13 +82,13 @@ function Step2({ onPrevious, onNext, phone }) {
                 <div className={Styles.currentCircle}>1</div>
                 <div className={Styles.currentCircleText}>驗證電話號碼</div>
               </div>
-              <div className={Styles.arrow}>
+              <div className={Styles.currentArrow}>
                 <FontAwesomeIcon icon={faArrowRightLong} />
               </div>
               {/* 步驟2 */}
               <div className={Styles.step}>
-                <div className={Styles.circle}>2</div>
-                <div className={Styles.circleText}>設定密碼</div>
+                <div className={Styles.currentCircle}>2</div>
+                <div className={Styles.currentCircleText}>設定密碼</div>
               </div>
               <div className={Styles.arrow}>
                 <FontAwesomeIcon icon={faArrowRightLong} />
@@ -195,50 +108,67 @@ function Step2({ onPrevious, onNext, phone }) {
                 <a className={Styles.back} onClick={onPrevious}>
                   <FontAwesomeIcon icon={faArrowLeftLong} />
                 </a>
-                <div className={Styles.cardName}>輸入驗證碼</div>
+                <div className={Styles.cardName}>設定您的密碼</div>
               </div>
               <div className={Styles.cardMain}>
-                {/* 錯誤訊息 */}
-                {hasError && (
-                  <div className={Styles.errorMessage}>
-                    <div className={Styles.crossIcon}>
-                      <FontAwesomeIcon icon={faCircleXmark} />
-                    </div>
-                    <div className={Styles.message}>{errorMessage}</div>
-                  </div>
-                )}
                 <div className={Styles.cardText}>
-                  <div className={Styles.text}>您的驗證碼已透過簡訊傳送至</div>
-                  <div className={Styles.phone}>{phone}</div>
+                  <div className={Styles.text}>最後一步! 請設定您的密碼已完成登入</div>
                 </div>
-                {/* OTP輸入框 */}
-                <div className={Styles.otpContainer}>
-                  <form className={Styles.otpForm}>
-                    <div className={Styles.inputFields}>
-                      {[...Array(6)].map((_, i) => (
-                        <input
-                          key={i}
-                          className={Styles.otpInput}
-                          type="number"
-                          ref={(el) => (inputsRef.current[i] = el)}
-                          disabled={i !== 0}
-                          onChange={(e) => handleInputChange(i, e.target.value)}
-                          onKeyUp={(e) => handleKeyUp(i, e)}
-                        />
-                      ))}
+                {/* 密碼輸入欄 */}
+                <div className={Styles.passwordContainer}>
+                  <div className={Styles.password}>
+                    <input
+                      className={`${Styles.passwordInput} ${inputTouched && !isPasswordValid ? Styles.warning : ''}`}
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      placeholder="密碼"
+                      value={password}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={() => handleBlur()}
+                      maxLength={16}
+                      aria-label="Password"
+                    />
+                    {/* Toggle Password */}
+                    <div
+                      className={Styles.eyeContainer}
+                      onClick={togglePassword}
+                      aria-label="Toggle Password"
+                    >
+                      <FontAwesomeIcon
+                        className={Styles.eye}
+                        icon={showPassword ? faEye : faEyeSlash}
+                      />
                     </div>
-                  </form>
-                </div>
-                {/* OTP發送倒數 & 其他選項 */}
-                <div className={Styles.otherVerification}>
-                  <div>{showCountDown ? countDownText : otherVerification}</div>
+                  </div>
+                  <div className={Styles.criteria}>
+                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isLowerCaseValid)}`}>
+                      <span>{isLowerCaseValid ? checkIcon : crossIcon}</span>
+                      <span>至少一個小寫字母</span>
+                    </div>
+                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isUpperCaseValid)}`}>
+                      <span>{isUpperCaseValid ? checkIcon : crossIcon}</span>
+                      <span>至少一個大寫字母</span>
+                    </div>
+                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isLengthValid)}`}>
+                      <span>{isLengthValid ? checkIcon : crossIcon}</span>
+                      <span>8-16個字母</span>
+                    </div>
+                    <div
+                      className={`${Styles.criteriaText} ${getCriteriaClass(isCharactersValid)}`}
+                    >
+                      <span>{isCharactersValid ? checkIcon : crossIcon}</span>
+                      <span>僅能使用英文、數字或常用的標點符號。</span>
+                    </div>
+                  </div>
                 </div>
                 {/* 執行下一步 */}
                 <div
-                  className={`${Styles.submit} ${allFilled ? Styles.allowed : Styles.notAllowed}`}
+                  className={`${Styles.submit} ${
+                    isPasswordValid ? Styles.allowed : Styles.notAllowed
+                  }`}
                   onClick={handleSubmit}
                 >
-                  下一步
+                  註冊
                 </div>
               </div>
             </div>

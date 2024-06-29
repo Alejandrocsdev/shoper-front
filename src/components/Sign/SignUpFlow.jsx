@@ -1,4 +1,5 @@
 // 引用註冊4步驟
+import SignUp from '../../pages/SignUp'
 import Step1 from '../../pages/SignUp/Step1'
 import Step2 from '../../pages/SignUp/Step2'
 import Step3 from '../../pages/SignUp/Step3'
@@ -6,8 +7,8 @@ import Step3 from '../../pages/SignUp/Step3'
 import { useState } from 'react'
 
 // 註冊組件
-const SignUp = () => {
-  const [step, setStep] = useState(1)
+function SignUpFlow() {
+  const [step, setStep] = useState(0)
   const [phone, setPhone] = useState('')
 
   // 下一步(包含資料傳遞: phone)
@@ -21,11 +22,12 @@ const SignUp = () => {
 
   return (
     <div>
-      {step === 1 && <Step1 onNext={nextStep} />}
+      {step === 0 && <SignUp onNext={nextStep} isLogin={false} />}
+      {step === 1 && <Step1 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
       {step === 2 && <Step2 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
-      {step === 3 && <Step3 onPrevious={previousStep} onNext={nextStep} />}
+      {step === 3 && <Step3 />}
     </div>
   )
 }
 
-export default SignUp
+export default SignUpFlow

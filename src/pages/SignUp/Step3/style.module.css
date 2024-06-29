@@ -11,22 +11,12 @@
 .currentCircle { background-color: #FCC30E; }
 .currentCircleText { color: #FCC30E; }
 .verificationCard { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
-.cardHeader { height: 80px; margin-right: 80px; display: flex; justify-content: center; align-items: center; }
-.back { width: 80px; font-size: 26px; text-align: center; cursor: pointer; }
-.back:hover { color:hsl(0, 0%, 30%); }
-.cardName { width: 420px; font-size: 20px; text-align: center; }
+.cardHeader { height: 80px; display: flex; justify-content: center; align-items: center; }
+.cardName { width: 340px; font-size: 20px; text-align: center; }
 .cardMain { margin: 0 80px; }
+.cardIcon { font-size: 70px; color: green; text-align: center; }
 .cardText { margin: 10px 0; }
 .text { font-size: 16px; margin-bottom: 10px; text-align: center; }
-.password { height: 40px; margin-top: 20px; background-color: white; border: 1px solid rgba(0,0,0,0.2); box-shadow:inset 0 2px 0 rgba(0, 0, 0, 0.02); display: flex; position: relative; }
-.passwordInput { width: 100%; padding: 12px; border: 0; outline: 0; }
-.warning { background-color: #ffeaed; border: 1px solid #ff424f; }
-.eyeContainer { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
-.eye { font-size: 18px; cursor: pointer; }
-.criteriaText { margin-top: 8px; color: gray; }
-.icon { margin: 0 5px }
+.phone { font-size: 16px; letter-spacing: 2px; text-align: center; }
 .submit { height: 40px; margin-top: 30px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
-.notAllowed { cursor: not-allowed; }
-.allowed:hover { background-color: hsl(248, 48%, 40%) }
-.valid { color: green; }
-.invalid { color: red; }
+.submit:hover { background-color: hsl(248, 48%, 40%) }

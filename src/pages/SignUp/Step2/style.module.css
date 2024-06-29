@@ -5,6 +5,7 @@
 .steps { height: 75px; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: center; }
 .step { width: 100px; display: flex; flex-direction: column; align-items: center; }
 .arrow { color: #ECEBF5; }
+.currentArrow { color: #FCC30E; }
 .circle, .currentCircle { width: 35px; height: 35px; border-radius: 50%; background-color: #ECEBF5; display: flex; justify-content: center; align-items: center; }
 .circleText,.currentCircleText { font-size: 12px; margin-top: 5px; color: #ECEBF5; }
 .currentCircle { background-color: #FCC30E; }
@@ -15,23 +16,17 @@
 .back:hover { color:hsl(0, 0%, 30%); }
 .cardName { width: 420px; font-size: 20px; text-align: center; }
 .cardMain { margin: 0 80px; }
-.errorMessage { margin-bottom: 30px; padding: 12px 15px; background-color: #ffdae0; border: 1px solid #ff424f33; display: flex; }
-.crossIcon { margin-right: 10px; color: red; }
-.message { font-size: 14px; }
 .cardText { margin: 10px 0; }
-.text { font-size: 14px; margin-bottom: 10px; text-align: center; }
-.phone { font-size: 16px; letter-spacing: 2px; text-align: center; }
-.otpContainer { margin: 20px 0 20px; }
-.inputFields { display: flex; flex-direction: row; justify-content: space-evenly; }
-.otpInput { max-width: 50px; height: 60px; font-size: 25px; text-align: center; border-radius: 5px; border: none; background: gray; }
-.otpInput::-webkit-inner-spin-button,
-.otpInput::-webkit-outer-spin-button { display: none; }
-.otpInput:focus { outline: 3px solid #00b991; outline-offset: 2px; }
-.otherVerification { height: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.countDown { color: gray; text-align: center; }
-.otherText { text-align: center; }
-.otherText span { color: #219ebc; text-decoration: none; cursor: pointer; }
-.otherText span:hover { filter: brightness(70%); }
+.text { font-size: 16px; margin-bottom: 10px; text-align: center; }
+.password { height: 40px; margin-top: 20px; background-color: white; border: 1px solid rgba(0,0,0,0.2); box-shadow:inset 0 2px 0 rgba(0, 0, 0, 0.02); display: flex; position: relative; }
+.passwordInput { width: 100%; padding: 12px; border: 0; outline: 0; }
+.warning { background-color: #ffeaed; border: 1px solid #ff424f; }
+.eyeContainer { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+.eye { font-size: 18px; cursor: pointer; }
+.criteriaText { margin-top: 8px; color: gray; }
+.icon { margin: 0 5px }
 .submit { height: 40px; margin-top: 30px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
 .notAllowed { cursor: not-allowed; }
 .allowed:hover { background-color: hsl(248, 48%, 40%) }
+.valid { color: green; }
+.invalid { color: red; }

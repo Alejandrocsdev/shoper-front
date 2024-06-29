@@ -1,7 +1,7 @@
 import Styles from './style.module.css'
 // PNG Files
-import facebookPng from '../../../assets/images/thirdParty/facebook.png'
-import googlePng from '../../../assets/images/thirdParty/google.png'
+import facebookPng from '../../../../assets/images/thirdParty/facebook.png'
+import googlePng from '../../../../assets/images/thirdParty/google.png'
 
 const ThirdParty = () => {
   return (

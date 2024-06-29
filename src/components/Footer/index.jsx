@@ -13,9 +13,15 @@ import { faSquareFacebook, faInstagram, faLine } from '@fortawesome/free-brands-
 import Anchor from '../Elements/Anchor'
 
 const Footer = () => {
+  // 社群LOGO
+  const facebook = <FontAwesomeIcon className={Styles.icon} icon={faSquareFacebook} />
+  const instagram = <FontAwesomeIcon className={Styles.icon} icon={faInstagram} />
+  const line = <FontAwesomeIcon className={Styles.icon} icon={faLine} />
+
   return (
     <footer className={Styles.footer}>
       <div className={Styles.platformInfo}>
+        {/* 付款 */}
         <div className={Styles.payment}>
           <div className={Styles.catName}>付款</div>
           <div className={Styles.images}>
@@ -24,6 +30,7 @@ const Footer = () => {
             <img className={Styles.image} src={jcbPng} />
           </div>
         </div>
+        {/* 物流合作 */}
         <div className={Styles.logistic}>
           <div className={Styles.catName}>物流合作</div>
           <div className={Styles.images}>
@@ -32,28 +39,21 @@ const Footer = () => {
             <img className={Styles.image} src={okMartPng} />
           </div>
         </div>
+        {/* 關注我們 */}
         <div className={Styles.socialMedia}>
           <div className={Styles.catName}>關注我們</div>
           <div className={Styles.images}>
-            <Anchor
-              style={Styles.link}
-              content={<FontAwesomeIcon className={Styles.icon} icon={faSquareFacebook} />}
-            />
-            <Anchor
-              style={Styles.link}
-              content={<FontAwesomeIcon className={Styles.icon} icon={faInstagram} />}
-            />
-            <Anchor
-              style={Styles.link}
-              content={<FontAwesomeIcon className={Styles.icon} icon={faLine} />}
-            />
+            <Anchor style={Styles.link} content={facebook} />
+            <Anchor style={Styles.link} content={instagram} />
+            <Anchor style={Styles.link} content={line} />
           </div>
         </div>
       </div>
+      {/* 公司資訊 */}
       <div className={Styles.companyInfo}>
-        <div className={Styles.companyName}>瞎皮爾電商有限公司</div>
-        <div className={Styles.unifiedNumber}>統一編號&#65306;00000000</div>
-        <div className={Styles.copyright}>&copy; 2024 Shopper. 版權所有。</div>
+        <div>瞎皮爾電商有限公司</div>
+        <div>統一編號&#65306;00000000</div>
+        <div>&copy; 2024 Shopper. 版權所有。</div>
       </div>
     </footer>
   )
