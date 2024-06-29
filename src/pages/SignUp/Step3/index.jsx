@@ -2,13 +2,19 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRightLong, faArrowLeftLong, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCheck,
+  faArrowRightLong,
+  faArrowLeftLong,
+  faEye,
+  faEyeSlash
+} from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark, faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
 import Footer from '../../../components/Footer'
 // Hooks
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 // modules
 import axios from 'axios'
 // environment variables
@@ -18,7 +24,8 @@ const { VITE_BASE_URL } = import.meta.env
 function Step3({ onPrevious, onNext }) {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
-  const [inputTouched, setInputTouched] = useState({ password: false })
+  const [inputTouched, setInputTouched] = useState(false)
+  // 密碼限制
   const [isLowerCaseValid, setIsLowerCaseValid] = useState(false)
   const [isUpperCaseValid, setIsUpperCaseValid] = useState(false)
   const [isLengthValid, setIsLengthValid] = useState(false)
@@ -29,8 +36,8 @@ function Step3({ onPrevious, onNext }) {
   const handleChange = (e) => {
     const value = e.target.value
     setPassword(value)
-    if (value !== '') setInputTouched((prev) => ({ ...prev, ['password']: true }))
-      validatePassword(value)
+    if (!inputTouched && value !== '') setInputTouched(true)
+    validatePassword(value)
   }
 
   const handleBlur = () => {
@@ -46,8 +53,22 @@ function Step3({ onPrevious, onNext }) {
     setIsCharactersValid(/^[a-zA-Z0-9!@#$%^&*()-_+=~`[\]{}|:;"'<>,.?/]+$/.test(value))
   }
 
-  const crossIcon = <FontAwesomeIcon icon={faCircleXmark} />
-  const checkIcon = <FontAwesomeIcon icon={faCircleCheck} />
+  const crossIcon = <FontAwesomeIcon className={Styles.icon} icon={faCircleXmark} />
+  const checkIcon = <FontAwesomeIcon className={Styles.icon} icon={faCircleCheck} />
+
+  const isPasswordValid = isLowerCaseValid && isUpperCaseValid && isLengthValid && isCharactersValid
+
+  const getCriteriaClass = (isValid) => {
+    if (!inputTouched) return ''
+    return isValid ? Styles.valid : Styles.invalid
+  }
+
+  const handleSubmit = () => {
+    if (isPasswordValid) {
+      console.log('Next')
+      // onNext()
+    }
+  }
 
   return (
     <>
@@ -97,7 +118,7 @@ function Step3({ onPrevious, onNext }) {
                 <div className={Styles.passwordContainer}>
                   <div className={Styles.password}>
                     <input
-                      className={Styles.passwordInput}
+                      className={`${Styles.passwordInput} ${inputTouched && !isPasswordValid ? Styles.warning : ''}`}
                       type={showPassword ? 'text' : 'password'}
                       name="password"
                       placeholder="密碼"
@@ -120,24 +141,32 @@ function Step3({ onPrevious, onNext }) {
                     </div>
                   </div>
                   <div className={Styles.criteria}>
-                    <div className={`${Styles.criteriaText} ${isLowerCaseValid ? Styles.valid : Styles.invalid}`}>
-                      <span>{isLowerCaseValid ? checkIcon : crossIcon}</span><span>至少一個小寫字母</span>
+                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isLowerCaseValid)}`}>
+                      <span>{isLowerCaseValid ? checkIcon : crossIcon}</span>
+                      <span>至少一個小寫字母</span>
                     </div>
-                    <div className={`${Styles.criteriaText} ${isUpperCaseValid ? Styles.valid : Styles.invalid}`}>
-                    <span>{isUpperCaseValid ? checkIcon : crossIcon}</span><span>至少一個大寫字母</span>
+                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isUpperCaseValid)}`}>
+                      <span>{isUpperCaseValid ? checkIcon : crossIcon}</span>
+                      <span>至少一個大寫字母</span>
                     </div>
-                    <div className={`${Styles.criteriaText} ${isLengthValid ? Styles.valid : Styles.invalid}`}>
-                    <span>{isLengthValid ? checkIcon : crossIcon}</span><span>8-16個字母</span>
+                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isLengthValid)}`}>
+                      <span>{isLengthValid ? checkIcon : crossIcon}</span>
+                      <span>8-16個字母</span>
                     </div>
-                    <div className={`${Styles.criteriaText} ${isCharactersValid ? Styles.valid : Styles.invalid}`}>
-                    <span>{isCharactersValid ? checkIcon : crossIcon}</span><span>僅能使用英文、數字或常用的標點符號。</span>
+                    <div
+                      className={`${Styles.criteriaText} ${getCriteriaClass(isCharactersValid)}`}
+                    >
+                      <span>{isCharactersValid ? checkIcon : crossIcon}</span>
+                      <span>僅能使用英文、數字或常用的標點符號。</span>
                     </div>
                   </div>
                 </div>
                 {/* 執行下一步 */}
                 <div
-                  className={Styles.submit}
-                  // onClick={handleSubmit}
+                  className={`${Styles.submit} ${
+                    isPasswordValid ? Styles.allowed : Styles.notAllowed
+                  }`}
+                  onClick={handleSubmit}
                 >
                   註冊
                 </div>
