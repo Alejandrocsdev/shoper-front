@@ -2,12 +2,13 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRightLong, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
 import Footer from '../../../components/Footer'
 import Anchor from '../../../components/Elements/Anchor'
+import SignUpSteps from '../../../components/Sign/SignUpSteps'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
 // modules
@@ -159,93 +160,67 @@ function Step1({ onPrevious, onNext, phone }) {
 
   return (
     <>
-      <div className={Styles.container}>
-        <Header pageName="註冊" />
-        <main className={Styles.main}>
-          <div className={Styles.mainContainer}>
-            <div className={Styles.steps}>
-              {/* 步驟1 */}
-              <div className={Styles.step}>
-                <div className={Styles.currentCircle}>1</div>
-                <div className={Styles.currentCircleText}>驗證電話號碼</div>
-              </div>
-              <div className={Styles.arrow}>
-                <FontAwesomeIcon icon={faArrowRightLong} />
-              </div>
-              {/* 步驟2 */}
-              <div className={Styles.step}>
-                <div className={Styles.circle}>2</div>
-                <div className={Styles.circleText}>設定密碼</div>
-              </div>
-              <div className={Styles.arrow}>
-                <FontAwesomeIcon icon={faArrowRightLong} />
-              </div>
-              {/* 步驟3 */}
-              <div className={Styles.step}>
-                <div className={Styles.circle}>
-                  <FontAwesomeIcon className={Styles.checkIcon} icon={faCheck} />
-                </div>
-                <div className={Styles.circleText}>完成</div>
-              </div>
+      <Header pageName="註冊" />
+      <main className={Styles.main}>
+        <div className={Styles.mainContainer}>
+          <SignUpSteps step={1} />
+          {/* 驗證表單 */}
+          <div className={Styles.verificationCard}>
+            <div className={Styles.cardHeader}>
+              {/* 返回上一頁 */}
+              <a className={Styles.back} onClick={onPrevious}>
+                <FontAwesomeIcon icon={faArrowLeftLong} />
+              </a>
+              <div className={Styles.cardName}>輸入驗證碼</div>
             </div>
-            {/* 驗證表單 */}
-            <div className={Styles.verificationCard}>
-              <div className={Styles.cardHeader}>
-                {/* 返回上一頁 */}
-                <a className={Styles.back} onClick={onPrevious}>
-                  <FontAwesomeIcon icon={faArrowLeftLong} />
-                </a>
-                <div className={Styles.cardName}>輸入驗證碼</div>
-              </div>
-              <div className={Styles.cardMain}>
-                {/* 錯誤訊息 */}
-                {hasError && (
-                  <div className={Styles.errorMessage}>
-                    <div className={Styles.crossIcon}>
-                      <FontAwesomeIcon icon={faCircleXmark} />
-                    </div>
-                    <div className={Styles.message}>{errorMessage}</div>
+            <div className={Styles.cardMain}>
+              {/* 錯誤訊息 */}
+              {hasError && (
+                <div className={Styles.errorMessage}>
+                  <div className={Styles.crossIcon}>
+                    <FontAwesomeIcon icon={faCircleXmark} />
                   </div>
-                )}
-                <div className={Styles.cardText}>
-                  <div className={Styles.text}>您的驗證碼已透過簡訊傳送至</div>
-                  <div className={Styles.phone}>{phone}</div>
+                  <div className={Styles.message}>{errorMessage}</div>
                 </div>
-                {/* OTP輸入框 */}
-                <div className={Styles.otpContainer}>
-                  <form className={Styles.otpForm}>
-                    <div className={Styles.inputFields}>
-                      {[...Array(6)].map((_, i) => (
-                        <input
-                          key={i}
-                          className={Styles.otpInput}
-                          type="number"
-                          ref={(el) => (inputsRef.current[i] = el)}
-                          disabled={i !== 0}
-                          onChange={(e) => handleInputChange(i, e.target.value)}
-                          onKeyUp={(e) => handleKeyUp(i, e)}
-                        />
-                      ))}
-                    </div>
-                  </form>
-                </div>
-                {/* OTP發送倒數 & 其他選項 */}
-                <div className={Styles.otherVerification}>
-                  <div>{showCountDown ? countDownText : otherVerification}</div>
-                </div>
-                {/* 執行下一步 */}
-                <div
-                  className={`${Styles.submit} ${allFilled ? Styles.allowed : Styles.notAllowed}`}
-                  onClick={handleSubmit}
-                >
-                  下一步
-                </div>
+              )}
+              <div className={Styles.cardText}>
+                <div className={Styles.text}>您的驗證碼已透過簡訊傳送至</div>
+                <div className={Styles.phone}>{phone}</div>
+              </div>
+              {/* OTP輸入框 */}
+              <div className={Styles.otpContainer}>
+                <form className={Styles.otpForm}>
+                  <div className={Styles.inputFields}>
+                    {[...Array(6)].map((_, i) => (
+                      <input
+                        key={i}
+                        className={Styles.otpInput}
+                        type="number"
+                        ref={(el) => (inputsRef.current[i] = el)}
+                        disabled={i !== 0}
+                        onChange={(e) => handleInputChange(i, e.target.value)}
+                        onKeyUp={(e) => handleKeyUp(i, e)}
+                      />
+                    ))}
+                  </div>
+                </form>
+              </div>
+              {/* OTP發送倒數 & 其他選項 */}
+              <div className={Styles.otherVerification}>
+                <div>{showCountDown ? countDownText : otherVerification}</div>
+              </div>
+              {/* 執行下一步 */}
+              <div
+                className={`${Styles.submit} ${allFilled ? Styles.allowed : Styles.notAllowed}`}
+                onClick={handleSubmit}
+              >
+                下一步
               </div>
             </div>
           </div>
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </main>
+      <Footer />
     </>
   )
 }

@@ -14,13 +14,11 @@ function SignCard({ onNext, isLogin }) {
       {/* 表單主體 */}
       <Form onNext={onNext} isLogin={isLogin} />
       {/* 忘記密碼 */}
-      {isLogin ? (
+      {isLogin && (
         <div className={Styles.otherLogin}>
           <Anchor style={Styles.forgotPassword} content="忘記密碼" />
           <Anchor style={Styles.smsLogin} content="使用簡訊登入" />
         </div>
-      ) : (
-        ''
       )}
       {/* 分隔線 */}
       <div className={`${Styles.breakLine} ${isLogin ? Styles.loginBreakLine : ''}`}>
@@ -35,13 +33,11 @@ function SignCard({ onNext, isLogin }) {
       {/* 第三分登入/註冊 */}
       <ThirdParty />
       {/* 服務條款 */}
-      {!isLogin ? (
+      {!isLogin && (
         <div className={Styles.policy}>
           點擊「下一步」或繼續註冊，即表示您已閱讀並同意瞎皮爾購物的
           <Anchor content="服務條款" />與<Anchor content="隱私權政策" />
         </div>
-      ) : (
-        ''
       )}
       {/* 表單結尾文字 */}
       <div className={Styles.loginFooter}>
