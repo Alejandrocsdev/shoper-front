@@ -20,7 +20,7 @@ import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
 
-// 註冊步驟2: 驗證手機OTP
+// 註冊步驟3: 設定密碼
 function Step3({ onPrevious, onNext }) {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')

@@ -6,6 +6,7 @@ import SignUp from './components/Sign/SignUp.jsx'
 
 import Test2 from './pages/SignUp/Step2'
 import Test3 from './pages/SignUp/Step3'
+import Test4 from './pages/SignUp/Step4'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/signUp/test2" element={<Test2 />} />
           <Route path="/signUp/test3" element={<Test3 />} />
+          <Route path="/signUp/test4" element={<Test4 />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,0 +1,22 @@
+.container { min-width: 1200px; }
+/* Main */
+.main { min-height: calc(100vh - var(--header-heaight)); padding: 50px 0; display: flex; justify-content: center; background-color: #100D25; }
+.mainContainer { width: 500px; }
+.steps { height: 75px; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: center; }
+.step { width: 100px; display: flex; flex-direction: column; align-items: center; }
+.arrow { color: #ECEBF5; }
+.currentArrow { color: #FCC30E; }
+.circle, .currentCircle { width: 35px; height: 35px; border-radius: 50%; background-color: #ECEBF5; display: flex; justify-content: center; align-items: center; }
+.circleText,.currentCircleText { font-size: 12px; margin-top: 5px; color: #ECEBF5; }
+.currentCircle { background-color: #FCC30E; }
+.currentCircleText { color: #FCC30E; }
+.verificationCard { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
+.cardHeader { height: 80px; display: flex; justify-content: center; align-items: center; }
+.cardName { width: 340px; font-size: 20px; text-align: center; }
+.cardMain { margin: 0 80px; }
+.cardIcon { font-size: 70px; color: green; text-align: center; }
+.cardText { margin: 10px 0; }
+.text { font-size: 16px; margin-bottom: 10px; text-align: center; }
+.phone { font-size: 16px; letter-spacing: 2px; text-align: center; }
+.submit { height: 40px; margin-top: 30px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.submit:hover { background-color: hsl(248, 48%, 40%) }
