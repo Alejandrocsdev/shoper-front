@@ -2,16 +2,11 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCheck,
-  faArrowRightLong,
-  faArrowLeftLong,
-  faEye,
-  faEyeSlash
-} from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeftLong, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark, faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
+import SignUpSteps from '../../../components/Sign/SignUpSteps'
 import Footer from '../../../components/Footer'
 // Hooks
 import { useState } from 'react'
@@ -24,47 +19,51 @@ const { VITE_BASE_URL } = import.meta.env
 function Step2({ onPrevious, onNext }) {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
-  const [inputTouched, setInputTouched] = useState(false)
+  const [hasTyped, setHasTyped] = useState(false)
   // 密碼限制
   const [isLowerCaseValid, setIsLowerCaseValid] = useState(false)
   const [isUpperCaseValid, setIsUpperCaseValid] = useState(false)
   const [isLengthValid, setIsLengthValid] = useState(false)
-  const [isCharactersValid, setIsCharactersValid] = useState(false)
 
+  // 切換密碼顯示
   const togglePassword = () => setShowPassword(!showPassword)
 
+  // 儲存密碼值 / 紀錄是否輸入過
   const handleChange = (e) => {
     const value = e.target.value
     setPassword(value)
-    if (!inputTouched && value !== '') setInputTouched(true)
+    if (!hasTyped && value !== '') setHasTyped(true)
     validatePassword(value)
   }
 
+  // 焦點處理
   const handleBlur = () => {
-    if (password !== '') {
-      setInputTouched((prev) => ({ ...prev, password: true }))
-    }
+    if (password !== '') setHasTyped(true)
   }
 
+  // 驗證密碼條件
   const validatePassword = (value) => {
     setIsLowerCaseValid(/[a-z]/.test(value))
     setIsUpperCaseValid(/[A-Z]/.test(value))
     setIsLengthValid(value.length >= 8 && value.length <= 16)
-    setIsCharactersValid(/^[a-zA-Z0-9!@#$%^&*()-_+=~`[\]{}|:;"'<>,.?/]+$/.test(value))
   }
 
+  // 正確/錯誤 圖示
   const crossIcon = <FontAwesomeIcon className={Styles.icon} icon={faCircleXmark} />
   const checkIcon = <FontAwesomeIcon className={Styles.icon} icon={faCircleCheck} />
 
-  const isPasswordValid = isLowerCaseValid && isUpperCaseValid && isLengthValid && isCharactersValid
+  // 密碼有效
+  const isPwdValid = isLowerCaseValid && isUpperCaseValid && isLengthValid
 
+  // 條件樣式(綠/紅)
   const getCriteriaClass = (isValid) => {
-    if (!inputTouched) return ''
+    if (!hasTyped) return ''
     return isValid ? Styles.valid : Styles.invalid
   }
 
+  // 提交函式
   const handleSubmit = () => {
-    if (isPasswordValid) {
+    if (isPwdValid) {
       console.log('Next')
       // onNext()
     }
@@ -72,110 +71,83 @@ function Step2({ onPrevious, onNext }) {
 
   return (
     <>
-      <div className={Styles.container}>
-        <Header pageName="註冊" />
-        <main className={Styles.main}>
-          <div className={Styles.mainContainer}>
-            <div className={Styles.steps}>
-              {/* 步驟1 */}
-              <div className={Styles.step}>
-                <div className={Styles.currentCircle}>1</div>
-                <div className={Styles.currentCircleText}>驗證電話號碼</div>
-              </div>
-              <div className={Styles.currentArrow}>
-                <FontAwesomeIcon icon={faArrowRightLong} />
-              </div>
-              {/* 步驟2 */}
-              <div className={Styles.step}>
-                <div className={Styles.currentCircle}>2</div>
-                <div className={Styles.currentCircleText}>設定密碼</div>
-              </div>
-              <div className={Styles.arrow}>
-                <FontAwesomeIcon icon={faArrowRightLong} />
-              </div>
-              {/* 步驟3 */}
-              <div className={Styles.step}>
-                <div className={Styles.circle}>
-                  <FontAwesomeIcon className={Styles.checkIcon} icon={faCheck} />
-                </div>
-                <div className={Styles.circleText}>完成</div>
-              </div>
+      <Header pageName="註冊" />
+      <main className={Styles.main}>
+        <div className={Styles.mainContainer}>
+          {/* 註冊步驟 */}
+          <SignUpSteps step={2} />
+          {/* 表單 */}
+          <div className={Styles.card}>
+            <div className={Styles.cardHeader}>
+              {/* 返回上一頁 */}
+              <a className={Styles.back} onClick={onPrevious}>
+                <FontAwesomeIcon icon={faArrowLeftLong} />
+              </a>
+              <div className={Styles.cardName}>設定您的密碼</div>
             </div>
-            {/* 驗證表單 */}
-            <div className={Styles.verificationCard}>
-              <div className={Styles.cardHeader}>
-                {/* 返回上一頁 */}
-                <a className={Styles.back} onClick={onPrevious}>
-                  <FontAwesomeIcon icon={faArrowLeftLong} />
-                </a>
-                <div className={Styles.cardName}>設定您的密碼</div>
+            <div className={Styles.cardMain}>
+              <div className={Styles.cardText}>
+                <div className={Styles.text}>最後一步! 請設定您的密碼已完成登入</div>
               </div>
-              <div className={Styles.cardMain}>
-                <div className={Styles.cardText}>
-                  <div className={Styles.text}>最後一步! 請設定您的密碼已完成登入</div>
-                </div>
-                {/* 密碼輸入欄 */}
-                <div className={Styles.passwordContainer}>
-                  <div className={Styles.password}>
-                    <input
-                      className={`${Styles.passwordInput} ${inputTouched && !isPasswordValid ? Styles.warning : ''}`}
-                      type={showPassword ? 'text' : 'password'}
-                      name="password"
-                      placeholder="密碼"
-                      value={password}
-                      onChange={(e) => handleChange(e)}
-                      onBlur={() => handleBlur()}
-                      maxLength={16}
-                      aria-label="Password"
+              {/* 密碼輸入欄 */}
+              <div className={Styles.passwordContainer}>
+                <div className={Styles.password}>
+                  <input
+                    className={`${Styles.passwordInput} ${
+                      hasTyped && !isPwdValid ? Styles.warning : ''
+                    }`}
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    placeholder="密碼"
+                    value={password}
+                    onChange={(e) => handleChange(e)}
+                    onBlur={() => handleBlur()}
+                    maxLength={16}
+                    aria-label="Password"
+                  />
+                  {/* 顯示密碼 */}
+                  <div
+                    className={Styles.eyeContainer}
+                    onClick={togglePassword}
+                    aria-label="Toggle Password"
+                  >
+                    <FontAwesomeIcon
+                      className={Styles.eye}
+                      icon={showPassword ? faEye : faEyeSlash}
                     />
-                    {/* Toggle Password */}
-                    <div
-                      className={Styles.eyeContainer}
-                      onClick={togglePassword}
-                      aria-label="Toggle Password"
-                    >
-                      <FontAwesomeIcon
-                        className={Styles.eye}
-                        icon={showPassword ? faEye : faEyeSlash}
-                      />
-                    </div>
-                  </div>
-                  <div className={Styles.criteria}>
-                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isLowerCaseValid)}`}>
-                      <span>{isLowerCaseValid ? checkIcon : crossIcon}</span>
-                      <span>至少一個小寫字母</span>
-                    </div>
-                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isUpperCaseValid)}`}>
-                      <span>{isUpperCaseValid ? checkIcon : crossIcon}</span>
-                      <span>至少一個大寫字母</span>
-                    </div>
-                    <div className={`${Styles.criteriaText} ${getCriteriaClass(isLengthValid)}`}>
-                      <span>{isLengthValid ? checkIcon : crossIcon}</span>
-                      <span>8-16個字母</span>
-                    </div>
-                    <div
-                      className={`${Styles.criteriaText} ${getCriteriaClass(isCharactersValid)}`}
-                    >
-                      <span>{isCharactersValid ? checkIcon : crossIcon}</span>
-                      <span>僅能使用英文、數字或常用的標點符號。</span>
-                    </div>
                   </div>
                 </div>
-                {/* 執行下一步 */}
-                <div
-                  className={`${Styles.submit} ${
-                    isPasswordValid ? Styles.allowed : Styles.notAllowed
-                  }`}
-                  onClick={handleSubmit}
-                >
-                  註冊
+                {/* 密碼條件 */}
+                <div className={Styles.criteria}>
+                  {/* 小寫 */}
+                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isLowerCaseValid)}`}>
+                    <span>{isLowerCaseValid ? checkIcon : crossIcon}</span>
+                    <span>至少一個小寫字母</span>
+                  </div>
+                  {/* 大寫 */}
+                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isUpperCaseValid)}`}>
+                    <span>{isUpperCaseValid ? checkIcon : crossIcon}</span>
+                    <span>至少一個大寫字母</span>
+                  </div>
+                  {/* 字數 */}
+                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isLengthValid)}`}>
+                    <span>{isLengthValid ? checkIcon : crossIcon}</span>
+                    <span>8-16個字母</span>
+                  </div>
                 </div>
+              </div>
+              {/* 執行下一步 */}
+              <div
+                className={`${Styles.submit} ${isPwdValid ? Styles.allowed : Styles.notAllowed}`}
+                onClick={handleSubmit}
+              >
+                註冊
               </div>
             </div>
           </div>
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </main>
+      <Footer />
     </>
   )
 }

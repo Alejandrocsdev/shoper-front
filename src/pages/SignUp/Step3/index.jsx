@@ -45,8 +45,8 @@ function Step3() {
                 <div className={Styles.currentCircleText}>完成</div>
               </div>
             </div>
-            {/* 驗證表單 */}
-            <div className={Styles.verificationCard}>
+            {/* 表單 */}
+            <div className={Styles.card}>
               <div className={Styles.cardHeader}>
                 <div className={Styles.cardName}>註冊成功!</div>
               </div>

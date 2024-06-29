@@ -6,9 +6,9 @@ import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
-import Footer from '../../../components/Footer'
-import Anchor from '../../../components/Elements/Anchor'
 import SignUpSteps from '../../../components/Sign/SignUpSteps'
+import Footer from '../../../components/Footer'
+
 // Hooks
 import { useEffect, useRef, useState } from 'react'
 // modules
@@ -163,9 +163,10 @@ function Step1({ onPrevious, onNext, phone }) {
       <Header pageName="註冊" />
       <main className={Styles.main}>
         <div className={Styles.mainContainer}>
+          {/* 註冊步驟 */}
           <SignUpSteps step={1} />
-          {/* 驗證表單 */}
-          <div className={Styles.verificationCard}>
+          {/* 表單 */}
+          <div className={Styles.card}>
             <div className={Styles.cardHeader}>
               {/* 返回上一頁 */}
               <a className={Styles.back} onClick={onPrevious}>

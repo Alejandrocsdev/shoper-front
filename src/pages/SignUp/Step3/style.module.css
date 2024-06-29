@@ -10,7 +10,7 @@
 .circleText,.currentCircleText { font-size: 12px; margin-top: 5px; color: #ECEBF5; }
 .currentCircle { background-color: #FCC30E; }
 .currentCircleText { color: #FCC30E; }
-.verificationCard { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
+.card { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
 .cardHeader { height: 80px; display: flex; justify-content: center; align-items: center; }
 .cardName { width: 340px; font-size: 20px; text-align: center; }
 .cardMain { margin: 0 80px; }
