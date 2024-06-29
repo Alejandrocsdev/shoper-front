@@ -24,8 +24,8 @@ function SignUpFlow() {
     <div>
       {step === 0 && <SignUp onNext={nextStep} isLogin={false} />}
       {step === 1 && <Step1 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
-      {step === 2 && <Step2 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
-      {step === 3 && <Step3 />}
+      {step === 2 && <Step2 onPrevious={previousStep} onNext={nextStep}/>}
+      {step === 3 && <Step3 phone={phone} />}
     </div>
   )
 }
