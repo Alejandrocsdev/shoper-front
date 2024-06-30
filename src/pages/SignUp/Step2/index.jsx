@@ -14,9 +14,10 @@ import { useState } from 'react'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
+const CREATE_USER_URL = `${VITE_BASE_URL}/users/signUp`
 
 // 註冊步驟2: 設定密碼
-function Step2({ onPrevious, onNext }) {
+function Step2({ onPrevious, onNext, phone }) {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
   const [hasTyped, setHasTyped] = useState(false)
@@ -61,11 +62,17 @@ function Step2({ onPrevious, onNext }) {
     return isValid ? Styles.valid : Styles.invalid
   }
 
-  // 提交函式
-  const handleSubmit = () => {
+  // 處理表單提交事件
+  const handleSubmit = async () => {
     if (isPwdValid) {
-      console.log('Next')
-      // onNext()
+      try {
+        const response = await axios.post(CREATE_USER_URL, { password, phone })
+        if (response.data.statusType === 'Success') {
+          onNext(phone, password)
+        }
+      } catch (err) {
+        console.error('Error:', err)
+      }
     }
   }
 

@@ -10,10 +10,12 @@ import { useState } from 'react'
 function SignUpFlow() {
   const [step, setStep] = useState(0)
   const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
 
   // 下一步(包含資料傳遞: phone)
-  const nextStep = (phone) => {
+  const nextStep = (phone, password) => {
     setPhone(phone)
+    setPassword(password)
     setStep((prevStep) => prevStep + 1)
   }
 
@@ -24,8 +26,8 @@ function SignUpFlow() {
     <div>
       {step === 0 && <SignUp onNext={nextStep} isLogin={false} />}
       {step === 1 && <Step1 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
-      {step === 2 && <Step2 onPrevious={previousStep} onNext={nextStep}/>}
-      {step === 3 && <Step3 phone={phone} />}
+      {step === 2 && <Step2 onPrevious={previousStep} onNext={nextStep} phone={phone}/>}
+      {step === 3 && <Step3 phone={phone} password={password} />}
     </div>
   )
 }

@@ -16,8 +16,8 @@ import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
 // 請求網址
-const SEND_OTP_URL = `${VITE_BASE_URL}/verification/send/otp`
-const VERIFY_OTP_URL = `${VITE_BASE_URL}/verification/verify/otp`
+const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
+const VERIFY_OTP_URL = `${VITE_BASE_URL}/verif/verify/otp`
 
 // 註冊步驟1: 驗證手機OTP
 function Step1({ onPrevious, onNext, phone }) {
@@ -128,7 +128,7 @@ function Step1({ onPrevious, onNext, phone }) {
         setErrorMessage('')
         setHasError(false)
         if (response.data.statusType === 'Success') {
-          // onNext()
+          onNext(phone)
         }
       } catch (err) {
         setErrorMessage(err.response?.data?.message)

@@ -4,7 +4,7 @@
 .cardHeader { height: 80px; display: flex; justify-content: center; align-items: center; }
 .cardName { width: 340px; font-weight: 700; font-size: 20px; text-align: center; }
 .cardMain { margin: 0 80px; }
-.cardIcon { font-size: 70px; color: green; text-align: center; }
+.successIcon { font-size: 70px; color: green; text-align: center; }
 .cardText { margin: 10px 0; }
 .text { font-size: 16px; margin-bottom: 15px; text-align: center; }
 .phone { color: orangered; font-weight: 700; font-size: 16px; letter-spacing: 2px; text-align: center; }

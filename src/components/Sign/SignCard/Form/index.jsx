@@ -5,7 +5,7 @@ import { useState } from 'react'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-const SEND_OTP_URL = `${VITE_BASE_URL}/verification/send/otp`
+const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
 // components
 import LoginKey from './LoginKey'
 import Password from './Password'
@@ -50,7 +50,6 @@ const Form = ({ isLogin, onNext }) => {
           SEND_OTP_URL,
           isLogin ? { loginKey } : { phone: loginKey }
         )
-        console.log('xx', loginKey)
         // 導向註冊步驟1
         onNext(loginKey)
       } catch (err) {
