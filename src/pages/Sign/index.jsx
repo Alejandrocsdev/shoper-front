@@ -6,14 +6,14 @@ import Header from '../../components/Sign/Header'
 import SignCard from '../../components/Sign/SignCard'
 import Footer from '../../components/Footer'
 
-function SignUp() {
+function Sign({ onPrevious, onNext, isLogin, isSms }) {
   return (
     <>
-      <Header pageName="登入" />
+      <Header pageName={isLogin ? '登入' : '註冊'} />
       <main className={Styles.main}>
         <div className={Styles.mainContainer}>
           <img className={Styles.mainLogo} src={mainLogoPng} />
-          <SignCard isLogin={true} />
+          <SignCard onPrevious={onPrevious} onNext={onNext} isLogin={isLogin} isSms={isSms} />
         </div>
       </main>
       <Footer />
@@ -21,4 +21,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+export default Sign

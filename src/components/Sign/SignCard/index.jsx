@@ -6,18 +6,23 @@ import Form from './Form'
 import ThirdParty from './ThirdParty'
 import Anchor from '../../Elements/Anchor'
 
-function SignCard({ onNext, isLogin }) {
+function SignCard({ onPrevious, onNext, isLogin, isSms }) {
   return (
     <div className={Styles.signContainer}>
       {/* 表單標題 */}
       <div className={Styles.signHeader}>{isLogin ? '登入' : '註冊'}</div>
       {/* 表單主體 */}
-      <Form onNext={onNext} isLogin={isLogin} />
+      <Form onNext={onNext} isLogin={isLogin} isSms={isSms} />
       {/* 忘記密碼 */}
       {isLogin && (
         <div className={Styles.otherLogin}>
-          <Anchor style={Styles.forgotPassword} content="忘記密碼" />
-          <Anchor style={Styles.smsLogin} content="使用簡訊登入" />
+          <div className={Styles.otherLoginLeft}>
+            {isLogin && !isSms && <Anchor style={Styles.forgotPassword} content="忘記密碼" />}
+          </div>
+          <div className={Styles.otherLoginRight}>
+          {isLogin && !isSms && <Anchor style={Styles.smsLogin} content="使用簡訊登入" onClick={onNext} />}
+            {isLogin && isSms && <Anchor style={Styles.smsLogin} content="使用密碼登入" onClick={onPrevious} />}
+          </div>
         </div>
       )}
       {/* 分隔線 */}

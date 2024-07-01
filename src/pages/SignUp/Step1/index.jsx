@@ -125,10 +125,12 @@ function Step1({ onPrevious, onNext, phone }) {
     if (allFilled) {
       try {
         const response = await axios.post(VERIFY_OTP_URL, { phone, otp })
-        setErrorMessage('')
-        setHasError(false)
-        if (response.data.statusType === 'Success') {
-          onNext(phone)
+        const data = response.data
+        if (data.statusType === 'Success') {
+          setErrorMessage('')
+          setHasError(false)
+          const user = data.result
+          data.message === '已註冊過手機號碼' ? onNext(phone, null, true) : onNext(phone)
         }
       } catch (err) {
         setErrorMessage(err.response?.data?.message)
@@ -153,7 +155,7 @@ function Step1({ onPrevious, onNext, phone }) {
     <div>
       <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
       <div className={Styles.otherText}>
-        <span onClick={handleResendClick}>重新傳送</span>或嘗試<span>其他方式</span>
+        <span onClick={handleResendClick}>重新傳送</span>
       </div>
     </div>
   )

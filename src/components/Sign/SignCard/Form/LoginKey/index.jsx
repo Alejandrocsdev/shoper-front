@@ -3,7 +3,7 @@ import Styles from './style.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 
-function LoginKey({ isLogin, params }) {
+function LoginKey({ isLogin, isSms, params }) {
   // 帳號參數
   const { loginKey, setLoginKey, hasTyped, setHasTyped, phoneCheck } = params
 
@@ -34,8 +34,8 @@ function LoginKey({ isLogin, params }) {
         <input
           className={`${Styles.loginKeyInput} ${showWarning(isLogin) ? Styles.inputWarning : ''}`}
           type="text"
-          name={isLogin ? 'loginKey' : 'phone'}
-          placeholder={isLogin ? '電話號碼/使用者名稱/Email' : '手機號碼'}
+          name={isLogin && !isSms ? 'loginKey' : 'phone'}
+          placeholder={isLogin && !isSms ? '電話號碼/使用者名稱/Email' : '手機號碼'}
           value={loginKey}
           onChange={(e) => handleChange(e)}
           onBlur={() => handleBlur()}

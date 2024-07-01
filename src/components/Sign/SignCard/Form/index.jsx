@@ -10,7 +10,7 @@ const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
 import LoginKey from './LoginKey'
 import Password from './Password'
 
-const Form = ({ isLogin, onNext }) => {
+const Form = ({ onNext, isLogin, isSms }) => {
   // 顯示密碼
   const [showPwd, setShowPwd] = useState(false)
   // 帳號 (手機/帳號/信箱)
@@ -65,9 +65,9 @@ const Form = ({ isLogin, onNext }) => {
   return (
     <div>
       {/* 登入帳號 / 註冊手機 */}
-      <LoginKey isLogin={isLogin} params={loginKeyParams} />
+      <LoginKey isLogin={isLogin} isSms={isSms} params={loginKeyParams} />
       {/* 密碼 */}
-      {isLogin ? <Password params={passwordParams} /> : ''}
+      {isLogin && !isSms ? <Password params={passwordParams} /> : ''}
       {/* 提交 */}
       <button className={`${Styles.submit} ${submitStyle}`} onClick={handleSubmit}>
         {isLogin ? '登入' : '下一步'}

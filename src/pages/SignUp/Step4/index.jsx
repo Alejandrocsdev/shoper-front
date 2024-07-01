@@ -18,7 +18,7 @@ const { VITE_BASE_URL } = import.meta.env
 const SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn`
 
 // 註冊步驟3: 完成註冊並導向首頁
-function Step3({ phone, password }) {
+function Step4({ phone, password }) {
   const [count, setCount] = useState(10)
   const navigate = useNavigate()
 
@@ -55,7 +55,7 @@ function Step3({ phone, password }) {
 
   return (
     <>
-      <Header pageName="註冊" />
+      <Header pageName="Step4" />
       <main className={Styles.main}>
         <div className={Styles.mainContainer}>
           {/* 註冊步驟 */}
@@ -89,4 +89,4 @@ function Step3({ phone, password }) {
   )
 }
 
-export default Step3
+export default Step4

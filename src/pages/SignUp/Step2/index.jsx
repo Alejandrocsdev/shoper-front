@@ -14,7 +14,7 @@ import { useState } from 'react'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-const CREATE_USER_URL = `${VITE_BASE_URL}/users/signUp`
+const SIGN_UP_URL = `${VITE_BASE_URL}/users/signUp`
 
 // 註冊步驟2: 設定密碼
 function Step2({ onPrevious, onNext, phone }) {
@@ -22,9 +22,10 @@ function Step2({ onPrevious, onNext, phone }) {
   const [password, setPassword] = useState('')
   const [hasTyped, setHasTyped] = useState(false)
   // 密碼限制
-  const [isLowerCaseValid, setIsLowerCaseValid] = useState(false)
-  const [isUpperCaseValid, setIsUpperCaseValid] = useState(false)
-  const [isLengthValid, setIsLengthValid] = useState(false)
+  const [isLowerCase, setIsLowerCase] = useState(false)
+  const [isUpperCase, setIsUpperCase] = useState(false)
+  const [isLength, setIsLength] = useState(false)
+  const [isNumber, setIsNumber] = useState(false)
 
   // 切換密碼顯示
   const togglePassword = () => setShowPassword(!showPassword)
@@ -44,9 +45,10 @@ function Step2({ onPrevious, onNext, phone }) {
 
   // 驗證密碼條件
   const validatePassword = (value) => {
-    setIsLowerCaseValid(/[a-z]/.test(value))
-    setIsUpperCaseValid(/[A-Z]/.test(value))
-    setIsLengthValid(value.length >= 8 && value.length <= 16)
+    setIsLowerCase(/[a-z]/.test(value))
+    setIsUpperCase(/[A-Z]/.test(value))
+    setIsLength(value.length >= 8 && value.length <= 16)
+    setIsNumber(/\d/.test(value))
   }
 
   // 正確/錯誤 圖示
@@ -54,7 +56,7 @@ function Step2({ onPrevious, onNext, phone }) {
   const checkIcon = <FontAwesomeIcon className={Styles.icon} icon={faCircleCheck} />
 
   // 密碼有效
-  const isPwdValid = isLowerCaseValid && isUpperCaseValid && isLengthValid
+  const isPwdValid = isLowerCase && isUpperCase && isLength && isNumber
 
   // 條件樣式(綠/紅)
   const getCriteriaClass = (isValid) => {
@@ -66,7 +68,8 @@ function Step2({ onPrevious, onNext, phone }) {
   const handleSubmit = async () => {
     if (isPwdValid) {
       try {
-        const response = await axios.post(CREATE_USER_URL, { password, phone })
+        // 註冊
+        const response = await axios.post(SIGN_UP_URL, { password, phone })
         if (response.data.statusType === 'Success') {
           onNext(phone, password)
         }
@@ -86,10 +89,6 @@ function Step2({ onPrevious, onNext, phone }) {
           {/* 表單 */}
           <div className={Styles.card}>
             <div className={Styles.cardHeader}>
-              {/* 返回上一頁 */}
-              <a className={Styles.back} onClick={onPrevious}>
-                <FontAwesomeIcon icon={faArrowLeftLong} />
-              </a>
               <div className={Styles.cardName}>設定您的密碼</div>
             </div>
             <div className={Styles.cardMain}>
@@ -127,19 +126,24 @@ function Step2({ onPrevious, onNext, phone }) {
                 {/* 密碼條件 */}
                 <div className={Styles.criteria}>
                   {/* 小寫 */}
-                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isLowerCaseValid)}`}>
-                    <span>{isLowerCaseValid ? checkIcon : crossIcon}</span>
-                    <span>至少一個小寫字母</span>
+                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isLowerCase)}`}>
+                    <span>{isLowerCase ? checkIcon : crossIcon}</span>
+                    <span>包含至少一個小寫字母</span>
                   </div>
                   {/* 大寫 */}
-                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isUpperCaseValid)}`}>
-                    <span>{isUpperCaseValid ? checkIcon : crossIcon}</span>
-                    <span>至少一個大寫字母</span>
+                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isUpperCase)}`}>
+                    <span>{isUpperCase ? checkIcon : crossIcon}</span>
+                    <span>包含至少一個大寫字母</span>
+                  </div>
+                  {/* 數字 */}
+                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isNumber)}`}>
+                    <span>{isNumber ? checkIcon : crossIcon}</span>
+                    <span>包含至少一個數字</span>
                   </div>
                   {/* 字數 */}
-                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isLengthValid)}`}>
-                    <span>{isLengthValid ? checkIcon : crossIcon}</span>
-                    <span>8-16個字母</span>
+                  <div className={`${Styles.criteriaText} ${getCriteriaClass(isLength)}`}>
+                    <span>{isLength ? checkIcon : crossIcon}</span>
+                    <span>密碼長度8-16個字元</span>
                   </div>
                 </div>
               </div>

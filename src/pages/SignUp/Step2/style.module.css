@@ -1,7 +1,7 @@
 .main { min-height: calc(100vh - var(--header-heaight)); padding: 50px 0; display: flex; justify-content: center; background-color: #100D25; }
 .mainContainer { width: 500px; }
 .card { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
-.cardHeader { height: 80px; margin-right: 80px; display: flex; justify-content: center; align-items: center; }
+.cardHeader { height: 80px; display: flex; justify-content: center; align-items: center; }
 .back { width: 80px; font-size: 26px; text-align: center; cursor: pointer; }
 .back:hover { color:hsl(0, 0%, 30%); }
 .cardName { width: 420px; font-weight: 700; font-size: 20px; text-align: center; }
@@ -22,8 +22,6 @@
 .invalid { color: red; }
 @media (max-width: 650px) {
   .mainContainer { width: 340px; justify-content: center; }
- .cardHeader { margin-right: 40px; }
- .back { width: 40px; padding-left: 20px; }
  .cardName { width: 300px; }
  .cardMain { margin: 0 40px; }
  .text { font-size: 14px;}

@@ -1,6 +1,6 @@
-.signContainer { width: 400px; height: 450px; padding: 0 30px; background-color: #ECEBF5; border-radius: 5px; }
-.signHeader { padding: 26px 0; font-weight: 700; font-size: 24px; text-align: center;}
-.otherLogin { margin: 10px 0; font-size: 12px; display: flex; justify-content: space-between; }
+.signContainer { width: 400px; padding: 30px; background-color: #ECEBF5; border-radius: 5px; }
+.signHeader { padding-bottom: 26px; font-weight: 700; font-size: 24px; text-align: center; }
+.otherLogin { margin: 10px 0; font-size: 12px; display: flex; justify-content: space-between;}
 .breakLine { margin: 25px 0; display: flex; }
 .loginBreakLine { margin: 10px 0; display: flex; }
 .lineContainer { width: 100%; display: flex; align-items: center; }
