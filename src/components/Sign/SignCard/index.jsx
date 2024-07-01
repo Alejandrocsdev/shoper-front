@@ -1,12 +1,16 @@
 import Styles from './style.module.css'
 // PNG Files
 import mainLogoPng from '../../../assets/images/logo/cart_text_square_dark.png'
+// Hooks
+import { useNavigate } from 'react-router-dom'
 // Components
 import Form from './Form'
 import ThirdParty from './ThirdParty'
 import Anchor from '../../Elements/Anchor'
 
 function SignCard({ onPrevious, onNext, isLogin, isSms }) {
+  const navigate = useNavigate()
+  
   return (
     <div className={Styles.signContainer}>
       {/* 表單標題 */}
@@ -17,11 +21,21 @@ function SignCard({ onPrevious, onNext, isLogin, isSms }) {
       {isLogin && (
         <div className={Styles.otherLogin}>
           <div className={Styles.otherLoginLeft}>
-            {isLogin && !isSms && <Anchor style={Styles.forgotPassword} content="忘記密碼" />}
+            {isLogin && !isSms && (
+              <Anchor
+                style={Styles.forgotPassword}
+                content="忘記密碼"
+                onClick={() => navigate('/reset')}
+              />
+            )}
           </div>
           <div className={Styles.otherLoginRight}>
-          {isLogin && !isSms && <Anchor style={Styles.smsLogin} content="使用簡訊登入" onClick={onNext} />}
-            {isLogin && isSms && <Anchor style={Styles.smsLogin} content="使用密碼登入" onClick={onPrevious} />}
+            {isLogin && !isSms && (
+              <Anchor style={Styles.smsLogin} content="使用簡訊登入" onClick={onNext} />
+            )}
+            {isLogin && isSms && (
+              <Anchor style={Styles.smsLogin} content="使用密碼登入" onClick={onPrevious} />
+            )}
           </div>
         </div>
       )}
