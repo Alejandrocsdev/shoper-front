@@ -2,7 +2,6 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRightLong } from '@fortawesome/free-solid-svg-icons'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'

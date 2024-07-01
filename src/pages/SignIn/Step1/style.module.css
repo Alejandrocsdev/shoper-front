@@ -1,0 +1,36 @@
+.main { min-height: calc(100vh - var(--header-heaight)); padding: 50px 0; display: flex; justify-content: center; background-color: #100D25; }
+.mainContainer { width: 500px; }
+.card { margin-top: 75px; padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
+.cardHeader { height: 80px; margin-right: 80px; display: flex; justify-content: center; align-items: center; }
+.back { width: 80px; font-size: 26px; text-align: center; cursor: pointer; }
+.back:hover { color:hsl(0, 0%, 30%); }
+.cardName { width: 420px; font-weight: 700; font-size: 20px; text-align: center; }
+.cardMain { margin: 0 80px; }
+.errorMessage { margin-bottom: 30px; padding: 12px 15px; background-color: #ffdae0; border: 1px solid #ff424f33; display: flex; }
+.crossIcon { margin-right: 10px; color: red; }
+.message { font-size: 14px; }
+.cardText { margin: 10px 0; }
+.text { font-size: 14px; margin-bottom: 10px; text-align: center; }
+.phone { font-size: 16px; letter-spacing: 2px; text-align: center; }
+.otpContainer { margin: 20px 0; }
+.inputFields { display: flex; flex-direction: row; justify-content: space-evenly; }
+.otpInput { width: 50px; height: 60px; font-size: 25px; text-align: center; border-radius: 5px; border: none; background: gray; }
+.otpInput::-webkit-inner-spin-button,
+.otpInput::-webkit-outer-spin-button { display: none; }
+.otpInput:focus { outline: 3px solid #00b991; outline-offset: 2px; }
+.otherVerification { height: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.countDown { color: gray; text-align: center; }
+.otherText { text-align: center; }
+.otherText span { color: #219ebc; text-decoration: none; cursor: pointer; }
+.otherText span:hover { filter: brightness(70%); }
+.submit { height: 40px; margin-top: 30px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.notAllowed { background-color: gray; cursor: not-allowed; }
+.allowed:hover { background-color: hsl(248, 48%, 40%) }
+@media (max-width: 650px) {
+ .mainContainer { width: 340px; justify-content: center; }
+.cardHeader { margin-right: 40px; }
+.back { width: 40px; padding-left: 20px; }
+.cardName { width: 300px; }
+.cardMain { margin: 0 40px; }
+.otpInput { width: 35px; height: 50px; font-size: 20px;}
+ }

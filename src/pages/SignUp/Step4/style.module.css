@@ -3,18 +3,18 @@
 .card { padding-bottom: 30px; border-radius: 5px; background-color: #ECEBF5; }
 .cardHeader { height: 80px; display: flex; justify-content: center; align-items: center; }
 .cardName { width: 340px; font-weight: 700; font-size: 20px; text-align: center; }
-.cardMain { margin: 0 80px; }
-.successIcon { font-size: 70px; color: green; text-align: center; }
-.cardText { margin: 10px 0; }
+.cardMain { margin: 0 80px; display: flex; flex-direction: column; justify-content: center; }
+.avatar {width: 100px; margin: 0 auto 10px}
+.username { margin-bottom: 10px; font-weight: 700; font-size: 16px; text-align: center; }
+.phone { color: orangered; margin-bottom: 10px; font-weight: 700; font-size: 16px; letter-spacing: 2px; text-align: center; }
 .text { font-size: 16px; margin-bottom: 15px; text-align: center; }
-.phone { color: orangered; font-weight: 700; font-size: 16px; letter-spacing: 2px; text-align: center; }
-.count {color: orangered; font-weight: 700;}
-.submit { height: 40px; margin-top: 25px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.submit { height: 40px; margin-bottom: 25px; font-weight: 700; border-radius: 5px; color: #ECEBF5; background-color: #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
 .submit:hover { background-color: hsl(248, 48%, 40%) }
+.back { height: 40px; font-weight: 700; border-radius: 5px; color: #100D25; border: 3px solid #100D25; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.back:hover { background-color: #b2a9ff; }
 @media (max-width: 650px) {
-  .mainContainer { width: 340px; justify-content: center; }
- .cardName { width: 300px; }
- .cardMain { margin: 0 40px; }
- .text { font-size: 14px;}
-  }
- 
+ .mainContainer { width: 340px; justify-content: center; }
+.cardName { width: 300px; }
+.cardMain { margin: 0 40px; }
+.text { font-size: 14px; }
+ }

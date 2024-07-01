@@ -11,6 +11,7 @@ import Footer from '../../../components/Footer'
 
 // Hooks
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // modules
 import axios from 'axios'
 // environment variables
@@ -18,9 +19,12 @@ const { VITE_BASE_URL } = import.meta.env
 // 請求網址
 const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
 const VERIFY_OTP_URL = `${VITE_BASE_URL}/verif/verify/otp`
+const SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn`
 
 // 註冊步驟1: 驗證手機OTP
-function Step1({ onPrevious, onNext, phone }) {
+function Step1({ onPrevious, phone }) {
+  const navigate = useNavigate()
+
   // 用來保存所有 OTP 輸入框的參考
   const inputsRef = useRef([])
 
@@ -129,19 +133,28 @@ function Step1({ onPrevious, onNext, phone }) {
         if (data.statusType === 'Success') {
           setErrorMessage('')
           setHasError(false)
-          const user = data.result
-          if (user && data.message === '已註冊過手機號碼') {
-            const user = data.result
-            const { username, avatar } = user
-            onNext({ username, password: 'otp', phone, avatar }, true)
-          } else {
-            onNext({ phone })
-          }
+          signIn()
         }
       } catch (err) {
         setErrorMessage(err.response?.data?.message)
         setHasError(true)
       }
+    }
+  }
+
+  // 處理表單提交事件
+  const signIn = async () => {
+    try {
+      const response = await axios.post(
+        SIGN_IN_URL,
+        { loginKey: phone, password: 'otp' },
+        { withCredentials: true }
+      )
+      if (response.data.statusType === 'Success') {
+        navigate('/')
+      }
+    } catch (err) {
+      console.error('Error:', err)
     }
   }
 
@@ -168,11 +181,9 @@ function Step1({ onPrevious, onNext, phone }) {
 
   return (
     <>
-      <Header pageName="註冊" />
+      <Header pageName="登入" />
       <main className={Styles.main}>
         <div className={Styles.mainContainer}>
-          {/* 註冊步驟 */}
-          <SignUpSteps step={1} />
           {/* 表單 */}
           <div className={Styles.card}>
             <div className={Styles.cardHeader}>

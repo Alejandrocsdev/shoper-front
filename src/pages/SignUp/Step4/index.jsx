@@ -1,15 +1,12 @@
 // Style
 import Styles from './style.module.css'
-// Font Awesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRightLong } from '@fortawesome/free-solid-svg-icons'
-import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
+// PNG Files
+import avatarPng from '../../../assets/images/avatar/avatar.png'
 // Components
 import Header from '../../../components/Sign/Header'
 import SignUpSteps from '../../../components/Sign/SignUpSteps'
 import Footer from '../../../components/Footer'
 // Hooks
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 // modules
 import axios from 'axios'
@@ -18,27 +15,11 @@ const { VITE_BASE_URL } = import.meta.env
 const SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn`
 
 // 註冊步驟3: 完成註冊並導向首頁
-function Step4({ phone, password }) {
-  const [count, setCount] = useState(10)
+function Step4({ username, password, phone, avatar }) {
   const navigate = useNavigate()
 
-  const successIcon = <FontAwesomeIcon icon={faCircleCheck} />
-
-  useEffect(() => {
-    const countdown = setInterval(() => {
-      setCount((prevCount) => prevCount - 1)
-    }, 1000)
-
-    if (count === 0) {
-      clearInterval(countdown)
-      handleSubmit()
-    }
-
-    return () => clearInterval(countdown)
-  }, [count, navigate])
-
   // 處理表單提交事件
-  const handleSubmit = async () => {
+  const handleLogin = async () => {
     try {
       const response = await axios.post(
         SIGN_IN_URL,
@@ -55,7 +36,7 @@ function Step4({ phone, password }) {
 
   return (
     <>
-      <Header pageName="Step4" />
+      <Header pageName="登入" />
       <main className={Styles.main}>
         <div className={Styles.mainContainer}>
           {/* 註冊步驟 */}
@@ -63,22 +44,22 @@ function Step4({ phone, password }) {
           {/* 表單 */}
           <div className={Styles.card}>
             <div className={Styles.cardHeader}>
-              <div className={Styles.cardName}>註冊成功!</div>
+              <div className={Styles.cardName}>這是您的帳號嗎?</div>
             </div>
             <div className={Styles.cardMain}>
-              <div className={Styles.successIcon}>{successIcon}</div>
-              <div className={Styles.cardText}>
-                <div className={Styles.text}>
-                  您已成功使用電話號碼 <span className={Styles.phone}>{phone}</span>
-                  <div>建立瞎皮爾購物帳號</div>
-                </div>
-                <div className={Styles.text}>
-                  您將在 <span className={Styles.count}>{count}</span> 秒內回到瞎皮爾購物
-                </div>
+              <img className={Styles.avatar} src={avatar || avatarPng} />
+              <div className={Styles.username}>{username}</div>
+              <div className={Styles.phone}>{phone}</div>
+              <div className={Styles.text}>
+                此手機號碼已被此帳號使用，若此帳號屬於您，請點選「是，前往登入」。
               </div>
-              {/* 執行下一步 */}
-              <div className={Styles.submit} onClick={handleSubmit}>
-                回到瞎皮爾購物
+              {/* 登入 */}
+              <div className={Styles.submit} onClick={handleLogin}>
+                是，前往登入
+              </div>
+              {/* 返回註冊 */}
+              <div className={Styles.back} onClick={() => navigate('/signUp')}>
+                否，返回註冊頁面
               </div>
             </div>
           </div>

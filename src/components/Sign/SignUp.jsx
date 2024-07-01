@@ -10,13 +10,19 @@ import { useState } from 'react'
 // 註冊組件
 function SignUp() {
   const [step, setStep] = useState(0)
-  const [phone, setPhone] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [phone, setPhone] = useState('')
+  const [avatar, setAvatar] = useState('')
+
+  const user = { username, password, phone, avatar }
 
   // 下一步(包含資料傳遞: phone, password)
-  const nextStep = (phone, password, isSignedUp = false) => {
-    setPhone(phone)
-    setPassword(password)
+  const nextStep = (user, isSignedUp = false) => {
+    setUsername(user.username)
+    setPassword(user.password)
+    setPhone(user.phone)
+    setAvatar(user.avatar)
     setStep((prevStep) => (prevStep === 1 && isSignedUp ? 4 : prevStep + 1))
   }
 
@@ -29,7 +35,7 @@ function SignUp() {
       {step === 1 && <Step1 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
       {step === 2 && <Step2 onNext={nextStep} phone={phone} />}
       {step === 3 && <Step3 phone={phone} password={password} />}
-      {step === 4 && <Step4 />}
+      {step === 4 && <Step4 username={username} password={password} phone={phone} avatar={avatar}/>}
     </div>
   )
 }

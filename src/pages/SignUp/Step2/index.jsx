@@ -2,7 +2,7 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeftLong, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark, faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
@@ -71,7 +71,7 @@ function Step2({ onPrevious, onNext, phone }) {
         // 註冊
         const response = await axios.post(SIGN_UP_URL, { password, phone })
         if (response.data.statusType === 'Success') {
-          onNext(phone, password)
+          onNext({phone, password})
         }
       } catch (err) {
         console.error('Error:', err)

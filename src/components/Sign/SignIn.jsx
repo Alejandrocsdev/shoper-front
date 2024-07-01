@@ -1,5 +1,6 @@
 // 引用註冊4步驟
 import Sign from '../../pages/Sign'
+import Step1 from '../../pages/SignIn/Step1'
 // Hooks
 import { useState } from 'react'
 
@@ -7,12 +8,10 @@ import { useState } from 'react'
 function SignIn() {
   const [step, setStep] = useState(0)
   const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState('')
 
-  // 下一步(包含資料傳遞: phone, password)
-  const nextStep = (phone, password) => {
+  // 下一步(包含資料傳遞: phone)
+  const nextStep = (phone) => {
     setPhone(phone)
-    setPassword(password)
     setStep((prevStep) => prevStep + 1)
   }
 
@@ -23,6 +22,7 @@ function SignIn() {
     <div>
       {step === 0 && <Sign onNext={nextStep} isLogin={true} isSms={false} />}
       {step === 1 && <Sign onPrevious={previousStep} onNext={nextStep} isLogin={true} isSms={true} />}
+      {step === 2 && <Step1 onPrevious={previousStep} phone={phone} />}
     </div>
   )
 }
