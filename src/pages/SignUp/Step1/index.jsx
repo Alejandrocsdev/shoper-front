@@ -28,7 +28,7 @@ function Step1({ onPrevious, onNext, phone }) {
               <div className={Styles.cardName}>重新設定密碼</div>
             </div>
             <div className={Styles.cardMain}>
-              <OTP onPrevious={onPrevious} onNext={onNext} phone={phone} />
+              <OTP onPrevious={onPrevious} onNext={onNext} phone={phone} isSignUp={true} />
             </div>{' '}
           </div>
         </div>

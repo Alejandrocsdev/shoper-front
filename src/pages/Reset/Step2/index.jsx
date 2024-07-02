@@ -54,7 +54,7 @@ function Step2({ onPrevious, onNext, phone, email }) {
               <div className={Styles.cardName}>重新設定密碼</div>
             </div>
             <div className={Styles.cardMain}>
-              {isPhone ? <OTP onPrevious={onPrevious} onNext={onNext} phone={phone} /> : emailSent}
+              {isPhone ? <OTP onPrevious={onPrevious} onNext={onNext} phone={phone} isSignUp={false} /> : emailSent}
             </div>
           </div>
         </div>

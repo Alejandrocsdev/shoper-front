@@ -77,9 +77,9 @@ function Step1({ onNext }) {
         const url = method === 'phone' ? SEND_OTP_URL : SEND_LINK_URL
         axios.post(url, { [method]: loginKey })
         if (method === 'phone') {
-          onNext(loginKey)
+          onNext({ phone: loginKey })
         } else {
-          onNext(null, loginKey)
+          onNext({ email: loginKey })
         }
       } catch (err) {
         console.error(err.response?.data?.message)

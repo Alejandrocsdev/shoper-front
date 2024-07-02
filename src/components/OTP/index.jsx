@@ -2,7 +2,6 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
@@ -14,9 +13,9 @@ const { VITE_BASE_URL } = import.meta.env
 const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
 const VERIFY_OTP_URL = `${VITE_BASE_URL}/verif/verify/otp`
 
-// 註冊步驟1: 驗證手機OTP
-function OTP({ onPrevious, onNext, phone }) {
-  // 用來保存所有 OTP 輸入框的參考
+// OTP Card
+function OTP({ onNext, phone, isSignUp }) {
+  // OTP input 元素
   const inputsRef = useRef([])
 
   // 倒數計時秒數
@@ -60,6 +59,7 @@ function OTP({ onPrevious, onNext, phone }) {
 
   // 處理每個 OTP 輸入框值的變化
   const handleInputChange = (index, value) => {
+    // OTP input 元素
     const OTPinputs = inputsRef.current
 
     // 保持只取值的最後一個字符
@@ -78,9 +78,10 @@ function OTP({ onPrevious, onNext, phone }) {
     checkAllFilled()
   }
 
-  // 處理鍵盤事件，特別是退格鍵事件
+  // 處理鍵盤事件(退格鍵)
   const handleKeyUp = (index, event) => {
     if (event.key === 'Backspace' && index > 0) {
+      // OTP input 元素
       const OTPinputs = inputsRef.current
       OTPinputs[index].value = ''
       OTPinputs[index].setAttribute('disabled', true)
@@ -119,19 +120,22 @@ function OTP({ onPrevious, onNext, phone }) {
   const handleSubmit = async () => {
     if (allFilled) {
       try {
+        // 請求回應
         const response = await axios.post(VERIFY_OTP_URL, { phone, otp })
+        // 回應資料
         const data = response.data
-        if (data.statusType === 'Success') {
-          setErrorMessage('')
-          setHasError(false)
-          const user = data.result
-          if (user && data.message === '已註冊過手機號碼') {
-            const user = data.result
-            const { username, avatar } = user
-            onNext({ username, password: 'otp', phone, avatar }, true)
-          } else {
-            onNext({ phone })
-          }
+        const message = data.message
+        const user = data.result
+        // 不顯示錯誤
+        setErrorMessage('')
+        setHasError(false)
+
+        // 如已註冊過
+        if (user && isSignUp) {
+          const { username, avatar } = user
+          onNext({ username, password: 'otp', phone, avatar }, true)
+        } else {
+          onNext({ phone })
         }
       } catch (err) {
         setErrorMessage(err.response?.data?.message)

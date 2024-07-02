@@ -10,19 +10,19 @@ function SignIn() {
   const [phone, setPhone] = useState('')
 
   // 下一步(包含資料傳遞: phone)
-  const nextStep = (phone) => {
+  const next = (phone) => {
     setPhone(phone)
     setStep((prevStep) => prevStep + 1)
   }
 
   // 上一步
-  const previousStep = () => setStep((prevStep) => prevStep - 1)
+  const previous = () => setStep((prevStep) => prevStep - 1)
 
   return (
     <div>
-      {step === 0 && <Sign onNext={nextStep} isLogin={true} isSms={false} />}
-      {step === 1 && <Sign onPrevious={previousStep} onNext={nextStep} isLogin={true} isSms={true} />}
-      {step === 2 && <Step1 onPrevious={previousStep} phone={phone} />}
+      {step === 0 && <Sign onNext={next} isLogin={true} isSms={false} />}
+      {step === 1 && <Sign onPrevious={previous} onNext={next} isLogin={true} isSms={true} />}
+      {step === 2 && <Step1 onPrevious={previous} phone={phone} />}
     </div>
   )
 }

@@ -18,22 +18,23 @@ function SignUp() {
   const user = { username, password, phone, avatar }
 
   // 下一步(包含資料傳遞: phone, password)
-  const nextStep = (user, isSignedUp = false) => {
+  const next = (user, isSignedUp = false) => {
     setUsername(user.username)
     setPassword(user.password)
+    setPhone(user.phone)
     setPhone(user.phone)
     setAvatar(user.avatar)
     setStep((prevStep) => (prevStep === 1 && isSignedUp ? 4 : prevStep + 1))
   }
 
   // 上一步
-  const previousStep = () => setStep((prevStep) => prevStep - 1)
+  const previous = () => setStep((prevStep) => prevStep - 1)
 
   return (
     <div>
-      {step === 0 && <Sign onNext={nextStep} isLogin={false} />}
-      {step === 1 && <Step1 onPrevious={previousStep} onNext={nextStep} phone={phone} />}
-      {step === 2 && <Step2 onNext={nextStep} phone={phone} />}
+      {step === 0 && <Sign onNext={next} isLogin={false} />}
+      {step === 1 && <Step1 onPrevious={previous} onNext={next} phone={phone} />}
+      {step === 2 && <Step2 onNext={next} phone={phone} />}
       {step === 3 && <Step3 phone={phone} password={password} />}
       {step === 4 && <Step4 username={username} password={password} phone={phone} avatar={avatar}/>}
     </div>
