@@ -1,6 +1,6 @@
 import Styles from './style.module.css'
 
-function Anchor({ style, href, content, onClick }) {
+function Anchor({ style, href, onClick, content }) {
   return <a className={`${Styles.a} ${style}`} href={href} onClick={onClick}>{content}</a>
 }
 
