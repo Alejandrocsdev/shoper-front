@@ -2,9 +2,10 @@
 import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeftLong, faEnvelopeCircleCheck } from '@fortawesome/free-solid-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
+import OTP from '../../../components/OTP'
 import Footer from '../../../components/Footer'
 // Hooks
 import { useState } from 'react'
@@ -15,71 +16,28 @@ import axios from 'axios'
 const { VITE_BASE_URL } = import.meta.env
 const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
 
-function Step2({ onNext, phone, email }) {
+function Step2({ onPrevious, onNext, phone, email }) {
   const navigate = useNavigate()
 
-  const [loginKey, setLoginKey] = useState('')
-  const [hasTyped, setHasTyped] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [isPhone, setIsPhone] = useState(false)
-  const [isValid, setIsValid] = useState(false)
+  const isPhone = phone ? true : false
 
-  const handleChange = (e) => {
-    const value = e.target.value
-    setLoginKey(value)
-    setHasTyped(true)
-    validateInput(value)
-  }
+  const envelopIcon = (
+    <FontAwesomeIcon className={Styles.envelopIcon} icon={faEnvelopeCircleCheck} />
+  )
 
-  const validateInput = (value) => {
-    const phoneRegex = /^09\d{8}$/
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-    if (/^\d+$/.test(value)) {
-      // If the input contains only numbers
-      if (phoneRegex.test(value)) {
-        setErrorMessage('')
-        setIsPhone(true)
-        setIsValid(true)
-      } else {
-        setErrorMessage('請輸入有效行動電話號碼')
-        setIsPhone(false)
-        setIsValid(false)
-      }
-    } else {
-      // If the input contains non-numeric characters
-      if (emailRegex.test(value)) {
-        setErrorMessage('')
-        setIsPhone(false)
-        setIsValid(true)
-      } else {
-        setErrorMessage('無效的email')
-        setIsPhone(false)
-        setIsValid(false)
-      }
-    }
-  }
-
-  const handleBlur = () => {
-    if (loginKey === '') {
-      setHasTyped(false)
-      setErrorMessage('')
-      setIsValid(false)
-    }
-  }
-
-  // 處理發送OTP事件
-  const handleSubmit = async () => {
-    try {
-      const method = isPhone ? 'phone' : 'email'
-      const response = await axios.post(SEND_OTP_URL, { [method]: loginKey })
-      if (data.statusType === 'Success') {
-        onNext({ [method]: loginKey })
-      }
-    } catch (err) {
-      console.error(err.response?.data?.message)
-    }
-  }
+  const emailSent = (
+    <>
+      <div className={Styles.iconContainer}>{envelopIcon}</div>
+      <div className={Styles.text}>
+        驗證信已發送至<span className={Styles.email}>newlean14@gmail.com</span>
+      </div>
+      <div className={Styles.text}>請驗證</div>
+      {/* 執行下一步 */}
+      <div className={Styles.submit} onClick={() => navigate('/')}>
+        下一步
+      </div>
+    </>
+  )
 
   return (
     <>
@@ -90,33 +48,13 @@ function Step2({ onNext, phone, email }) {
           <div className={Styles.card}>
             <div className={Styles.cardHeader}>
               {/* 返回上一頁 */}
-              <a className={Styles.back} onClick={() => navigate('/signIn')}>
+              <a className={Styles.back} onClick={onPrevious}>
                 <FontAwesomeIcon icon={faArrowLeftLong} />
               </a>
               <div className={Styles.cardName}>重新設定密碼</div>
             </div>
             <div className={Styles.cardMain}>
-              {/* 電話/信箱輸入欄 */}
-              <div className={Styles.loginKey}>
-                <input
-                  className={Styles.loginKeyInput}
-                  type="text"
-                  name={isPhone ? 'phone' : 'email'}
-                  placeholder="Email / 手機號碼"
-                  value={loginKey}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </div>
-              {/* 輸入錯誤 */}
-              <div className={Styles.warning}>{errorMessage}</div>
-              {/* 執行下一步 */}
-              <div
-                className={`${Styles.submit} ${isValid ? Styles.allowed : Styles.notAllowed}`}
-                onClick={handleSubmit}
-              >
-                下一步
-              </div>
+              {isPhone ? <OTP onPrevious={onPrevious} onNext={onNext} phone={phone} /> : emailSent}
             </div>
           </div>
         </div>

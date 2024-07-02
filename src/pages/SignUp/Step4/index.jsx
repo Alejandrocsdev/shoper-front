@@ -4,7 +4,6 @@ import Styles from './style.module.css'
 import avatarPng from '../../../assets/images/avatar/avatar.png'
 // Components
 import Header from '../../../components/Sign/Header'
-import SignUpSteps from '../../../components/Sign/SignUpSteps'
 import Footer from '../../../components/Footer'
 // Hooks
 import { useNavigate } from 'react-router-dom'
@@ -39,8 +38,6 @@ function Step4({ username, password, phone, avatar }) {
       <Header pageName="登入" />
       <main className={Styles.main}>
         <div className={Styles.mainContainer}>
-          {/* 註冊步驟 */}
-          <SignUpSteps step={3} />
           {/* 表單 */}
           <div className={Styles.card}>
             <div className={Styles.cardHeader}>

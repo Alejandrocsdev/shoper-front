@@ -12,7 +12,7 @@ import Test3 from './pages/SignUp/Step3'
 import Test4 from './pages/SignUp/Step4'
 import Test5 from './pages/SignIn/Step1'
 import Test6 from './pages/SignIn/Step1'
-import Test7 from './pages/SignIn/Step1'
+import Test7 from './pages/Reset/Step2'
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
           <Route path="/signUp/test4" element={<Test4 />} />
           <Route path="/signIn/test1" element={<Test5 />} />
           <Route path="/signIn/test2" element={<Test6 />} />
+          <Route path="/reset/test2" element={<Test7 />} />
         </Routes>
       </BrowserRouter>
     </>

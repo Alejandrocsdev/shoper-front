@@ -14,8 +14,9 @@ import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
 const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
+const SEND_LINK_URL = `${VITE_BASE_URL}/verif/send/link`
 
-function Step1({ onNext, phone, email }) {
+function Step1({ onNext }) {
   const navigate = useNavigate()
 
   const [loginKey, setLoginKey] = useState('')
@@ -70,14 +71,19 @@ function Step1({ onNext, phone, email }) {
 
   // 處理發送OTP事件
   const handleSubmit = async () => {
-    try {
-      const method = isPhone ? 'phone' : 'email'
-      const response = await axios.post(SEND_OTP_URL, { [method]: loginKey })
-      if (data.statusType === 'Success') {
-        onNext({ [method]: loginKey })
+    if (isValid) {
+      try {
+        const method = isPhone ? 'phone' : 'email'
+        const url = method === 'phone' ? SEND_OTP_URL : SEND_LINK_URL
+        axios.post(url, { [method]: loginKey })
+        if (method === 'phone') {
+          onNext(loginKey)
+        } else {
+          onNext(null, loginKey)
+        }
+      } catch (err) {
+        console.error(err.response?.data?.message)
       }
-    } catch (err) {
-      console.error(err.response?.data?.message)
     }
   }
 

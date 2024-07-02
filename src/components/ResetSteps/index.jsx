@@ -1,5 +1,6 @@
 // 找回密碼
 import Step1 from '../../pages/Reset/Step1'
+import Step2 from '../../pages/Reset/Step2'
 // Hooks
 import { useState } from 'react'
 
@@ -21,7 +22,8 @@ function Reset() {
 
   return (
     <div>
-      {step === 0 && <Step1 onNext={nextStep} phone={phone} email={email} />}
+      {step === 0 && <Step1 onNext={nextStep} />}
+      {step === 1 && <Step2 onPrevious={previousStep} onNext={nextStep} phone={phone} email={email} />}
     </div>
   )
 }
