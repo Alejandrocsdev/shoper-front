@@ -10,7 +10,7 @@ function SmsSignIn({ onNext, onPrevious, phone }) {
       back={true}
       backPath={onPrevious}
       cardName="輸入驗證碼"
-      main={<OtpCard onPrevious={onPrevious} onNext={onNext} phone={phone} isSignUp={false} />}
+      main={<OtpCard onPrevious={onPrevious} onNext={onNext} phone={phone} isSmsSignIn={true} />}
     />
   )
 }

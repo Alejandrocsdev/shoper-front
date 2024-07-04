@@ -38,7 +38,7 @@ function Step2({ onPrevious, onNext, phone, email }) {
       cardName="重新設定密碼"
       main={
         isPhone ? (
-          <OtpCard onPrevious={onPrevious} onNext={onNext} phone={phone} isSignUp={false} />
+          <OtpCard onPrevious={onPrevious} onNext={onNext} phone={phone} />
         ) : (
           emailSent
         )

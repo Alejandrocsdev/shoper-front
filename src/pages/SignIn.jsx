@@ -22,8 +22,8 @@ function SignIn() {
 
   return (
     <div>
-      {step === 0 && <Sign isLogin={true} isSms={false} onNext={next} />}
-      {step === 1 && <Sign isLogin={true} isSms={true}  onNext={next} onPrevious={previous} />}
+      {step === 0 && <Sign isSignIn={true} isSmsSignIn={false} onNext={next} />}
+      {step === 1 && <Sign isSignIn={true} isSmsSignIn={true}  onNext={next} onPrevious={previous} />}
       {step === 2 && <SmsSignIn onPrevious={previous} phone={phone} />}
     </div>
   )

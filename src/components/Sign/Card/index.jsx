@@ -8,39 +8,33 @@ import Form from './Form'
 import ThirdPartySign from './ThirdPartySign'
 import Anchor from '../../Elements/Anchor'
 
-function Card({ onPrevious, onNext, isLogin, isSms }) {
-  const navigate = useNavigate()
+function Card({ onPrevious, onNext, isSignIn, isSmsSignIn }) {
+  // 密碼登入
+  const isPwdSignIn = isSignIn && !isSmsSignIn
 
   return (
-    <div className={Styles.signContainer}>
-      {/* 表單標題 */}
-      <div className={Styles.signHeader}>{isLogin ? '登入' : '註冊'}</div>
-      {/* 表單主體 */}
-      <Form onNext={onNext} isLogin={isLogin} isSms={isSms} />
-      {/* 忘記密碼 */}
-      {isLogin && (
-        <div className={Styles.otherLogin}>
-          <div className={Styles.otherLoginLeft}>
-            {isLogin && !isSms && (
-              <Anchor
-                style={Styles.forgotPassword}
-                content="忘記密碼"
-                onClick={() => navigate('/reset')}
-              />
-            )}
+    <div className={Styles.card}>
+      <div className={Styles.cardHeader}>{isSignIn ? '登入' : '註冊'}</div>
+      {/* 表單 */}
+      <Form onNext={onNext} isSignIn={isSignIn} isSmsSignIn={isSmsSignIn} />
+      {/* 忘記密碼 || 其他登入 */}
+      {isSignIn && (
+        <div className={Styles.otherSign}>
+          <div>
+            {isPwdSignIn && <Anchor style={Styles.forgotPwd} content="忘記密碼" href="/reset" />}
           </div>
-          <div className={Styles.otherLoginRight}>
-            {isLogin && !isSms && (
-              <Anchor style={Styles.smsLogin} content="使用簡訊登入" onClick={onNext} />
+          <div>
+            {isPwdSignIn && (
+              <Anchor style={Styles.smsSignIn} content="使用簡訊登入" onClick={onNext} />
             )}
-            {isLogin && isSms && (
-              <Anchor style={Styles.smsLogin} content="使用密碼登入" onClick={onPrevious} />
+            {isSmsSignIn && (
+              <Anchor style={Styles.smsSignIn} content="使用密碼登入" onClick={onPrevious} />
             )}
           </div>
         </div>
       )}
       {/* 分隔線 */}
-      <div className={`${Styles.breakLine} ${isLogin ? Styles.loginBreakLine : ''}`}>
+      <div className={`${Styles.breakLine} ${isSignIn ? Styles.signInLine : ''}`}>
         <div className={Styles.lineContainer}>
           <div className={Styles.line}></div>
         </div>
@@ -49,22 +43,22 @@ function Card({ onPrevious, onNext, isLogin, isSms }) {
           <div className={Styles.line}></div>
         </div>
       </div>
-      {/* 第三分登入/註冊 */}
+      {/* 第三方登入/註冊 */}
       <ThirdPartySign />
       {/* 服務條款 */}
-      {!isLogin && (
+      {!isSignIn && (
         <div className={Styles.policy}>
           點擊「下一步」或繼續註冊，即表示您已閱讀並同意瞎皮爾購物的
           <Anchor content="服務條款" />與<Anchor content="隱私權政策" />
         </div>
       )}
-      {/* 表單結尾文字 */}
-      <div className={Styles.loginFooter}>
+      {/* 結尾文字 */}
+      <div className={Styles.cardFooter}>
         <span className={Styles.redirectText}>已經有帳號了嗎&#65311;</span>
         <Anchor
           style={Styles.redirect}
-          href={isLogin ? '/signUp' : 'signIn'}
-          content={isLogin ? '註冊' : '登入'}
+          href={isSignIn ? '/signUp' : 'signIn'}
+          content={isSignIn ? '註冊' : '登入'}
         />
       </div>
     </div>

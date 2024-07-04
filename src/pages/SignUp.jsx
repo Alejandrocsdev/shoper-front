@@ -40,7 +40,7 @@ function SignUp() {
 
   return (
     <div>
-      {step === 0 && <Sign onNext={next} isLogin={false} />}
+      {step === 0 && <Sign onNext={next} isSignIn={false} />}
       {step === 1 && <Step1 onNext={next} onPrevious={previous} phone={phone} />}
       {step === 2 && <Step2 onNext={next} phone={phone} />}
       {step === 3 && <Step3 phone={phone} />}

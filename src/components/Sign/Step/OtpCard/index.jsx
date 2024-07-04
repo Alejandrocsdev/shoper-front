@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // modules
 import axios from 'axios'
 // environment variables
@@ -12,11 +13,19 @@ const { VITE_BASE_URL } = import.meta.env
 // 請求網址
 const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
 const VERIFY_OTP_URL = `${VITE_BASE_URL}/verif/verify/otp`
+const SMS_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/sms`
+const GET_USER_URL = `${VITE_BASE_URL}/users/phone`
 
-// OTP Card
-function OtpCard({ onNext, phone, isSignUp }) {
-  // OTP input 元素
-  const inputsRef = useRef([])
+function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
+  const length = 6
+  const navigate = useNavigate()
+  const inputRefs = useRef([])
+  // OTP 值
+  const [otp, setOtp] = useState(new Array(6).fill(''))
+  const [otpFilled, setOtpFilled] = useState(false)
+
+  // 錯誤訊息
+  const [error, setError] = useState({ errMsg: '', hasError: false })
 
   // 倒數計時秒數
   const [count, setCount] = useState(60)
@@ -24,22 +33,50 @@ function OtpCard({ onNext, phone, isSignUp }) {
   const [counting, setCounting] = useState(true)
   // 是否顯示倒數計時的狀態
   const [showCountDown, setShowCountDown] = useState(true)
-  // 是否所有 OTP 輸入框都已填入值的狀態
-  const [allFilled, setAllFilled] = useState(false)
-  // OTP 驗證碼
-  const [otp, setOtp] = useState('')
-  // 錯誤訊息
-  const [errorMessage, setErrorMessage] = useState('')
-  // 是否有錯誤的狀態
-  const [hasError, setHasError] = useState(false)
 
-  // 當組件渲染後，將第一個 OTP 輸入框設置焦點
+  // 聚焦於第一個輸入欄
   useEffect(() => {
-    const OTPinputs = inputsRef.current
-    OTPinputs[0].focus()
+    if (inputRefs.current[0]) {
+      inputRefs.current[0].focus()
+    }
   }, [])
 
-  // 控制倒數計時
+  // Change 監聽器
+  const handleChange = (index, e) => {
+    const { value } = e.target
+    if (isNaN(value)) return
+
+    const newOtp = [...otp]
+    newOtp[index] = value.substring(value.length - 1)
+    setOtp(newOtp)
+
+    // 檢查 OTP 是否填滿
+    setOtpFilled(newOtp.some((value) => value !== ''))
+
+    // 如果當前輸入框已填滿，聚焦下一個輸入框
+    if (value && index < length - 1 && inputRefs.current[index + 1]) {
+      inputRefs.current[index + 1].focus()
+    }
+  }
+
+  // Click 監聽器
+  const handleClick = (index) => {
+    inputRefs.current[index].setSelectionRange(1, 1)
+
+    if (index > 0 && !otp[index - 1]) {
+      inputRefs.current[otp.indexOf('')].focus()
+    }
+  }
+
+  // Key Down 監聽器
+  const handleKeyDown = (index, e) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0 && inputRefs.current[index - 1]) {
+      // 按下退格鍵時聚焦前一個輸入框
+      inputRefs.current[index - 1].focus()
+    }
+  }
+
+  // 處理倒數計時
   useEffect(() => {
     let timer
     if (counting) {
@@ -57,156 +94,110 @@ function OtpCard({ onNext, phone, isSignUp }) {
     return () => clearInterval(timer)
   }, [counting])
 
-  // 處理每個 OTP 輸入框值的變化
-  const handleInputChange = (index, value) => {
-    // OTP input 元素
-    const OTPinputs = inputsRef.current
-
-    // 保持只取值的最後一個字符
-    const singleDigit = value.slice(-1)
-    OTPinputs[index].value = singleDigit
-
-    // 如果該輸入框填入了值且不是最後一個輸入框，解鎖下一個輸入框並設置焦點
-    if (index < OTPinputs.length - 1 && value.length === 1) {
-      OTPinputs[index + 1].removeAttribute('disabled')
-      OTPinputs[index + 1].focus()
-    }
-
-    // 更新OTP值
-    updateOtpValue()
-    // 驗證OTP六位數是否填滿
-    checkAllFilled()
-  }
-
-  // 處理鍵盤事件(退格鍵)
-  const handleKeyUp = (index, event) => {
-    if (event.key === 'Backspace' && index > 0) {
-      // OTP input 元素
-      const OTPinputs = inputsRef.current
-      OTPinputs[index].value = ''
-      OTPinputs[index].setAttribute('disabled', true)
-      OTPinputs[index - 1].focus()
-
-      // 更新OTP值
-      updateOtpValue()
-      // 驗證OTP六位數是否填滿
-      checkAllFilled()
-    }
-  }
-
-  // 更新 OTP 驗證碼的值
-  const updateOtpValue = () => {
-    const otpValue = inputsRef.current.map((input) => input.value).join('')
-    setOtp(otpValue)
-  }
-
-  // 檢查是否所有 OTP 輸入框都已填入值
-  const checkAllFilled = () => {
-    const allFilled = !inputsRef.current.some((input) => input.value === '')
-    setAllFilled(allFilled)
-  }
-
-  // 處理重新發送驗證碼的點擊事件
-  const handleResendClick = () => {
-    // 開始倒數60秒
+  // 處理倒數計時並傳送OTP
+  const handleResend = () => {
     setCount(60)
     setCounting(true)
     setShowCountDown(true)
-    // 發送OTP
     handleResendOTP()
   }
 
-  // 處理表單提交事件
-  const handleSubmit = async () => {
-    if (allFilled) {
-      try {
-        // 請求回應
-        const response = await axios.post(VERIFY_OTP_URL, { phone, otp })
-        // 回應資料
-        const data = response.data
-        const message = data.message
-        const user = data.result
-        // 不顯示錯誤
-        setErrorMessage('')
-        setHasError(false)
+  // 提交按鈕樣式
+  const submitStyle = otpFilled ? Styles.notAllowed : Styles.allowed
 
-        // 如已註冊過
-        if (user && isSignUp) {
+  // 處理提交事件
+  const handleSubmit = async () => {
+    if (otpFilled) {
+      try {
+        setError({ errMsg: '', hasError: false })
+
+        if (isSignUp) {
+          await axios.post(VERIFY_OTP_URL, { phone, otp: otp.join('') })
+
+          const response = await axios.get(`${GET_USER_URL}/${phone}`)
+          const user = response.data
+
           const { username, avatar } = user
-          onNext({ username, password: 'otp', phone, avatar }, true)
+
+          user ? onNext({ phone, username, avatar }, true) : onNext({ phone })
+        } else if (isSmsSignIn) {
+          await axios.post(SMS_SIGN_IN_URL, { phone, otp: otp.join('') }, { withCredentials: true })
+          navigate('/')
         } else {
+          await axios.post(VERIFY_OTP_URL, { phone, otp: otp.join('') })
           onNext({ phone })
         }
       } catch (err) {
-        setErrorMessage(err.response?.data?.message)
-        setHasError(true)
+        setError({ errMsg: err.response?.data?.message, hasError: true })
       }
     }
   }
 
-  // 處理重新傳送OTP事件
+  // 處理重新傳送OTP
   const handleResendOTP = async () => {
     try {
-      const response = await axios.post(SEND_OTP_URL, { phone })
+      await axios.post(SEND_OTP_URL, { phone })
+      setError({ errMsg: '', hasError: false })
     } catch (err) {
-      console.error(err.response?.data?.message)
+      setError({ errMsg: err.response?.data?.message, hasError: true })
     }
   }
 
-  // 60秒倒數文字
+  // 元素變數 (倒數計時 || 重新發送)
   const countDownText = <div className={Styles.countDown}>{`${count}秒後重新傳送`}</div>
-  // 重新傳送 & 其他方式
-  const otherVerification = (
+  const other = (
     <div>
-      <div className={Styles.otherText}>沒有收到驗證碼嗎？</div>
-      <div className={Styles.otherText}>
-        <span onClick={handleResendClick}>重新傳送</span>
-      </div>
+      沒有收到驗證碼嗎？<span onClick={handleResend}>重新傳送</span>
     </div>
   )
 
   return (
     <>
       {/* 錯誤訊息 */}
-      {hasError && (
-        <div className={Styles.errorMessage}>
+      {error.hasError && (
+        <div className={Styles.errMsg}>
           <div className={Styles.crossIcon}>
             <FontAwesomeIcon icon={faCircleXmark} />
           </div>
-          <div className={Styles.message}>{errorMessage}</div>
+          <div className={Styles.message}>{error.errMsg}</div>
         </div>
       )}
+
+      {/* 表單文字 */}
       <div className={Styles.cardText}>
         <div className={Styles.text}>您的驗證碼已透過簡訊傳送至</div>
         <div className={Styles.phone}>{phone}</div>
       </div>
+
       {/* OTP輸入框 */}
       <div className={Styles.otpContainer}>
         <form className={Styles.otpForm}>
           <div className={Styles.inputFields}>
-            {[...Array(6)].map((_, i) => (
-              <input
-                key={i}
-                className={Styles.otpInput}
-                type="number"
-                ref={(el) => (inputsRef.current[i] = el)}
-                disabled={i !== 0}
-                onChange={(e) => handleInputChange(i, e.target.value)}
-                onKeyUp={(e) => handleKeyUp(i, e)}
-              />
-            ))}
+            {otp.map((value, index) => {
+              return (
+                <input
+                  key={index}
+                  type="text"
+                  ref={(input) => (inputRefs.current[index] = input)}
+                  value={value}
+                  onChange={(e) => handleChange(index, e)}
+                  onClick={() => handleClick(index)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className={Styles.otpInput}
+                />
+              )
+            })}
           </div>
         </form>
       </div>
+
       {/* OTP發送倒數 & 其他選項 */}
-      <div className={Styles.otherVerification}>
-        <div>{showCountDown ? countDownText : otherVerification}</div>
+      <div className={Styles.other}>
+        <div>{showCountDown ? countDownText : other}</div>
       </div>
+
       {/* 執行下一步 */}
-      <div
-        className={`${Styles.submit} ${allFilled ? Styles.allowed : Styles.notAllowed}`}
-        onClick={handleSubmit}
-      >
+      <div className={`${Styles.submit} ${submitStyle}`} onClick={handleSubmit}>
         下一步
       </div>
     </>
