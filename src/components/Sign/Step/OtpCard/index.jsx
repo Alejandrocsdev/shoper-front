@@ -51,7 +51,7 @@ function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
     setOtp(newOtp)
 
     // 檢查 OTP 是否填滿
-    setOtpFilled(newOtp.some((value) => value !== ''))
+    setOtpFilled(newOtp.every((value) => value !== ''))
 
     // 如果當前輸入框已填滿，聚焦下一個輸入框
     if (value && index < length - 1 && inputRefs.current[index + 1]) {
@@ -103,7 +103,7 @@ function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
   }
 
   // 提交按鈕樣式
-  const submitStyle = otpFilled ? Styles.notAllowed : Styles.allowed
+  const submitStyle = otpFilled ? Styles.allowed : Styles.notAllowed
 
   // 處理提交事件
   const handleSubmit = async () => {
@@ -115,11 +115,14 @@ function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
           await axios.post(VERIFY_OTP_URL, { phone, otp: otp.join('') })
 
           const response = await axios.get(`${GET_USER_URL}/${phone}`)
-          const user = response.data
+          const user = response.data.result
 
-          const { username, avatar } = user
-
-          user ? onNext({ phone, username, avatar }, true) : onNext({ phone })
+          if (user) {
+            const { id, username, avatar } = user
+            onNext({ id, username, avatar, phone }, true)
+          } else {
+            onNext({ phone })
+          }
         } else if (isSmsSignIn) {
           await axios.post(SMS_SIGN_IN_URL, { phone, otp: otp.join('') }, { withCredentials: true })
           navigate('/')

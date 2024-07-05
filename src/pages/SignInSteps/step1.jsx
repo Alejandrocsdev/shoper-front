@@ -3,7 +3,7 @@ import Step from '../../components/Sign/Step'
 import OtpCard from '../../components/Sign/Step/OtpCard'
 
 // 簡訊登入: 驗證手機OTP
-function SmsSignIn({ onNext, onPrevious, phone }) {
+function Step1({ onNext, onPrevious, phone }) {
   return (
     <Step
       pageName="登入"
@@ -15,4 +15,4 @@ function SmsSignIn({ onNext, onPrevious, phone }) {
   )
 }
 
-export default SmsSignIn
+export default Step1

@@ -11,10 +11,10 @@ import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
 const SIGN_UP_URL = `${VITE_BASE_URL}/users/signUp`
-const RESET_PASSWORD_URL = `${VITE_BASE_URL}/users`
+const UPDATE_PASSWORD_URL = `${VITE_BASE_URL}/users`
 
 // 註冊步驟2: 設定密碼
-function PasswordCard({ onNext, phone, email, isSignUp }) {
+function PasswordCard({ onNext, phone, email, isSignUp = false }) {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
   const [hasTyped, setHasTyped] = useState(false)
@@ -65,12 +65,14 @@ function PasswordCard({ onNext, phone, email, isSignUp }) {
   const handleSubmit = async () => {
     if (isPwdValid) {
       try {
-        // 註冊
-        const url = isSignUp ? SIGN_UP_URL : RESET_PASSWORD_URL
-        const payload = email ? { password, email } : { password, phone }
-        const response = await axios.post(url, payload)
-        if (response.data.statusType === 'Success') {
-          onNext({ password, phone })
+        if (isSignUp) {
+          const response = await axios.post(SIGN_UP_URL, { phone, password })
+          const user = response.data.result
+          onNext({ id: user.id, phone })
+        } else {
+          const path = phone ? `/phone/${phone}` : `/email/${email}`
+          const response = await axios.put(`${UPDATE_PASSWORD_URL}/${path}`, { password })
+          onNext({ phone, email })
         }
       } catch (err) {
         console.error('Error:', err)
@@ -81,7 +83,10 @@ function PasswordCard({ onNext, phone, email, isSignUp }) {
   return (
     <>
       <div className={Styles.cardText}>
-        <div className={Styles.text}>最後一步! 請設定您的密碼以完成登入</div>
+        <div className={Styles.text}>
+          {isSignUp ? '最後一步! 請設定您的密碼以完成登入' : '設定一組新密碼給'}
+        </div>
+        {!isSignUp && <div className={Styles.method}>{phone ? phone : email}</div>}
       </div>
       {/* 密碼輸入欄 */}
       <div className={Styles.passwordContainer}>

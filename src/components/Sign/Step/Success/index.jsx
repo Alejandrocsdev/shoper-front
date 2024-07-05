@@ -3,19 +3,17 @@ import Styles from './style.module.css'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
-// Components
-import Step from '../../../components/Sign/Step'
 // Hooks
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 // modules
 import axios from 'axios'
 // environment variables
-const { VITE_BASE_URL, VITE_PASSWORD_SECRET } = import.meta.env
-const SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn`
+const { VITE_BASE_URL } = import.meta.env
+const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/auto`
 
 // 註冊步驟3: 完成註冊並導向首頁
-function Step3({ phone }) {
+function Success({ id, phone, email, isSignUp = false }) {
   const navigate = useNavigate()
 
   const [count, setCount] = useState(10)
@@ -37,41 +35,37 @@ function Step3({ phone }) {
 
   // 處理表單提交事件
   const handleSubmit = async () => {
-    try {
-      const response = await axios.post(
-        SIGN_IN_URL,
-        { loginKey: phone, password: VITE_PASSWORD_SECRET },
-        { withCredentials: true }
-      )
-      if (response.data.statusType === 'Success') {
+    if (isSignUp) {
+      try {
+        await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
         navigate('/')
+      } catch (err) {
+        console.error('Error:', err)
       }
-    } catch (err) {
-      console.error('Error:', err)
+    } else {
+      navigate('/signIn')
     }
   }
 
-  const main = (
+  return (
     <>
       <div className={Styles.successIcon}>{successIcon}</div>
       <div className={Styles.cardText}>
         <div className={Styles.text}>
-          您已成功使用電話號碼 <span className={Styles.phone}>{phone}</span>
-          <div>建立瞎皮爾購物帳號</div>
+          您已成功使用{phone ? '電話號碼' : 'Email'}{' '}
+          <span className={Styles.method}>{phone ? phone : email}</span>
+          <div>{isSignUp ? '建立瞎皮爾購物帳號' : '重設密碼'}</div>
         </div>
         <div className={Styles.text}>
-          您將在 <span className={Styles.count}>{count}</span> 秒內回到瞎皮爾購物
+          您將在 <span className={Styles.count}>{count}</span> 秒內回到
+          {isSignUp ? '瞎皮爾購物' : '登入頁面'}
         </div>
       </div>
       <div className={Styles.submit} onClick={handleSubmit}>
-        回到瞎皮爾購物
+        {isSignUp ? '回到瞎皮爾購物' : '回到登入頁面'}
       </div>
     </>
   )
-
-  return (
-    <Step pageName="註冊" steps={true} step={3} cardName="註冊成功!" main={main} />
-  )
 }
 
-export default Step3
+export default Success

@@ -2,16 +2,32 @@
 import Step1 from '../pages/ResetSteps/Step1'
 import Step2 from '../pages/ResetSteps/Step2'
 import Step3 from '../pages/ResetSteps/Step3'
+import Step4 from '../pages/ResetSteps/Step4'
+import Step5 from '../pages/ResetSteps/Step5'
 // Hooks
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 // 註冊組件
 function Reset() {
-  const [step, setStep] = useState(0)
+  const location = useLocation()
+  const [step, setStep] = useState(1)
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
 
   const method = { phone, email }
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search)
+    if (queryParams.get('verified') === 'true') {
+      setStep(4)
+      setEmail(queryParams.get('email'))
+    } else if (queryParams.get('verified') === 'false') {
+      setStep(5)
+      setMessage(queryParams.get('message'))
+    }
+  }, [location.search])
 
   // 下一步(包含資料傳遞: phone)
   const next = (method) => {
@@ -25,9 +41,11 @@ function Reset() {
 
   return (
     <div>
-      {step === 0 && <Step1 onNext={next} />}
-      {step === 1 && <Step2 onPrevious={previous} onNext={next} phone={phone} email={email} />}
-      {step === 2 && <Step3 onNext={next} phone={phone} email={email} />}
+      {step === 1 && <Step1 onNext={next} />}
+      {step === 2 && <Step2 onPrevious={previous} onNext={next} phone={phone} email={email} />}
+      {step === 3 && <Step3 onNext={next} phone={phone} email={email} />}
+      {step === 4 && <Step4 phone={phone} email={email} />}
+      {step === 5 && <Step5 message={message} />}
     </div>
   )
 }

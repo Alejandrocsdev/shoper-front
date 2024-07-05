@@ -5,7 +5,8 @@ import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import Reset from './pages/Reset'
 import OTP from './pages/SignUpSteps/Step1'
-import XX from './pages/SignUpSteps/Step4'
+import Password from './pages/ResetSteps/Step3'
+import End from './pages/SignUpSteps/Step3'
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
           <Route path="/signIn" element={<SignIn />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/otp" element={<OTP />} />
-          <Route path="/xx" element={<XX />} />
+          <Route path="/password" element={<Password />} />
+          <Route path="/end" element={<End />} />
         </Routes>
       </BrowserRouter>
     </>

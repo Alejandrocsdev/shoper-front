@@ -1,7 +1,7 @@
 // 引用註冊4步驟
 import Sign from '../components/Sign'
-import Step1 from './SignUpSteps/Step1.jsx'
-import Step2 from './SignUpSteps/Step2.jsx'
+import Step1 from './SignUpSteps/Step1'
+import Step2 from './SignUpSteps/Step2'
 import Step3 from './SignUpSteps/Step3'
 import Step4 from './SignUpSteps/Step4'
 // Hooks
@@ -10,6 +10,7 @@ import { useState } from 'react'
 // 註冊組件
 function SignUp() {
   const [step, setStep] = useState(0)
+  const [id, setId] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
@@ -19,8 +20,8 @@ function SignUp() {
 
   // 下一步(包含資料傳遞)
   const next = (user, isSignedUp = false) => {
+    setId(user.id)
     setUsername(user.username)
-    setPhone(user.phone)
     setPhone(user.phone)
     setAvatar(user.avatar)
     setStep((prevStep) => {
@@ -43,8 +44,8 @@ function SignUp() {
       {step === 0 && <Sign onNext={next} isSignIn={false} />}
       {step === 1 && <Step1 onNext={next} onPrevious={previous} phone={phone} />}
       {step === 2 && <Step2 onNext={next} phone={phone} />}
-      {step === 3 && <Step3 phone={phone} />}
-      {step === 4 && <Step4 onNext={next} phone={phone} username={username} avatar={avatar} />}
+      {step === 3 && <Step3 id={id} phone={phone} />}
+      {step === 4 && <Step4 onNext={next} id={id} phone={phone} username={username} avatar={avatar} />}
     </div>
   )
 }

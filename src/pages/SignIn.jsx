@@ -1,6 +1,6 @@
 // 引用註冊4步驟
 import Sign from '../components/Sign'
-import SmsSignIn from './SignInSteps/SmsSignIn.jsx'
+import Step1 from './SignInSteps/step1'
 // Hooks
 import { useState } from 'react'
 
@@ -24,7 +24,7 @@ function SignIn() {
     <div>
       {step === 0 && <Sign isSignIn={true} isSmsSignIn={false} onNext={next} />}
       {step === 1 && <Sign isSignIn={true} isSmsSignIn={true}  onNext={next} onPrevious={previous} />}
-      {step === 2 && <SmsSignIn onPrevious={previous} phone={phone} />}
+      {step === 2 && <Step1 onPrevious={previous} phone={phone} />}
     </div>
   )
 }

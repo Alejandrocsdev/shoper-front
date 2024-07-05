@@ -111,7 +111,7 @@ function Step1({ onNext }) {
 
   return (
     <Step
-      pageName="重置"
+      pageName="重設"
       back={true}
       backPath={() => navigate('/signIn')}
       cardName="重新設定密碼"

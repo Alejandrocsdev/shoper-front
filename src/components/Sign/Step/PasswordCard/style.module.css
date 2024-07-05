@@ -8,6 +8,7 @@
 .cardMain { margin: 0 80px; }
 .cardText { margin: 10px 0; }
 .text { font-size: 16px; margin-bottom: 10px; text-align: center; }
+.method { color: orangered; font-weight: 700; letter-spacing: 2px; font-size: 16px; margin-bottom: 10px; text-align: center; }
 .password { height: 40px; margin-top: 20px; background-color: white; border: 1px solid rgba(0,0,0,0.2); box-shadow:inset 0 2px 0 rgba(0, 0, 0, 0.02); display: flex; position: relative; }
 .passwordInput { width: 100%; padding: 12px; border: 0; outline: 0; }
 .warning { background-color: #ffeaed; border: 1px solid #ff424f; }
@@ -21,10 +22,9 @@
 .valid { color: green; }
 .invalid { color: red; }
 @media (max-width: 650px) {
-  .mainContainer { width: 340px; justify-content: center; }
- .cardName { width: 300px; }
- .cardMain { margin: 0 40px; }
- .text { font-size: 14px;}
- .criteriaText { font-size: 14px; }
-  }
- 
+ .mainContainer { width: 340px; justify-content: center; }
+.cardName { width: 300px; }
+.cardMain { margin: 0 40px; }
+.text { font-size: 14px; }
+.criteriaText { font-size: 14px; }
+ }

@@ -32,7 +32,7 @@ function Step2({ onPrevious, onNext, phone, email }) {
 
   return (
     <Step
-      pageName="重置"
+      pageName="重設"
       back={true}
       backPath={onPrevious}
       cardName="重新設定密碼"

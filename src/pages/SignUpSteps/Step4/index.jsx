@@ -10,23 +10,17 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL, VITE_PASSWORD_SECRET } = import.meta.env
-const SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn`
+const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/auto`
 
 // 註冊步驟4: 已註冊過
-function Step4({ onNext, username, phone, avatar }) {
+function Step4({ onNext, id, username, phone, avatar }) {
   const navigate = useNavigate()
 
   // 處理表單提交事件
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        SIGN_IN_URL,
-        { loginKey: phone, password: VITE_PASSWORD_SECRET },
-        { withCredentials: true }
-      )
-      if (response.data.statusType === 'Success') {
-        navigate('/')
-      }
+      await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
+      navigate('/')
     } catch (err) {
       console.error('Error:', err)
     }
