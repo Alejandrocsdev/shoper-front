@@ -10,7 +10,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/auto`
+const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/auto`
+const NOTIFY_RESET_URL = `${VITE_BASE_URL}/notify/reset/password`
 
 // 註冊步驟3: 完成註冊並導向首頁
 function Success({ id, phone, email, isSignUp = false }) {
@@ -37,12 +38,13 @@ function Success({ id, phone, email, isSignUp = false }) {
   const handleSubmit = async () => {
     if (isSignUp) {
       try {
-        await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
+        axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
         navigate('/')
       } catch (err) {
         console.error('Error:', err)
       }
     } else {
+      await axios.post(NOTIFY_RESET_URL, { email })
       navigate('/signIn')
     }
   }

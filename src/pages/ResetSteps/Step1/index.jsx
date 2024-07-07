@@ -9,8 +9,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
-const SEND_LINK_URL = `${VITE_BASE_URL}/verif/send/link`
+const SEND_OTP_URL = `${VITE_BASE_URL}/verify/send/otp`
+const SEND_LINK_URL = `${VITE_BASE_URL}/verify/send/link`
 
 function Step1({ onNext }) {
   const navigate = useNavigate()

@@ -20,9 +20,10 @@ function Reset() {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search)
+
     if (queryParams.get('verified') === 'true') {
-      setStep(4)
-      setEmail(queryParams.get('email'))
+      setStep(3)
+      setEmail(queryParams.get('result'))
     } else if (queryParams.get('verified') === 'false') {
       setStep(5)
       setMessage(queryParams.get('message'))
@@ -31,9 +32,9 @@ function Reset() {
 
   // 下一步(包含資料傳遞: phone)
   const next = (method) => {
-    setPhone(method.phone)
-    setEmail(method.email)
-    setStep((prevStep) => prevStep + 1)
+    setPhone(method?.phone)
+    setEmail(method?.email)
+    setStep((prevStep) => (prevStep === 5 ? 1 : prevStep + 1))
   }
 
   // 上一步
@@ -45,7 +46,7 @@ function Reset() {
       {step === 2 && <Step2 onPrevious={previous} onNext={next} phone={phone} email={email} />}
       {step === 3 && <Step3 onNext={next} phone={phone} email={email} />}
       {step === 4 && <Step4 phone={phone} email={email} />}
-      {step === 5 && <Step5 message={message} />}
+      {step === 5 && <Step5 onNext={next} message={message} />}
     </div>
   )
 }

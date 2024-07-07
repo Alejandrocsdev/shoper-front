@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
-const PWD_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/pwd`
+const SEND_OTP_URL = `${VITE_BASE_URL}/verify/send/otp`
+const PWD_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/pwd`
 
 const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
   // 密碼登入

@@ -12,10 +12,10 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/auto`
+const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/auto`
 
 // 註冊步驟3: 完成註冊並導向首頁
-function Step5({ message }) {
+function Step5({ onNext, message }) {
   const navigate = useNavigate()
 
   const [count, setCount] = useState(10)
@@ -29,7 +29,7 @@ function Step5({ message }) {
 
     if (count === 0) {
       clearInterval(countdown)
-      handleSubmit()
+      onNext()
     }
 
     return () => clearInterval(countdown)
@@ -47,7 +47,7 @@ function Step5({ message }) {
           您將在 <span className={Styles.count}>{count}</span> 秒內回到登入頁面
         </div>
       </div>
-      <div className={Styles.submit} onClick={handleSubmit}>
+      <div className={Styles.submit} onClick={onNext}>
         回到登入頁面
       </div>
     </>

@@ -10,7 +10,7 @@ import { useState } from 'react'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
-const SIGN_UP_URL = `${VITE_BASE_URL}/users/signUp`
+const SIGN_UP_URL = `${VITE_BASE_URL}/auth/signUp`
 const UPDATE_PASSWORD_URL = `${VITE_BASE_URL}/users`
 
 // 註冊步驟2: 設定密碼

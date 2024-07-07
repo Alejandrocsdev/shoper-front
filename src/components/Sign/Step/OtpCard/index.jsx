@@ -11,9 +11,9 @@ import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL } = import.meta.env
 // 請求網址
-const SEND_OTP_URL = `${VITE_BASE_URL}/verif/send/otp`
-const VERIFY_OTP_URL = `${VITE_BASE_URL}/verif/verify/otp`
-const SMS_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/sms`
+const SEND_OTP_URL = `${VITE_BASE_URL}/verify/send/otp`
+const VERIFY_OTP_URL = `${VITE_BASE_URL}/verify/otp`
+const SMS_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/sms`
 const GET_USER_URL = `${VITE_BASE_URL}/users/phone`
 
 function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {

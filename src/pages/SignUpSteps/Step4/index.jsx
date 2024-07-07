@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // environment variables
 const { VITE_BASE_URL, VITE_PASSWORD_SECRET } = import.meta.env
-const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/users/signIn/auto`
+const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/auto`
 
 // 註冊步驟4: 已註冊過
 function Step4({ onNext, id, username, phone, avatar }) {
