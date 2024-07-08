@@ -49,7 +49,8 @@ function Card({ onPrevious, onNext, isSignIn, isSmsSignIn }) {
       {!isSignIn && (
         <div className={Styles.policy}>
           點擊「下一步」或繼續註冊，即表示您已閱讀並同意瞎皮爾購物的
-          <Anchor content="服務條款" />與<Anchor content="隱私權政策" />
+          <Anchor href="/terms" content="服務條款" />與
+          <Anchor href="/privacy-policy" content="隱私權政策" />
         </div>
       )}
       {/* 結尾文字 */}
