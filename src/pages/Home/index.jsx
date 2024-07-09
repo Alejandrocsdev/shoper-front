@@ -7,10 +7,10 @@ import Footer from '../../components/Footer'
 function Home() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       {/* <BannerSection /> */}
       <main className={Styles.main}></main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
