@@ -73,6 +73,7 @@ const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
       // 密碼登入請求
       if (isPwdSignIn) {
         await axios.post(PWD_SIGN_IN_URL, input, { withCredentials: true })
+        console.log(':)')
         setError({ errMsg: '', hasError: false })
         // 導向首頁
         navigate('/')
