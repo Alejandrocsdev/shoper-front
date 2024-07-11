@@ -7,7 +7,7 @@ import Step4 from './SignUpSteps/Step4'
 // Hooks
 import { useState } from 'react'
 
-// 註冊組件
+// 註冊
 function SignUp() {
   const [step, setStep] = useState(0)
   const [id, setId] = useState('')

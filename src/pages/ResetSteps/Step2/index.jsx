@@ -9,6 +9,7 @@ import Step from '../../../components/Sign/Step'
 // Hooks
 import { useNavigate } from 'react-router-dom'
 
+// 重設密碼(2): 輸入簡訊驗證碼 / 驗證信發送成功畫面
 function Step2({ onPrevious, onNext, phone, email }) {
   const navigate = useNavigate()
 
@@ -37,11 +38,9 @@ function Step2({ onPrevious, onNext, phone, email }) {
       backPath={onPrevious}
       cardName="重新設定密碼"
       main={
-        isPhone ? (
-          <OtpCard onPrevious={onPrevious} onNext={onNext} phone={phone} />
-        ) : (
-          emailSent
-        )
+        isPhone 
+          ? (<OtpCard onPrevious={onPrevious} onNext={onNext} phone={phone} />) 
+          : (emailSent)
       }
     />
   )

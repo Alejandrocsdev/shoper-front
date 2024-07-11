@@ -5,17 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 // Components
 import Header from '../../../components/Sign/Header'
-import StepsHeader from '../../../components/Sign/Step/StepsHeader'
+import StepsView from '../../../components/Sign/Step/StepsView'
 import Footer from '../../../components/Footer'
 
-// 註冊步驟1: 驗證手機OTP
+// 步驟樣板
 function Step({ pageName, steps = false, step, back = false, backPath, cardName, main }) {
   return (
     <>
       <Header pageName={pageName} />
       <main className={Styles.main}>
         <div className={Styles.mainContainer}>
-          {steps && <StepsHeader step={step} />}
+          {steps && <StepsView step={step} />}
           <div className={Styles.card}>
             <div className={Styles.cardHeader}>
               {back && (

@@ -1,3 +1,4 @@
+// Module Style
 import Styles from './style.module.css'
 // PNG Files
 import masterCardPng from '../../assets/images/ecpay/masterCard.png'
@@ -9,11 +10,12 @@ import okMartPng from '../../assets/images/ecpay/okMart.png'
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareFacebook, faInstagram, faLine } from '@fortawesome/free-brands-svg-icons'
-// Components
+// components
 import Anchor from '../Elements/Anchor'
 
+// All Layout Footer
 const Footer = () => {
-  // 社群LOGO
+  // 社群 LOGO 元素
   const facebook = <FontAwesomeIcon className={Styles.icon} icon={faSquareFacebook} />
   const instagram = <FontAwesomeIcon className={Styles.icon} icon={faInstagram} />
   const line = <FontAwesomeIcon className={Styles.icon} icon={faLine} />

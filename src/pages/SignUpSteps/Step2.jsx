@@ -2,7 +2,7 @@
 import Step from '../../components/Sign/Step'
 import PasswordCard from '../../components/Sign/Step/PasswordCard'
 
-// 註冊步驟2: 設定密碼
+// 註冊(2): 設定密碼
 function Step2({ onNext, phone }) {
   return (
     <Step

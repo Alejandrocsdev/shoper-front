@@ -7,11 +7,11 @@ import Step from '../../../components/Sign/Step'
 // Hooks
 import { useNavigate } from 'react-router-dom'
 // services
-import axios from '../../../services/Axios'
+import axios from '../../../services/axiosInstance'
 // URLs
 const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
-// 註冊步驟4: 已註冊過
+// 註冊(4): 已註冊過
 function Step4({ onNext, id, username, phone, avatar }) {
   const navigate = useNavigate()
 

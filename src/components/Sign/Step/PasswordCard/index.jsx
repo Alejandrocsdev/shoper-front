@@ -7,12 +7,12 @@ import { faCircleXmark, faCircleCheck } from '@fortawesome/free-regular-svg-icon
 // Hooks
 import { useState } from 'react'
 // services
-import axios from '../../../../services/Axios'
+import axios from '../../../../services/axiosInstance'
 // URLs
 const SIGN_UP_URL = '/auth/signUp'
 const UPDATE_PASSWORD_URL = '/users'
 
-// 註冊步驟2: 設定密碼
+// 輸入密碼表單
 function PasswordCard({ onNext, phone, email, isSignUp = false }) {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')

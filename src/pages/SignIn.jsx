@@ -4,7 +4,7 @@ import Step1 from './SignInSteps/step1'
 // Hooks
 import { useState } from 'react'
 
-// 註冊組件
+// 登入: 密碼 / 簡訊
 function SignIn() {
   const [step, setStep] = useState(0)
   const [phone, setPhone] = useState('')

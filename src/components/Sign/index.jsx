@@ -6,6 +6,7 @@ import Header from './Header'
 import Card from './Card'
 import Footer from '../Footer'
 
+// 樣板: 密碼登入 / 簡訊登入 / 註冊
 function Sign({ onPrevious, onNext, isSignIn, isSmsSignIn }) {
   return (
     <>

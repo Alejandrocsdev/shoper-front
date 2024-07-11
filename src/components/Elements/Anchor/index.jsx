@@ -1,11 +1,12 @@
-// Styles
+// Module Style
 import Styles from './style.module.css'
 // Hooks
 import { Link } from 'react-router-dom'
 
-function Anchor({ style, off, href, onClick, content }) {
+// 不刷新導向連結
+function Anchor({ style, off, to, onClick, content }) {
   return (
-    <Link className={`${off ? '' : Styles.anchor} ${style}`} to={href} onClick={onClick}>
+    <Link className={`${off ? '' : Styles.anchor} ${style}`} to={to} onClick={onClick}>
       {content}
     </Link>
   )

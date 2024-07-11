@@ -9,11 +9,11 @@ import Step from '../../../components/Sign/Step'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 // services
-import axios from '../../../services/Axios'
+import axios from '../../../services/axiosInstance'
 // URLs
 const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
-// 註冊步驟3: 完成註冊並導向首頁
+// 重設密碼(5): 密碼設定失敗畫面
 function Step5({ onNext, message }) {
   const navigate = useNavigate()
 

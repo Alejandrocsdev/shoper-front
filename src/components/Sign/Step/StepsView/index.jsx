@@ -4,7 +4,8 @@ import Styles from './style.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faArrowRightLong } from '@fortawesome/free-solid-svg-icons'
 
-function StepsHeader({ step }) {
+// 註冊步驟圖示
+function StepsView({ step }) {
   const stepState = (currentStep) => {
     return currentStep <= step ? true : false
   }
@@ -37,4 +38,4 @@ function StepsHeader({ step }) {
   )
 }
 
-export default StepsHeader
+export default StepsView

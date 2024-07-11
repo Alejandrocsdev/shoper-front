@@ -8,6 +8,7 @@ import Form from './Form'
 import ThirdPartySign from './ThirdPartySign'
 import Anchor from '../../Elements/Anchor'
 
+// 表單容器: 密碼登入 / 簡訊登入 / 註冊
 function Card({ onPrevious, onNext, isSignIn, isSmsSignIn }) {
   // 密碼登入
   const isPwdSignIn = isSignIn && !isSmsSignIn
@@ -21,7 +22,7 @@ function Card({ onPrevious, onNext, isSignIn, isSmsSignIn }) {
       {isSignIn && (
         <div className={Styles.otherSign}>
           <div>
-            {isPwdSignIn && <Anchor style={Styles.forgotPwd} content="忘記密碼" href="/reset" />}
+            {isPwdSignIn && <Anchor style={Styles.forgotPwd} content="忘記密碼" to="/reset" />}
           </div>
           <div>
             {isPwdSignIn && (
@@ -49,8 +50,8 @@ function Card({ onPrevious, onNext, isSignIn, isSmsSignIn }) {
       {!isSignIn && (
         <div className={Styles.policy}>
           點擊「下一步」或繼續註冊，即表示您已閱讀並同意瞎皮爾購物的
-          <Anchor href="/terms" content="服務條款" />與
-          <Anchor href="/privacy-policy" content="隱私權政策" />
+          <Anchor content="服務條款" />與
+          <Anchor content="隱私權政策" />
         </div>
       )}
       {/* 結尾文字 */}
@@ -58,7 +59,7 @@ function Card({ onPrevious, onNext, isSignIn, isSmsSignIn }) {
         <span className={Styles.redirectText}>已經有帳號了嗎&#65311;</span>
         <Anchor
           style={Styles.redirect}
-          href={isSignIn ? '/signUp' : 'signIn'}
+          to={isSignIn ? '/signUp' : '/signIn'}
           content={isSignIn ? '註冊' : '登入'}
         />
       </div>

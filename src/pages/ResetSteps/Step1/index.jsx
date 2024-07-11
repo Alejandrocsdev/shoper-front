@@ -6,11 +6,12 @@ import Step from '../../../components/Sign/Step'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // services
-import axios from '../../../services/Axios'
+import axios from '../../../services/axiosInstance'
 // URLs
 const SEND_OTP_URL = '/verify/send/otp'
 const SEND_LINK_URL = '/verify/send/link'
 
+// 重設密碼(1): 發送驗證碼 / 發送驗證信
 function Step1({ onNext }) {
   const navigate = useNavigate()
 
@@ -32,7 +33,6 @@ function Step1({ onNext }) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     if (/^\d+$/.test(value)) {
-      // If the input contains only numbers
       if (phoneRegex.test(value)) {
         setErrorMessage('')
         setIsPhone(true)
@@ -43,7 +43,6 @@ function Step1({ onNext }) {
         setIsValid(false)
       }
     } else {
-      // If the input contains non-numeric characters
       if (emailRegex.test(value)) {
         setErrorMessage('')
         setIsPhone(false)

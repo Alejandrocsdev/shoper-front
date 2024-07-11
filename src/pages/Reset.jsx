@@ -8,7 +8,7 @@ import Step5 from '../pages/ResetSteps/Step5'
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-// 註冊組件
+// 重設密碼
 function Reset() {
   const location = useLocation()
   const [step, setStep] = useState(1)

@@ -7,12 +7,12 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 // services
-import axios from '../../../../services/Axios'
+import axios from '../../../../services/axiosInstance'
 // URLs
 const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 const NOTIFY_RESET_URL = '/notify/reset/password'
 
-// 註冊步驟3: 完成註冊並導向首頁
+// 成功頁面: 註冊 / 重設密碼
 function Success({ id, phone, email, isSignUp = false }) {
   const navigate = useNavigate()
 
@@ -37,7 +37,8 @@ function Success({ id, phone, email, isSignUp = false }) {
   const handleSubmit = async () => {
     if (isSignUp) {
       try {
-        axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
+        const response = await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
+        const accessToken = response.data.result
         navigate('/')
       } catch (err) {
         console.error('Error:', err)

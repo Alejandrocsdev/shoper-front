@@ -1,14 +1,15 @@
 .header { height: 120px; background-color: #100D25; }
 /* NAV LAYER */
-.nav { height: 35px; display: flex; justify-content: space-between; align-items: center; }
+.nav { height: 35px; display: flex; justify-content: space-between; align-items: center; background-color: rgb(32, 19, 109)!important; }
 .navLeft { width: 350px; display: flex; justify-content: space-evenly; }
-.navRight { width: 350px; display: flex; justify-content: center; }
-.navText, .signUp, .signIn { font-size: 13px; color: #ECEBF5!important; }
+.navRight { width: 350px; margin-right: 10%; display: flex; justify-content: end; }
+.navText, .signUp, .signIn { font-size: 15px; color: #ECEBF5!important; }
 .socialMedia { font-size: 18px; color: #ECEBF5!important; display: flex; justify-content: center; align-items: center; }
 .profileLink { color: #ECEBF5; text-decoration: none; display: flex; cursor: pointer; }
 .profileLink:hover { filter: brightness(70%); }
-.avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: contain; }
-.signIn, .username { margin-left: 10px; }
+.avatar { width: 25px; height: 25px; margin-right: 10px; border-radius: 50%; object-fit: contain; }
+.username { color: #ECEBF5; font-size: 20px; display: flex; align-items: center; }
+.signIn { margin-left: 25px; }
 /* SEARCH LAYER */
 .homeLink { height: 70px; margin: 0 20px; }
 .headerLogo { height: 70px; object-fit: contain; }
@@ -23,8 +24,7 @@
 .searchButton { width: 60px; height: 34px; margin: 5px; padding: 15px 0; border-radius: 5px; display: flex; justify-content: center; align-items: center; background-color: #100D25; cursor: pointer; }
 .searchButton:hover { background-color: hsl(248, 48%, 40%); }
 .searchIcon { font-size: 14px; color: #ECEBF5; }
-
 @media (max-width: 700px) {
-.largeLogo { display: none; }
+ .largeLogo { display: none; }
 .smallLogo { display: block; }
  }

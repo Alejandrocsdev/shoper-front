@@ -9,7 +9,7 @@ const NotFound = () => {
       <section className={Styles.section}>
         <h1 className={Styles.title}>404</h1>
         <p className={Styles.text}>您訪問的頁面不存在</p>
-        <Anchor style={Styles.redirect} href="/" content="返回首頁" />
+        <Anchor style={Styles.redirect} content="返回首頁" to="/" />
       </section>
     </main>
   )

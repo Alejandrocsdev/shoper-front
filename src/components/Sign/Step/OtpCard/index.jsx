@@ -7,13 +7,14 @@ import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // services
-import axios from '../../../../services/Axios'
+import axios from '../../../../services/axiosInstance'
 // URLs
 const SEND_OTP_URL = '/verify/send/otp'
 const VERIFY_OTP_URL = '/verify/otp'
 const SMS_SIGN_IN_URL = '/auth/signIn/sms'
 const GET_USER_URL = '/users/phone'
 
+// 簡訊驗證碼表單
 function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
   const length = 6
   const navigate = useNavigate()

@@ -5,13 +5,14 @@ import { faCircleCheck, faCircleXmark } from '@fortawesome/free-regular-svg-icon
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 // Hooks
 import { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // services
-import axios from '../../../../services/Axios'
+import axios from '../../../../services/axiosInstance'
 // URLs
 const SEND_OTP_URL = '/verify/send/otp'
 const PWD_SIGN_IN_URL = '/auth/signIn/pwd'
 
+// 表單: 密碼登入 / 簡訊登入 / 註冊
 const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
   // 密碼登入
   const isPwdSignIn = isSignIn && !isSmsSignIn
@@ -27,7 +28,7 @@ const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
   // 錯誤訊息
   const [error, setError] = useState({ errMsg: '', hasError: false })
 
-  // 手機格式
+  // 手機號碼格式
   const phoneCheck = input.loginKey.startsWith('09') && input.loginKey.length === 10
 
   // change 監聽器
@@ -71,8 +72,9 @@ const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
     try {
       // 密碼登入請求
       if (isPwdSignIn) {
-        await axios.post(PWD_SIGN_IN_URL, input, { withCredentials: true })
-        console.log(':)')
+        const response = await axios.post(PWD_SIGN_IN_URL, input, { withCredentials: true })
+        const accessToken = response.data.result
+
         setError({ errMsg: '', hasError: false })
         // 導向首頁
         navigate('/')

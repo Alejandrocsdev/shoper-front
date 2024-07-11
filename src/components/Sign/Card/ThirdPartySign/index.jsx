@@ -3,17 +3,27 @@ import Styles from './style.module.css'
 import facebookPng from '../../../../assets/images/thirdParty/facebook.png'
 import googlePng from '../../../../assets/images/thirdParty/google.png'
 // services
-import axios from '../../../../services/Axios'
+import axios from '../../../../services/axiosInstance'
 // URLs
 const FB_SIGN_IN_URL = '/auth/signIn/facebook'
 
+// 第三方 登入 / 註冊
 const ThirdPartySign = () => {
+  // 臉書登入函式
+  const handleFacebookSignIn = async () => {
+    try {
+      const response = await axios.post(FB_SIGN_IN_URL, null, { withCredentials: true })
+      const accessToken = response.data.result
+    } catch (err) {
+      console.error(err)
+    }
+  }
   return (
     <div className={Styles.thirdParty}>
-      <a className={Styles.facebookSign} href={FB_SIGN_IN_URL}>
+      <div className={Styles.facebookSign} onClick={handleFacebookSignIn}>
         <img className={Styles.thirdPartyLogo} src={facebookPng} />
         <div className={Styles.thirdPartyText}>Facebook</div>
-      </a>
+      </div>
       <div className={Styles.googleSign}>
         <img className={Styles.thirdPartyLogo} src={googlePng} />
         <div className={Styles.thirdPartyText}>Google</div>
