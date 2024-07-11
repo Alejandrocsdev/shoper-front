@@ -6,15 +6,13 @@ import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-// modules
-import axios from 'axios'
-// environment variables
-const { VITE_BASE_URL } = import.meta.env
-// 請求網址
-const SEND_OTP_URL = `${VITE_BASE_URL}/verify/send/otp`
-const VERIFY_OTP_URL = `${VITE_BASE_URL}/verify/otp`
-const SMS_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/sms`
-const GET_USER_URL = `${VITE_BASE_URL}/users/phone`
+// services
+import axios from '../../../../services/Axios'
+// URLs
+const SEND_OTP_URL = '/verify/send/otp'
+const VERIFY_OTP_URL = '/verify/otp'
+const SMS_SIGN_IN_URL = '/auth/signIn/sms'
+const GET_USER_URL = '/users/phone'
 
 function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
   const length = 6

@@ -6,11 +6,10 @@ import avatarPng from '../../../assets/images/avatar/avatar.png'
 import Step from '../../../components/Sign/Step'
 // Hooks
 import { useNavigate } from 'react-router-dom'
-// modules
-import axios from 'axios'
-// environment variables
-const { VITE_BASE_URL, VITE_PASSWORD_SECRET } = import.meta.env
-const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/auto`
+// services
+import axios from '../../../services/Axios'
+// URLs
+const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
 // 註冊步驟4: 已註冊過
 function Step4({ onNext, id, username, phone, avatar }) {

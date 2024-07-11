@@ -8,11 +8,10 @@ import Step from '../../../components/Sign/Step'
 // Hooks
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// modules
-import axios from 'axios'
-// environment variables
-const { VITE_BASE_URL } = import.meta.env
-const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/auto`
+// services
+import axios from '../../../services/Axios'
+// URLs
+const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
 // 註冊步驟3: 完成註冊並導向首頁
 function Step5({ onNext, message }) {

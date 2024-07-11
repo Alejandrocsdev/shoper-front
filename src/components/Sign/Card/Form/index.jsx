@@ -6,12 +6,11 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 // Hooks
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-// module
-import axios from 'axios'
-// environment variables
-const { VITE_BASE_URL } = import.meta.env
-const SEND_OTP_URL = `${VITE_BASE_URL}/verify/send/otp`
-const PWD_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/pwd`
+// services
+import axios from '../../../../services/Axios'
+// URLs
+const SEND_OTP_URL = '/verify/send/otp'
+const PWD_SIGN_IN_URL = '/auth/signIn/pwd'
 
 const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
   // 密碼登入

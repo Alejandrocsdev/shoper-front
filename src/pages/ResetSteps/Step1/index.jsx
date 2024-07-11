@@ -5,12 +5,11 @@ import Step from '../../../components/Sign/Step'
 // Hooks
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-// modules
-import axios from 'axios'
-// environment variables
-const { VITE_BASE_URL } = import.meta.env
-const SEND_OTP_URL = `${VITE_BASE_URL}/verify/send/otp`
-const SEND_LINK_URL = `${VITE_BASE_URL}/verify/send/link`
+// services
+import axios from '../../../services/Axios'
+// URLs
+const SEND_OTP_URL = '/verify/send/otp'
+const SEND_LINK_URL = '/verify/send/link'
 
 function Step1({ onNext }) {
   const navigate = useNavigate()

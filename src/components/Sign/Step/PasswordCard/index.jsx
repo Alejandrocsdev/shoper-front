@@ -6,12 +6,11 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark, faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useState } from 'react'
-// modules
-import axios from 'axios'
-// environment variables
-const { VITE_BASE_URL } = import.meta.env
-const SIGN_UP_URL = `${VITE_BASE_URL}/auth/signUp`
-const UPDATE_PASSWORD_URL = `${VITE_BASE_URL}/users`
+// services
+import axios from '../../../../services/Axios'
+// URLs
+const SIGN_UP_URL = '/auth/signUp'
+const UPDATE_PASSWORD_URL = '/users'
 
 // 註冊步驟2: 設定密碼
 function PasswordCard({ onNext, phone, email, isSignUp = false }) {

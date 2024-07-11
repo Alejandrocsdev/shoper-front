@@ -6,12 +6,11 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// modules
-import axios from 'axios'
-// environment variables
-const { VITE_BASE_URL } = import.meta.env
-const AUTO_SIGN_IN_URL = `${VITE_BASE_URL}/auth/signIn/auto`
-const NOTIFY_RESET_URL = `${VITE_BASE_URL}/notify/reset/password`
+// services
+import axios from '../../../../services/Axios'
+// URLs
+const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
+const NOTIFY_RESET_URL = '/notify/reset/password'
 
 // 註冊步驟3: 完成註冊並導向首頁
 function Success({ id, phone, email, isSignUp = false }) {
