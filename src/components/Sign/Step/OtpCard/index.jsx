@@ -7,7 +7,8 @@ import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // Api
-import { axiosPublic, axiosPrivate } from '../../../../api/axios'
+// import { axiosPublic, axiosPrivate } from '../../../../api/axios'
+import axios from '../../../../api/axios'
 // URLs
 const SEND_OTP_URL = '/verify/send/otp'
 const VERIFY_OTP_URL = '/verify/otp'
@@ -111,9 +112,9 @@ function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
         setError({ errMsg: '', hasError: false })
 
         if (isSignUp) {
-          await axiosPublic.post(VERIFY_OTP_URL, { phone, otp: otp.join('') })
+          await axios.post(VERIFY_OTP_URL, { phone, otp: otp.join('') })
 
-          const response = await axiosPublic.get(`${GET_USER_URL}/${phone}`)
+          const response = await axios.get(`${GET_USER_URL}/${phone}`)
           const user = response.data.result
 
           if (user) {
@@ -123,10 +124,11 @@ function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
             onNext({ phone })
           }
         } else if (isSmsSignIn) {
-          await axiosPrivate.post(SMS_SIGN_IN_URL, { phone, otp: otp.join('') })
+          await axios.post(SMS_SIGN_IN_URL, { phone, otp: otp.join('') }, { withCredentials: true })
+          console.log('簡訊登入')
           navigate('/')
         } else {
-          await axiosPublic.post(VERIFY_OTP_URL, { phone, otp: otp.join('') })
+          await axios.post(VERIFY_OTP_URL, { phone, otp: otp.join('') })
           onNext({ phone })
         }
       } catch (err) {

@@ -6,7 +6,8 @@ import Step from '../../../components/Sign/Step'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // Api
-import { axiosPublic } from '../../../api/axios'
+// import { axiosPublic } from '../../../api/axios'
+import axios from '../../../api/axios'
 // URLs
 const SEND_OTP_URL = '/verify/send/otp'
 const SEND_LINK_URL = '/verify/send/link'
@@ -69,7 +70,7 @@ function Step1({ onNext }) {
       try {
         const method = isPhone ? 'phone' : 'email'
         const url = method === 'phone' ? SEND_OTP_URL : SEND_LINK_URL
-        axiosPublic.post(url, { [method]: loginKey })
+        axios.post(url, { [method]: loginKey })
         if (method === 'phone') {
           onNext({ phone: loginKey })
         } else {

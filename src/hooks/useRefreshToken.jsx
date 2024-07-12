@@ -1,23 +1,16 @@
-import { useEffect } from 'react'
-import { axiosPrivate } from '../api/axios'
+import axios from '../api/axios'
 import useAuth from './useAuth'
 
 const useRefreshToken = () => {
-  const { auth, setAuth } = useAuth()
+  const { setAuth } = useAuth()
 
   const refresh = async () => {
-    try {
-      console.log('old', auth?.accessToken)
-      const response = await axiosPrivate.get('/auth/refresh')
-      setAuth({ accessToken: response.data.result })
-      console.log('new', response.data.result)
-      return response.data.result
-    } catch (error) {
-      console.error('Error refreshing token:', error)
-      throw error
-    }
+    const response = await axios.get('/refresh', {
+      withCredentials: true
+    })
+    setAuth({ accessToken: response.data.result })
+    return response.data.accessToken
   }
-
   return refresh
 }
 

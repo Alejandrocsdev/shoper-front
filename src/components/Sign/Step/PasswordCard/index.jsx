@@ -7,7 +7,8 @@ import { faCircleXmark, faCircleCheck } from '@fortawesome/free-regular-svg-icon
 // Hooks
 import { useState } from 'react'
 // Api
-import { axiosPublic, axiosPrivate } from '../../../../api/axios'
+// import { axiosPublic, axiosPrivate } from '../../../../api/axios'
+import axios from '../../../../api/axios'
 // URLs
 const SIGN_UP_URL = '/auth/signUp'
 const UPDATE_PASSWORD_URL = '/users'
@@ -65,12 +66,16 @@ function PasswordCard({ onNext, phone, email, isSignUp = false }) {
     if (isPwdValid) {
       try {
         if (isSignUp) {
-          const response = await axiosPublic.post(SIGN_UP_URL, { phone, password })
+          const response = await axios.post(SIGN_UP_URL, { phone, password })
           const user = response.data.result
           onNext({ id: user.id, phone })
         } else {
           const path = phone ? `/phone/${phone}` : `/email/${email}`
-          const response = await axiosPrivate.put(`${UPDATE_PASSWORD_URL}/${path}`, { password })
+          const response = await axios.put(
+            `${UPDATE_PASSWORD_URL}/${path}`,
+            { password },
+            { withCredentials: true }
+          )
           onNext({ phone, email })
         }
       } catch (err) {

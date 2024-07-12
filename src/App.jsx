@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 // Context
 import { AuthProvider } from './context/AuthProvider'
 
+import PrivateRoute from './components/PrivateRoute'
+
 import Layout from './components/Layout'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
@@ -27,7 +29,11 @@ function App() {
 
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
+
+              <Route element={<PrivateRoute />}>
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+
             </Route>
 
             <Route path="*" element={<NotFound />} />

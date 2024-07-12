@@ -7,7 +7,8 @@ import Step from '../../../components/Sign/Step'
 // Hooks
 import { useNavigate } from 'react-router-dom'
 // Api
-import { axiosPrivate } from '../../../api/axios'
+// import { axiosPrivate } from '../../../api/axios'
+import axios from '../../../api/axios'
 // URLs
 const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
@@ -18,7 +19,8 @@ function Step4({ onNext, id, username, phone, avatar }) {
   // 處理表單提交事件
   const handleLogin = async () => {
     try {
-      await axiosPrivate.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
+      await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, null, { withCredentials: true })
+      console.log('自動登入')
       navigate('/')
     } catch (err) {
       console.error('Error:', err)

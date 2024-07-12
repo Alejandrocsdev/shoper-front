@@ -18,7 +18,7 @@ import useRefreshToken from '../../hooks/useRefreshToken'
 function Header() {
   // 用戶資料
   const user = useAccessToken()
-  const refresh = useRefreshToken()
+  // const refresh = useRefreshToken()
 
   // 社群 LOGO 元素
   const facebook = <FontAwesomeIcon className={Styles.socialMedia} icon={faSquareFacebook} />
@@ -35,17 +35,17 @@ function Header() {
     <img className={`${Styles.headerLogo} ${Styles.smallLogo}`} src={headerRoundLogoPng} />
   )
 
-  const handleRefreshTokenClick = async () => {
-    try {
-      await refresh() // Call the refresh function directly here
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  // const handleRefreshTokenClick = async () => {
+  //   try {
+  //     await refresh()
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
   return (
     <>
-      <button onClick={handleRefreshTokenClick}>Refresh Access Token</button>
+      {/* <button onClick={handleRefreshTokenClick}>Refresh Access Token</button> */}
       <header className={Styles.header}>
         <nav className={Styles.nav}>
           {/* 左側 */}
