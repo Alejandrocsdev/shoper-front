@@ -6,8 +6,8 @@ import avatarPng from '../../../assets/images/avatar/avatar.png'
 import Step from '../../../components/Sign/Step'
 // Hooks
 import { useNavigate } from 'react-router-dom'
-// services
-import axios from '../../../services/axiosInstance'
+// Api
+import { axiosPrivate } from '../../../api/axios'
 // URLs
 const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
@@ -18,7 +18,7 @@ function Step4({ onNext, id, username, phone, avatar }) {
   // 處理表單提交事件
   const handleLogin = async () => {
     try {
-      await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
+      await axiosPrivate.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
       navigate('/')
     } catch (err) {
       console.error('Error:', err)

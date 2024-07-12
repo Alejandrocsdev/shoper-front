@@ -5,9 +5,10 @@ import { faCircleCheck, faCircleXmark } from '@fortawesome/free-regular-svg-icon
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 // Hooks
 import { useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-// services
-import axios from '../../../../services/axiosInstance'
+import { useNavigate } from 'react-router-dom'
+import useAuth from '../../../../hooks/useAuth'
+// Api
+import { axiosPublic, axiosPrivate } from '../../../../api/axios'
 // URLs
 const SEND_OTP_URL = '/verify/send/otp'
 const PWD_SIGN_IN_URL = '/auth/signIn/pwd'
@@ -18,6 +19,8 @@ const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
   const isPwdSignIn = isSignIn && !isSmsSignIn
   // 導向
   const navigate = useNavigate()
+  // 身分憑證
+  const { setAuth } = useAuth()
 
   // loginKey / password
   const [input, setInput] = useState({ loginKey: '', password: '' })
@@ -72,20 +75,21 @@ const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
     try {
       // 密碼登入請求
       if (isPwdSignIn) {
-        const response = await axios.post(PWD_SIGN_IN_URL, input, { withCredentials: true })
+        const response = await axiosPrivate.post(PWD_SIGN_IN_URL, input)
         const accessToken = response.data.result
-
+        setAuth({ accessToken })
         setError({ errMsg: '', hasError: false })
         // 導向首頁
         navigate('/')
       }
       // 發送簡訊驗證碼
       else {
-        await axios.post(SEND_OTP_URL, { phone: input.loginKey })
+        await axiosPublic.post(SEND_OTP_URL, { phone: input.loginKey })
         // 導向下一頁
         onNext({ phone: input.loginKey })
       }
     } catch (err) {
+      console.log(err)
       setError({ errMsg: err.response?.data?.message, hasError: true })
     }
   }

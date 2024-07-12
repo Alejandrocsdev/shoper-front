@@ -6,8 +6,8 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// services
-import axios from '../../../../services/axiosInstance'
+// Api
+import { axiosPublic, axiosPrivate } from '../../../../api/axios'
 // URLs
 const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 const NOTIFY_RESET_URL = '/notify/reset/password'
@@ -37,14 +37,14 @@ function Success({ id, phone, email, isSignUp = false }) {
   const handleSubmit = async () => {
     if (isSignUp) {
       try {
-        const response = await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
+        const response = await axiosPrivate.post(`${AUTO_SIGN_IN_URL}/${id}`, {}, { withCredentials: true })
         const accessToken = response.data.result
         navigate('/')
       } catch (err) {
         console.error('Error:', err)
       }
     } else {
-      await axios.post(NOTIFY_RESET_URL, { email })
+      await axiosPublic.post(NOTIFY_RESET_URL, { email })
       navigate('/signIn')
     }
   }

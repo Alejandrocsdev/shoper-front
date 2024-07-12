@@ -7,28 +7,45 @@ import headerRoundLogoPng from '../../assets/images/logo/cart_text_round_dark.pn
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareFacebook, faInstagram, faLine } from '@fortawesome/free-brands-svg-icons'
 import { faCartShopping, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-// components
+// Components
 import Anchor from '../Elements/Anchor'
-
-// 暫時模擬登入資料
-const fetchedAvatar = 'https://avatar.iran.liara.run/public/boy?username=Scott'
-const fetchedUsername = 'newlean14'
+// Hooks
+import useAuth from '../../hooks/useAuth'
+import useAccessToken from '../../hooks/useAccessToken'
+import useRefreshToken from '../../hooks/useRefreshToken'
 
 // Main Layout Footer
 function Header() {
+  // 用戶資料
+  const user = useAccessToken()
+  const refresh = useRefreshToken()
+
   // 社群 LOGO 元素
   const facebook = <FontAwesomeIcon className={Styles.socialMedia} icon={faSquareFacebook} />
   const instagram = <FontAwesomeIcon className={Styles.socialMedia} icon={faInstagram} />
   const line = <FontAwesomeIcon className={Styles.socialMedia} icon={faLine} />
   // 會員頭像
-  const avatar = <img className={Styles.avatar} src={fetchedAvatar || avatarPng} />
-  const username = <div className={Styles.username}>{fetchedUsername}</div>
+  const avatar = <img className={Styles.avatar} src={user?.avatar || avatarPng} />
+  const username = <div className={Styles.username}>{user?.username}</div>
   // 網站 LOGO 元素
-  const largeLogo = <img className={`${Styles.headerLogo} ${Styles.largeLogo}`} src={headerLogoPng} />
-  const smallLogo = <img className={`${Styles.headerLogo} ${Styles.smallLogo}`} src={headerRoundLogoPng} />
+  const largeLogo = (
+    <img className={`${Styles.headerLogo} ${Styles.largeLogo}`} src={headerLogoPng} />
+  )
+  const smallLogo = (
+    <img className={`${Styles.headerLogo} ${Styles.smallLogo}`} src={headerRoundLogoPng} />
+  )
+
+  const handleRefreshTokenClick = async () => {
+    try {
+      await refresh() // Call the refresh function directly here
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <>
+      <button onClick={handleRefreshTokenClick}>Refresh Access Token</button>
       <header className={Styles.header}>
         <nav className={Styles.nav}>
           {/* 左側 */}
@@ -41,18 +58,27 @@ function Header() {
           {/* 右側 */}
           <div className={Styles.navRight}>
             {/* 登出樣式 */}
-            <div className={Styles.signOutView}>
-              <Anchor style={Styles.signUp} to="/signUp" content="註冊" />
-              <Anchor style={Styles.signIn} to="/signIn" content="登入" />
-            </div>
+            {!user && (
+              <div className={Styles.signOutView}>
+                <Anchor style={Styles.signUp} to="/signUp" content="註冊" />
+                <Anchor style={Styles.signIn} to="/signIn" content="登入" />
+              </div>
+            )}
             {/* 登入樣式 */}
-            {/* <div className={Styles.signInView}>
-              <Anchor
-                style={Styles.profileLink}
-                content={<>{avatar}{username}</>}
-                to="/profile"
-              />
-            </div> */}
+            {user && (
+              <div className={Styles.signInView}>
+                <Anchor
+                  style={Styles.profileLink}
+                  content={
+                    <>
+                      {avatar}
+                      {username}
+                    </>
+                  }
+                  to="/profile"
+                />
+              </div>
+            )}
           </div>
         </nav>
         <div className={Styles.headerSearch}>
@@ -60,7 +86,12 @@ function Header() {
           <Anchor
             off={true}
             style={Styles.homeLink}
-            content={<>{largeLogo}{smallLogo}</>}
+            content={
+              <>
+                {largeLogo}
+                {smallLogo}
+              </>
+            }
             to="/"
           />
           {/* 搜尋欄 */}

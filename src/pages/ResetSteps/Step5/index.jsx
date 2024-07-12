@@ -8,10 +8,6 @@ import Step from '../../../components/Sign/Step'
 // Hooks
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// services
-import axios from '../../../services/axiosInstance'
-// URLs
-const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
 // 重設密碼(5): 密碼設定失敗畫面
 function Step5({ onNext, message }) {

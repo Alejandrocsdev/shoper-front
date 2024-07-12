@@ -2,8 +2,8 @@ import Styles from './style.module.css'
 // PNG Files
 import facebookPng from '../../../../assets/images/thirdParty/facebook.png'
 import googlePng from '../../../../assets/images/thirdParty/google.png'
-// services
-import axios from '../../../../services/axiosInstance'
+// Api
+import { axiosPrivate } from '../../../../api/axios'
 // URLs
 const FB_SIGN_IN_URL = '/auth/signIn/facebook'
 
@@ -12,7 +12,7 @@ const ThirdPartySign = () => {
   // 臉書登入函式
   const handleFacebookSignIn = async () => {
     try {
-      const response = await axios.post(FB_SIGN_IN_URL, null, { withCredentials: true })
+      const response = await axiosPrivate.post(FB_SIGN_IN_URL)
       const accessToken = response.data.result
     } catch (err) {
       console.error(err)

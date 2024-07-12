@@ -2,6 +2,8 @@
 import './App.css'
 // Hooks
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+// Context
+import { AuthProvider } from './context/AuthProvider'
 
 import Layout from './components/Layout'
 import SignUp from './pages/SignUp'
@@ -16,20 +18,22 @@ import NotFound from './pages/NotFound'
 function App() {
   return (
     <>
-      <BrowserRouter basename="/">
-        <Routes>
-          <Route path="/signUp" element={<SignUp />} />
-          <Route path="/signIn" element={<SignIn />} />
-          <Route path="/reset" element={<Reset />} />
+      <AuthProvider>
+        <BrowserRouter basename="/">
+          <Routes>
+            <Route path="/signUp" element={<SignUp />} />
+            <Route path="/signIn" element={<SignIn />} />
+            <Route path="/reset" element={<Reset />} />
 
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </>
   )
 }
