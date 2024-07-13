@@ -5,9 +5,8 @@ const PrivateRoute = () => {
   const { auth } = useAuth()
   const location = useLocation()
 
-  const isTokenExpired = (accessToken) => {
-    if (!accessToken) return true
-
+  // 驗證憑證有效
+  const isExpired = (accessToken) => {
     try {
       const { exp } = JSON.parse(atob(accessToken.split('.')[1]))
       return exp < Date.now() / 1000
@@ -17,9 +16,10 @@ const PrivateRoute = () => {
     }
   }
 
-  const isAuthenticated = !!auth.accessToken && !isTokenExpired(auth.accessToken)
+  
+  const isAuth = !!auth?.accessToken && !isExpired(auth?.accessToken)
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/signIn" state={{ from: location }} replace />
+  return isAuth ? <Outlet /> : <Navigate to="/signIn" state={{ from: location }} replace />
 }
 
 export default PrivateRoute

@@ -71,11 +71,7 @@ function PasswordCard({ onNext, phone, email, isSignUp = false }) {
           onNext({ id: user.id, phone })
         } else {
           const path = phone ? `/phone/${phone}` : `/email/${email}`
-          const response = await axios.put(
-            `${UPDATE_PASSWORD_URL}/${path}`,
-            { password },
-            { withCredentials: true }
-          )
+          const response = await axios.put(`${UPDATE_PASSWORD_URL}/${path}`, { password })
           onNext({ phone, email })
         }
       } catch (err) {

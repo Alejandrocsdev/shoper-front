@@ -1,46 +1,38 @@
 import { useState, useEffect } from 'react'
 import useAuth from './useAuth'
-// import { axiosPrivate } from '../api/axios'
 import axios from '../api/axios'
 
 const useAccessToken = () => {
   const { auth } = useAuth()
-  const accessToken = auth.accessToken
   const [user, setUser] = useState(null)
-  const [expired, setExpired] = useState(false)
+
+  const accessToken = auth?.accessToken
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (accessToken) {
         try {
-          const { id, exp } = JSON.parse(atob(accessToken.split('.')[1]))
-          const isExpired = exp < Date.now() / 1000
+          // 從憑證取得用戶ID
+          const { id } = JSON.parse(atob(accessToken.split('.')[1]))
 
-          setExpired(isExpired)
-          if (isExpired) {
-            setUser(null)
-            console.log('isExpired: ', isExpired)
-            console.log('憑證過期')
-            return
-          }
+          // 取得用戶資料
           const response = await axios.get(`/users/${id}`, {
             withcredentials: true,
             headers: {
               Authorization: `Bearer ${accessToken}`
             }
           })
+
           setUser(response.data.result)
         } catch (err) {
           console.error('取得用戶資料失敗', err)
         }
-      } else {
-        setUser(null)
       }
     }
     fetchUserData()
-  }, [accessToken])
+  }, [auth])
 
-  return expired ? null : user
+  return user
 }
 
 export default useAccessToken

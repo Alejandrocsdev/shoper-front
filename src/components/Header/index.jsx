@@ -12,13 +12,11 @@ import Anchor from '../Elements/Anchor'
 // Hooks
 import useAuth from '../../hooks/useAuth'
 import useAccessToken from '../../hooks/useAccessToken'
-import useRefreshToken from '../../hooks/useRefreshToken'
 
 // Main Layout Footer
 function Header() {
   // 用戶資料
   const user = useAccessToken()
-  // const refresh = useRefreshToken()
 
   // 社群 LOGO 元素
   const facebook = <FontAwesomeIcon className={Styles.socialMedia} icon={faSquareFacebook} />
@@ -35,17 +33,8 @@ function Header() {
     <img className={`${Styles.headerLogo} ${Styles.smallLogo}`} src={headerRoundLogoPng} />
   )
 
-  // const handleRefreshTokenClick = async () => {
-  //   try {
-  //     await refresh()
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
-
   return (
     <>
-      {/* <button onClick={handleRefreshTokenClick}>Refresh Access Token</button> */}
       <header className={Styles.header}>
         <nav className={Styles.nav}>
           {/* 左側 */}

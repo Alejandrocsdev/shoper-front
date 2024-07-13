@@ -22,22 +22,31 @@ function App() {
     <>
       <AuthProvider>
         <BrowserRouter basename="/">
+
           <Routes>
+
+            {/* 公開路由: 註冊 / 登入 / 重設 */}
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/signIn" element={<SignIn />} />
             <Route path="/reset" element={<Reset />} />
 
             <Route path="/" element={<Layout />}>
+
+              {/* 公開路由 */}
               <Route index element={<Home />} />
 
+              {/* 限制路由 */}
               <Route element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
               </Route>
 
             </Route>
 
+            {/* 錯誤路由 */}
             <Route path="*" element={<NotFound />} />
+
           </Routes>
+
         </BrowserRouter>
       </AuthProvider>
     </>
