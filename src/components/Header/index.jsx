@@ -33,7 +33,7 @@ function Header() {
         <nav className={Styles.nav}>
           {/* 左側 */}
           <div className={Styles.navLeft}>
-            {user && (<Anchor style={Styles.navText} content="賣家中心" to="/" />)}
+            {user && (<Anchor style={Styles.navText} content="賣家中心" to="/signIn" />)}
             <Anchor style={Styles.socialMedia} content={facebook} />
             <Anchor style={Styles.socialMedia} content={instagram} />
             <Anchor style={Styles.socialMedia} content={line} />

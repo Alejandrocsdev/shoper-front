@@ -8,37 +8,26 @@ const useUserData = () => {
   const [user, setUser] = useState(null)
   const axiosPrivate = useAxiosPrivate()
 
-  // const accessToken = auth?.accessToken
-
   useEffect(() => {
+    // 取得用戶資料
     const fetchData = async () => {
       try {
-        // console.log(auth)
-        //
         const response = await axiosPrivate.get('/users/me', {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` }
+          headers: { Authorization: auth?.accessToken ? `Bearer ${auth?.accessToken}` : undefined }
         })
-        // const response = await axios.get('/users/me', {
-        //   withcredentials: true,
-        //   headers: {
-        //     Authorization: `Bearer ${accessToken}`
-        //   }
-        // })
-
+        console.log('here')
+        console.log('next')
         // 存儲用戶資料
-        setUser(response.data.result)
+        setUser(response?.data?.result)
       } catch (err) {
+        console.log(err)
         console.log('取得用戶資料失敗')
       }
     }
 
-      // 等待 fetchData() 完成
-
-
-    // if (accessToken) fetchData()
     fetchData()
-    // }, [auth])
-  }, [auth, axiosPrivate])
+  }, [axiosPrivate])
+  // }, [auth, axiosPrivate])
 
   return user
 }

@@ -30,7 +30,9 @@ const PrivateRoute = () => {
     const verifyToken = async () => {
       try {
         if (!auth?.accessToken || isExpired(auth?.accessToken)) {
-          await refresh()
+          console.log('Old Access Token: ', auth?.accessToken)
+          const newAccessToken = await refresh()
+          console.log('New Access Token Private: ', newAccessToken)
         }
         setIsAuth(true)
       } catch (err) {

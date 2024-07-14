@@ -9,41 +9,46 @@ const useAxiosPrivate = () => {
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
-      (config) => {
+      async (config) => {
         // console.log(config.sent)
+        const headers = config?.headers['Authorization']
+
+        if (!headers) {
+          const newAccessToken = await refresh()
+          config.headers['Authorization'] = `Bearer ${newAccessToken}`
+        } 
+
         // console.log('Authorization: ', config?.headers['Authorization'])
-        if (!config.headers['Authorization']) {
-          config.headers['Authorization'] = `Bearer ${auth?.accessToken}`
-        }
+        // if (!config.headers['Authorization']) {
+        //   config.headers['Authorization'] = auth?.accessToken ? `Bearer ${auth?.accessToken}` : undefined
+        // }
         return config
       },
-      (error) => Promise.reject(error)
+      (error) => {
+        console.log('eeeeeafsdfsvsdeerror', error)
+        Promise.reject(error)
+      }
     )
 
     const responseIntercept = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (error) => {
-        // console.log(error)
+        console.log('eeeeeeerror', error)
         const prevRequest = error?.config
         // console.log('prevRequest.sent: ', error?.config?.sent)
         // console.log('error.response.status: ', error?.response?.status)
         if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true
+          console.log('Old Access Token: ', auth?.accessToken)
           const newAccessToken = await refresh()
+          console.log('New Access Token Header: ', newAccessToken)
           // console.log('newAccessToken: ', newAccessToken)
           prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
           // console.log('axiosPrivate(prevRequest): ', prevRequest)
           return axiosPrivate(prevRequest)
         }
 
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
-          prevRequest.sent = true
-          const newAccessToken = await refresh()
-          // console.log('newAccessToken: ', newAccessToken)
-          prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-          // console.log('axiosPrivate(prevRequest): ', prevRequest)
-          return axiosPrivate(prevRequest)
-        }
+        // console.log('eeeeeeerror', error)
 
         return Promise.reject(error)
       }
