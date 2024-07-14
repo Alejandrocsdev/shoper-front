@@ -75,7 +75,7 @@ function PasswordCard({ onNext, phone, email, isSignUp = false }) {
           onNext({ phone, email })
         }
       } catch (err) {
-        console.error('Error:', err)
+        console.log('註冊失敗 / 重設密碼失敗')
       }
     }
   }

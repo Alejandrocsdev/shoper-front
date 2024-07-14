@@ -77,7 +77,7 @@ function Step1({ onNext }) {
           onNext({ email: loginKey })
         }
       } catch (err) {
-        console.error(err.response?.data?.message)
+        console.log(err.response?.data?.message)
       }
     }
   }

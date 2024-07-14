@@ -6,6 +6,7 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useAuth from '../../../../hooks/useAuth'
 // Api
 // import { axiosPublic, axiosPrivate } from '../../../../api/axios'
 import axios from '../../../../api/axios'
@@ -15,7 +16,10 @@ const NOTIFY_RESET_URL = '/notify/reset/password'
 
 // 成功頁面: 註冊 / 重設密碼
 function Success({ id, phone, email, isSignUp = false }) {
+  // 導向
   const navigate = useNavigate()
+  // 身分憑證
+  const { setAuth } = useAuth()
 
   const [count, setCount] = useState(10)
 
@@ -40,10 +44,11 @@ function Success({ id, phone, email, isSignUp = false }) {
       try {
         const response = await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, null, { withCredentials: true })
         const accessToken = response.data.result
+        setAuth({ accessToken })
         console.log('自動登入')
         navigate('/profile')
       } catch (err) {
-        console.error('Error:', err)
+        console.log('自動登入失敗')
       }
     } else {
       await axios.post(NOTIFY_RESET_URL, { email })

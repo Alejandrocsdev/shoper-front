@@ -10,14 +10,12 @@ import { faCartShopping, faMagnifyingGlass } from '@fortawesome/free-solid-svg-i
 // Components
 import Anchor from '../Elements/Anchor'
 // Hooks
-import useAuth from '../../hooks/useAuth'
-import useAccessToken from '../../hooks/useAccessToken'
+import useUserData from '../../hooks/useUserData'
 
 // Main Layout Footer
 function Header() {
   // 用戶資料
-  const user = useAccessToken()
-
+  const user = useUserData()
   // 社群 LOGO 元素
   const facebook = <FontAwesomeIcon className={Styles.socialMedia} icon={faSquareFacebook} />
   const instagram = <FontAwesomeIcon className={Styles.socialMedia} icon={faInstagram} />
@@ -26,12 +24,8 @@ function Header() {
   const avatar = <img className={Styles.avatar} src={user?.avatar || avatarPng} />
   const username = <div className={Styles.username}>{user?.username}</div>
   // 網站 LOGO 元素
-  const largeLogo = (
-    <img className={`${Styles.headerLogo} ${Styles.largeLogo}`} src={headerLogoPng} />
-  )
-  const smallLogo = (
-    <img className={`${Styles.headerLogo} ${Styles.smallLogo}`} src={headerRoundLogoPng} />
-  )
+  const largeLogo = <img className={`${Styles.headerLogo} ${Styles.largeLogo}`} src={headerLogoPng} />
+  const smallLogo = <img className={`${Styles.headerLogo} ${Styles.smallLogo}`} src={headerRoundLogoPng} />
 
   return (
     <>
@@ -39,7 +33,7 @@ function Header() {
         <nav className={Styles.nav}>
           {/* 左側 */}
           <div className={Styles.navLeft}>
-            <Anchor style={Styles.navText} content="賣家中心" to="/" />
+            {user && (<Anchor style={Styles.navText} content="賣家中心" to="/" />)}
             <Anchor style={Styles.socialMedia} content={facebook} />
             <Anchor style={Styles.socialMedia} content={instagram} />
             <Anchor style={Styles.socialMedia} content={line} />
@@ -58,12 +52,7 @@ function Header() {
               <div className={Styles.signInView}>
                 <Anchor
                   style={Styles.profileLink}
-                  content={
-                    <>
-                      {avatar}
-                      {username}
-                    </>
-                  }
+                  content={<>{avatar}{username}</>}
                   to="/profile"
                 />
               </div>
@@ -75,12 +64,7 @@ function Header() {
           <Anchor
             off={true}
             style={Styles.homeLink}
-            content={
-              <>
-                {largeLogo}
-                {smallLogo}
-              </>
-            }
+            content={<>{largeLogo}{smallLogo}</>}
             to="/"
           />
           {/* 搜尋欄 */}

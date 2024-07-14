@@ -17,7 +17,7 @@ const ThirdPartySign = () => {
       const accessToken = response.data.result
       console.log('臉書登入')
     } catch (err) {
-      console.error(err)
+      console.log('臉書登入失敗')
     }
   }
   return (

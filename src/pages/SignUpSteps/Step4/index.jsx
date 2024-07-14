@@ -6,6 +6,7 @@ import avatarPng from '../../../assets/images/avatar/avatar.png'
 import Step from '../../../components/Sign/Step'
 // Hooks
 import { useNavigate } from 'react-router-dom'
+import useAuth from '../../../hooks/useAuth'
 // Api
 // import { axiosPrivate } from '../../../api/axios'
 import axios from '../../../api/axios'
@@ -14,16 +15,21 @@ const AUTO_SIGN_IN_URL = '/auth/signIn/auto'
 
 // 註冊(4): 已註冊過
 function Step4({ onNext, id, username, phone, avatar }) {
+  // 導向
   const navigate = useNavigate()
+  // 身分憑證
+  const { setAuth } = useAuth()
 
   // 處理表單提交事件
   const handleLogin = async () => {
     try {
-      await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, null, { withCredentials: true })
+      const response = await axios.post(`${AUTO_SIGN_IN_URL}/${id}`, null, { withCredentials: true })
+      const accessToken = response.data.result
+      setAuth({ accessToken })
       console.log('自動登入')
       navigate('/')
     } catch (err) {
-      console.error('Error:', err)
+      console.log('自動登入失敗')
     }
   }
 

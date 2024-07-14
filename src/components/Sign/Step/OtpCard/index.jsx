@@ -6,6 +6,7 @@ import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 // Hooks
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useAuth from '../../../../hooks/useAuth'
 // Api
 // import { axiosPublic, axiosPrivate } from '../../../../api/axios'
 import axios from '../../../../api/axios'
@@ -17,8 +18,12 @@ const GET_USER_URL = '/users/phone'
 
 // 簡訊驗證碼表單
 function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
-  const length = 6
+  // 導向
   const navigate = useNavigate()
+  // 身分憑證
+  const { setAuth } = useAuth()
+
+  const length = 6
   const inputRefs = useRef([])
   // OTP 值
   const [otp, setOtp] = useState(new Array(6).fill(''))
@@ -124,7 +129,13 @@ function OtpCard({ onNext, phone, isSignUp = false, isSmsSignIn = false }) {
             onNext({ phone })
           }
         } else if (isSmsSignIn) {
-          await axios.post(SMS_SIGN_IN_URL, { phone, otp: otp.join('') }, { withCredentials: true })
+          const response = await axios.post(
+            SMS_SIGN_IN_URL,
+            { phone, otp: otp.join('') },
+            { withCredentials: true }
+          )
+          const accessToken = response.data.result
+          setAuth({ accessToken })
           console.log('簡訊登入')
           navigate('/')
         } else {

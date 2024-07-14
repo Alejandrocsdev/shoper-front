@@ -5,7 +5,7 @@ import { faCircleCheck, faCircleXmark } from '@fortawesome/free-regular-svg-icon
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 // Hooks
 import { useState, useRef } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import useAuth from '../../../../hooks/useAuth'
 // Api
 // import { axiosPublic } from '../../../../api/axios'
@@ -84,7 +84,6 @@ const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
         console.log('密碼登入')
         setError({ errMsg: '', hasError: false })
         // 導向首頁
-        // navigate('/')
         navigate(from, { replace: true })
       }
       // 發送簡訊驗證碼
@@ -94,7 +93,6 @@ const Form = ({ onNext, isSignIn, isSmsSignIn }) => {
         onNext({ phone: input.loginKey })
       }
     } catch (err) {
-      console.log(err)
       setError({ errMsg: err.response?.data?.message, hasError: true })
     }
   }
