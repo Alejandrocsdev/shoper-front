@@ -13,10 +13,31 @@ const useAxiosPrivate = () => {
         // console.log(config.sent)
         const headers = config?.headers['Authorization']
 
+        // 驗證憑證有效
+        const isExpired = (accessToken) => {
+          try {
+            if (accessToken) {
+              const { exp } = JSON.parse(atob(accessToken.split('.')[1]))
+              return exp < Date.now() / 1000
+            } else {
+              return true
+            }
+          } catch (err) {
+            console.log('憑證解碼失敗')
+            return true
+          }
+        }
+
         if (!headers) {
           const newAccessToken = await refresh()
           config.headers['Authorization'] = `Bearer ${newAccessToken}`
-        } 
+        } else {
+          const at = headers.split(' ')[1]
+          if (isExpired(at)) {
+            const newAccessToken = await refresh()
+            config.headers['Authorization'] = `Bearer ${newAccessToken}`
+          }
+        }
 
         // console.log('Authorization: ', config?.headers['Authorization'])
         // if (!config.headers['Authorization']) {

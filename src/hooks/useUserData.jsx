@@ -12,6 +12,7 @@ const useUserData = () => {
     // 取得用戶資料
     const fetchData = async () => {
       try {
+        console.log('auth?.accessToken', auth?.accessToken)
         const response = await axiosPrivate.get('/users/me', {
           headers: { Authorization: auth?.accessToken ? `Bearer ${auth?.accessToken}` : undefined }
         })
